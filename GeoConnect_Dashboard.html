@@ -48,7 +48,7 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
 .topbar-title{font-size:28px;font-weight:700;color:var(--nav);letter-spacing:-.01em}
 .topbar-spacer{flex:1}
 .topbar-right{display:flex;align-items:center;gap:8px}
-.topbar-search{display:flex;align-items:center;gap:8px;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:6px 12px;font-size:13px;color:var(--text-2);cursor:text;width:200px}
+.topbar-search{display:flex;align-items:center;gap:8px;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:0 12px;height:34px;font-size:13px;color:var(--text-2);cursor:text;width:200px}
 .topbar-search svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:1.75;stroke-linecap:round}
 .icon-btn{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;border:1px solid var(--border);background:var(--card);color:var(--text-2);position:relative}
 .icon-btn svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:1.75;stroke-linecap:round}
@@ -59,8 +59,8 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
 .role-switcher select{border:none;background:transparent;font-family:inherit;font-size:11px;font-weight:600;color:var(--text);cursor:pointer;outline:none}
 
 /* MY CALLS TOGGLE — text label only, no icon */
-.mycalls-wrap{display:flex;align-items:center;gap:6px;padding:4px 10px;background:var(--bg);border:1px solid var(--border);border-radius:8px;cursor:pointer;user-select:none;transition:all .15s}
-.mycalls-wrap:hover{border-color:#CBD5E1}
+.mycalls-wrap{display:flex;align-items:center;gap:6px;cursor:pointer;user-select:none}
+.mycalls-wrap:hover .mycalls-label{color:var(--text)}
 .mycalls-label{font-size:11px;font-weight:600;color:var(--text-2)}
 .toggle-switch{width:28px;height:15px;background:var(--border);border-radius:999px;position:relative;transition:background .2s;flex-shrink:0}
 .toggle-switch .knob{position:absolute;top:2px;left:2px;width:11px;height:11px;border-radius:50%;background:#fff;transition:left .2s;box-shadow:0 1px 2px rgba(0,0,0,.25)}
@@ -191,6 +191,7 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
 .da-tier.apda{background:var(--purple-bg);color:var(--purple)}
 .da-tier.sda{background:var(--amber-mid);color:#713E11}
 .da-tier.vi{background:var(--teal-bg);color:var(--teal-dark)}
+.da-tier.dda{background:#DBEAFE;color:#1D40AF;border:1px solid #93C5FD}
 
 /* PORT CALLS TABLE */
 .pc-table{width:100%;border-collapse:collapse;font-size:13px}
@@ -408,7 +409,7 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
   <div style="height:34px;background:transparent;display:flex;align-items:center;padding:0 28px;gap:12px;flex-shrink:0">
     <span style="font-size:12px;font-weight:600;color:var(--nav)">Monday, June 29, 2026</span>
     <span style="font-size:11px;color:var(--text-2)">·</span>
-    <span style="font-size:12px;color:var(--text-2)">Good morning, Sahithi Alluru 👋 — here's your operational snapshot for today.</span>
+    <span style="font-size:12px;color:var(--text-2)">Good morning, Sahithi Alluru — here's your operational snapshot for today.</span>
     <span style="flex:1"></span>
     <div class="refreshed-chip">
       <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
@@ -416,7 +417,7 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
     </div>
   </div>
   <div class="topbar">
-    <div class="topbar-title">Welcome, Sahithi Alluru 👋</div>
+    <div class="topbar-title">Welcome, Sahithi Alluru</div>
     <div class="topbar-spacer"></div>
     <div class="topbar-right">
 
@@ -455,22 +456,22 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
     <!-- Summary stat cards -->
     <div class="stat-cards">
       <div class="scard warn active" onclick="selectSection('sec-pending',this)">
-        <div class="scard-val">5</div>
+        <div class="scard-val">15</div>
         <div class="scard-lbl">Pending Approval</div>
         <div class="scard-sub">DAs awaiting sign-off</div>
       </div>
       <div class="scard alert" onclick="selectSection('sec-overdue',this)">
-        <div class="scard-val">3</div>
+        <div class="scard-val">5</div>
         <div class="scard-lbl">Overdue DAs</div>
         <div class="scard-sub">Past agreed deadline</div>
       </div>
       <div class="scard neutral" onclick="selectSection('sec-clar',this)">
-        <div class="scard-val">4</div>
+        <div class="scard-val">15</div>
         <div class="scard-lbl">Clarification</div>
         <div class="scard-sub">Pending agent response</div>
       </div>
       <div class="scard blue" onclick="selectSection('sec-appt',this)">
-        <div class="scard-val">5</div>
+        <div class="scard-val">8</div>
         <div class="scard-lbl">Pending Appointment</div>
         <div class="scard-sub">No agent appointed yet</div>
       </div>
@@ -478,7 +479,7 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
 
     <!-- SECTION: Pending Approvals -->
     <div class="sec-panel active" id="sec-pending">
-      <div class="card">
+      <div class="card card-flush">
         <div class="tile-hdr">
           <div class="tile-title">
             <svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:var(--orange);fill:none;stroke-width:2;stroke-linecap:round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
@@ -488,85 +489,171 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
           <div class="tile-actions">
             <div class="sort-btn"><svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="6" y1="12" x2="18" y2="12"/><line x1="9" y1="18" x2="15" y2="18"/></svg>Sort</div>
             <span class="section-link" title="Full screen" onclick="alert('Full screen')"><svg viewBox="0 0 24 24" style="width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg></span>
-            
           </div>
         </div>
+        <div id="pending-tabs" class="filter-tabs">
+          <div class="filter-tab active" onclick="filterDA('pending','all',this)">All (15)</div>
+          <div class="filter-tab" onclick="filterDA('pending','PDA',this)">PDA (3)</div>
+          <div class="filter-tab" onclick="filterDA('pending','FDA',this)">FDA (4)</div>
+          <div class="filter-tab" onclick="filterDA('pending','SDA',this)">SDA (2)</div>
+          <div class="filter-tab" onclick="filterDA('pending','DDA',this)">DDA (2)</div>
+          <div class="filter-tab" onclick="filterDA('pending','VI',this)">VI (2)</div>
+          <div class="filter-tab" onclick="filterDA('pending','APDA',this)">APDA (2)</div>
+        </div>
         <div id="pending-body" class="tile-body">
-          <div class="da-tabs" id="pending-tabs">
-            <div class="da-tab active" onclick="filterDA('pending','all',this)">All <span class="ct">8</span></div>
-            <div class="da-tab" onclick="filterDA('pending','PDA',this)">PDA <span class="ct n">1</span></div>
-            <div class="da-tab" onclick="filterDA('pending','FDA',this)">FDA <span class="ct n">2</span></div>
-            <div class="da-tab" onclick="filterDA('pending','SDA',this)">SDA <span class="ct n">1</span></div>
-            <div class="da-tab" onclick="filterDA('pending','DDA',this)">DDA <span class="ct n">1</span></div>
-            <div class="da-tab" onclick="filterDA('pending','VI',this)">VI <span class="ct n">1</span></div>
-            <div class="da-tab" onclick="filterDA('pending','APDA',this)">APDA <span class="ct n">1</span></div>
-          </div>
-          <div class="da-list" id="pending-list" style="max-height:380px">
-            <div class="da-card blue" data-type="FDA">
-              <div class="da-icon blue">FDA</div>
-              <div class="da-body">
-                <div class="da-r1"><span class="da-pc">TST2600082</span><span class="da-tname">· Ops Tier 1</span></div>
-                <div class="da-r2"><span><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>Omicron West</span><span><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>Singapore</span><span><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>ABC Test Shipping</span></div>
-              </div>
-              <div class="da-meta"><div class="da-amt">USD 25,624</div><div class="da-amt-lbl">Balance</div><div class="da-pill info">6 days</div></div>
-            </div>
-            <div class="da-card blue" data-type="FDA">
-              <div class="da-icon blue">FDA</div>
-              <div class="da-body">
-                <div class="da-r1"><span class="da-pc">TST2600113</span><span class="da-tname">· Ops Tier 1</span></div>
-                <div class="da-r2"><span><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>Test Vessel 1</span><span><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>Singapore</span><span><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>ABC Test Shipping</span></div>
-              </div>
-              <div class="da-meta"><div class="da-amt">USD 18,450</div><div class="da-amt-lbl">Balance</div><div class="da-pill info">3 days</div></div>
-            </div>
-            <div class="da-card blue" data-type="APDA">
-              <div class="da-icon blue">APDA</div>
-              <div class="da-body">
-                <div class="da-r1"><span class="da-pc">TST2600067</span><span class="da-tname">· Finance Tier 2</span></div>
-                <div class="da-r2"><span><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>Test Vessel 1</span><span><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>Test Port</span><span><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>ABC Test Shipping</span></div>
-              </div>
-              <div class="da-meta"><div class="da-amt">USD 6,318</div><div class="da-amt-lbl">Total</div><div class="da-pill info">3 days</div></div>
-            </div>
-            <div class="da-card blue" data-type="SDA">
-              <div class="da-icon teal">SDA</div>
-              <div class="da-body">
-                <div class="da-r1"><span class="da-pc">TST2600114</span></div>
-                <div class="da-r2"><span><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>Test Vessel 1</span><span><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>Test Port</span><span><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>Keppel Smit</span></div>
-              </div>
-              <div class="da-meta"><div class="da-amt">USD 637</div><div class="da-amt-lbl">Balance</div><div class="da-pill ok">Today</div></div>
-            </div>
-            <div class="da-card blue" data-type="PDA">
-              <div class="da-icon blue">PDA</div>
-              <div class="da-body">
-                <div class="da-r1"><span class="da-pc">TST2600117</span></div>
-                <div class="da-r2"><span><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>Test Vessel 1</span><span><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>Test Port</span><span><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>Test Vendor 22</span></div>
-              </div>
-              <div class="da-meta"><div class="da-amt">USD 4,200</div><div class="da-amt-lbl">Total</div><div class="da-pill info">1 day</div></div>
-            </div>
-            <div class="da-card blue" data-type="DDA">
-              <div class="da-icon blue">DDA</div>
-              <div class="da-body">
-                <div class="da-r1"><span class="da-pc">TST2600119</span><span class="da-tname">· Finance Tier 1</span></div>
-                <div class="da-r2"><span><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>Nordic Star</span><span><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>Rotterdam</span><span><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>Boskalis Terminal</span></div>
-              </div>
-              <div class="da-meta"><div class="da-amt">USD 11,750</div><div class="da-amt-lbl">Total</div><div class="da-pill info">4 days</div></div>
-            </div>
-            <div class="da-card blue" data-type="VI">
-              <div class="da-icon teal">VI</div>
-              <div class="da-body">
-                <div class="da-r1"><span class="da-pc">TST2600121</span><span class="da-tname">· Ops Tier 2</span></div>
-                <div class="da-r2"><span><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>Pacific Wind</span><span><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>Singapore</span><span><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>Test Vendor-A</span></div>
-              </div>
-              <div class="da-meta"><div class="da-amt">USD 9,880</div><div class="da-amt-lbl">Balance</div><div class="da-pill warn">5 days</div></div>
-            </div>
-            <div class="da-card blue" data-type="APDA">
-              <div class="da-icon blue">APDA</div>
-              <div class="da-body">
-                <div class="da-r1"><span class="da-pc">TST2600122</span></div>
-                <div class="da-r2"><span><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>Atlantic Hope</span><span><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>Hamburg</span><span><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>Eurogate Agency</span></div>
-              </div>
-              <div class="da-meta"><div class="da-amt">USD 3,415</div><div class="da-amt-lbl">Total</div><div class="da-pill warn">6 days</div></div>
-            </div>
-          </div>
+          <table class="pc-table" id="pending-table">
+            <thead>
+              <tr>
+                <th>Port Call</th>
+                <th>Type</th>
+                <th>Vessel</th>
+                <th>Port</th>
+                <th>Agent</th>
+                <th style="text-align:right">Amount</th>
+                <th style="text-align:center">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr data-type="FDA" style="cursor:pointer">
+                <td>TST2600082</td>
+                <td><span class="da-tier fda">FDA</span></td>
+                <td>Omicron West</td>
+                <td>Singapore</td>
+                <td>ABC Test Shipping</td>
+                <td style="text-align:right;font-variant-numeric:tabular-nums">USD 25,624</td>
+                <td style="text-align:center"><span class="da-pill info">6 days</span></td>
+              </tr>
+              <tr data-type="FDA" style="cursor:pointer">
+                <td>TST2600113</td>
+                <td><span class="da-tier fda">FDA</span></td>
+                <td>Test Vessel 1</td>
+                <td>Singapore</td>
+                <td>ABC Test Shipping</td>
+                <td style="text-align:right;font-variant-numeric:tabular-nums">USD 18,450</td>
+                <td style="text-align:center"><span class="da-pill info">3 days</span></td>
+              </tr>
+              <tr data-type="APDA" style="cursor:pointer">
+                <td>TST2600067</td>
+                <td><span class="da-tier apda">APDA</span></td>
+                <td>Test Vessel 1</td>
+                <td>Test Port</td>
+                <td>ABC Test Shipping</td>
+                <td style="text-align:right;font-variant-numeric:tabular-nums">USD 6,318</td>
+                <td style="text-align:center"><span class="da-pill info">3 days</span></td>
+              </tr>
+              <tr data-type="SDA" style="cursor:pointer">
+                <td>TST2600114</td>
+                <td><span class="da-tier sda">SDA</span></td>
+                <td>Test Vessel 1</td>
+                <td>Test Port</td>
+                <td>Keppel Smit</td>
+                <td style="text-align:right;font-variant-numeric:tabular-nums">USD 637</td>
+                <td style="text-align:center"><span class="da-pill ok">Today</span></td>
+              </tr>
+              <tr data-type="PDA" style="cursor:pointer">
+                <td>TST2600117</td>
+                <td><span class="da-tier pda">PDA</span></td>
+                <td>Test Vessel 1</td>
+                <td>Test Port</td>
+                <td>Test Vendor 22</td>
+                <td style="text-align:right;font-variant-numeric:tabular-nums">USD 4,200</td>
+                <td style="text-align:center"><span class="da-pill info">1 day</span></td>
+              </tr>
+              <tr data-type="DDA" style="cursor:pointer">
+                <td>TST2600119</td>
+                <td><span class="da-tier dda">DDA</span></td>
+                <td>Nordic Star</td>
+                <td>Rotterdam</td>
+                <td>Boskalis Terminal</td>
+                <td style="text-align:right;font-variant-numeric:tabular-nums">USD 11,750</td>
+                <td style="text-align:center"><span class="da-pill info">4 days</span></td>
+              </tr>
+              <tr data-type="VI" style="cursor:pointer">
+                <td>TST2600121</td>
+                <td><span class="da-tier vi">VI</span></td>
+                <td>Pacific Wind</td>
+                <td>Singapore</td>
+                <td>Test Vendor-A</td>
+                <td style="text-align:right;font-variant-numeric:tabular-nums">USD 9,880</td>
+                <td style="text-align:center"><span class="da-pill warn">5 days</span></td>
+              </tr>
+              <tr data-type="APDA" style="cursor:pointer">
+                <td>TST2600122</td>
+                <td><span class="da-tier apda">APDA</span></td>
+                <td>Atlantic Hope</td>
+                <td>Hamburg</td>
+                <td>Eurogate Agency</td>
+                <td style="text-align:right;font-variant-numeric:tabular-nums">USD 3,415</td>
+                <td style="text-align:center"><span class="da-pill warn">6 days</span></td>
+              </tr>
+              <tr data-type="PDA" style="cursor:pointer">
+                <td>TST2600125</td>
+                <td><span class="da-tier pda">PDA</span></td>
+                <td>Crimson Jade</td>
+                <td>Port Klang</td>
+                <td>Straits Agency</td>
+                <td style="text-align:right;font-variant-numeric:tabular-nums">USD 7,820</td>
+                <td style="text-align:center"><span class="da-pill info">2 days</span></td>
+              </tr>
+              <tr data-type="FDA" style="cursor:pointer">
+                <td>TST2600127</td>
+                <td><span class="da-tier fda">FDA</span></td>
+                <td>Eastern Horizon</td>
+                <td>Busan</td>
+                <td>Hanjin Agency</td>
+                <td style="text-align:right;font-variant-numeric:tabular-nums">USD 14,950</td>
+                <td style="text-align:center"><span class="da-pill info">5 days</span></td>
+              </tr>
+              <tr data-type="SDA" style="cursor:pointer">
+                <td>TST2600128</td>
+                <td><span class="da-tier sda">SDA</span></td>
+                <td>Nordic Star</td>
+                <td>Antwerp</td>
+                <td>Boskalis Terminal</td>
+                <td style="text-align:right;font-variant-numeric:tabular-nums">USD 5,430</td>
+                <td style="text-align:center"><span class="da-pill info">2 days</span></td>
+              </tr>
+              <tr data-type="DDA" style="cursor:pointer">
+                <td>TST2600130</td>
+                <td><span class="da-tier dda">DDA</span></td>
+                <td>MSC Voyager</td>
+                <td>Rotterdam</td>
+                <td>Maersk Agency</td>
+                <td style="text-align:right;font-variant-numeric:tabular-nums">USD 19,200</td>
+                <td style="text-align:center"><span class="da-pill warn">7 days</span></td>
+              </tr>
+              <tr data-type="VI" style="cursor:pointer">
+                <td>TST2600132</td>
+                <td><span class="da-tier vi">VI</span></td>
+                <td>Pacific Wind</td>
+                <td>Hamburg</td>
+                <td>Test Vendor-A</td>
+                <td style="text-align:right;font-variant-numeric:tabular-nums">USD 12,640</td>
+                <td style="text-align:center"><span class="da-pill info">3 days</span></td>
+              </tr>
+              <tr data-type="FDA" style="cursor:pointer">
+                <td>TST2600134</td>
+                <td><span class="da-tier fda">FDA</span></td>
+                <td>Crimson Jade</td>
+                <td>Singapore</td>
+                <td>Keppel Smit</td>
+                <td style="text-align:right;font-variant-numeric:tabular-nums">USD 21,300</td>
+                <td style="text-align:center"><span class="da-pill warn">4 days</span></td>
+              </tr>
+              <tr data-type="PDA" style="cursor:pointer">
+                <td>TST2600136</td>
+                <td><span class="da-tier pda">PDA</span></td>
+                <td>Atlantic Hope</td>
+                <td>Port Klang</td>
+                <td>Straits Agency</td>
+                <td style="text-align:right;font-variant-numeric:tabular-nums">USD 8,900</td>
+                <td style="text-align:center"><span class="da-pill info">1 day</span></td>
+              </tr>
+              <tr id="pending-empty" style="display:none">
+                <td colspan="7" style="height:100px;text-align:center;vertical-align:middle;color:var(--text-2);font-size:13px;font-weight:500">No records found</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </div><!-- /sec-pending -->
@@ -602,6 +689,9 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
               <tr><td>Pacific Wind</td><td>PW-114</td><td>Hamburg</td><td>06 Jul 2026</td><td>002</td></tr>
               <tr><td>Atlantic Hope</td><td>AH-038</td><td>Test Port</td><td>08 Jul 2026</td><td>001</td></tr>
               <tr><td>Test Vessel 3</td><td>TV3-22</td><td>Singapore</td><td>10 Jul 2026</td><td>004</td></tr>
+              <tr><td>Crimson Jade</td><td>CJ-2026-05</td><td>Antwerp</td><td>12 Jul 2026</td><td>001</td></tr>
+              <tr><td>Eastern Horizon</td><td>EH-089</td><td>Busan</td><td>14 Jul 2026</td><td>002</td></tr>
+              <tr><td>MSC Voyager</td><td>MSCV-41</td><td>Port Klang</td><td>16 Jul 2026</td><td>003</td></tr>
             </tbody>
           </table>
         </div>
@@ -647,6 +737,22 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
             </div>
             <div class="da-meta"><div class="da-amt">USD 50,420</div><div class="da-amt-lbl">PDA Total: $52,100</div><div class="da-pill warn">2 days</div></div>
           </div>
+          <div class="da-card red">
+            <div class="da-icon red">FDA</div>
+            <div class="da-body">
+              <div class="da-r1"><span class="da-pc">TST2600089</span></div>
+              <div class="da-r2"><span><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>Nordic Star</span><span><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>Rotterdam</span><span><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/></svg>18 Jun</span></div>
+            </div>
+            <div class="da-meta"><div class="da-amt">USD 22,100</div><div class="da-amt-lbl">PDA Total: $24,500</div><div class="da-pill urgent">8 days</div></div>
+          </div>
+          <div class="da-card orange">
+            <div class="da-icon orange">PDA</div>
+            <div class="da-body">
+              <div class="da-r1"><span class="da-pc">TST2600091</span></div>
+              <div class="da-r2"><span><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>Pacific Wind</span><span><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>Hamburg</span><span><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/></svg>20 Jun</span></div>
+            </div>
+            <div class="da-meta"><div class="da-amt">USD 31,500</div><div class="da-amt-lbl">PDA Total: $33,200</div><div class="da-pill warn">6 days</div></div>
+          </div>
         </div>
       </div>
 
@@ -666,13 +772,13 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
           </div>
         </div>
         <div id="clar-tabs" class="filter-tabs">
-          <div class="filter-tab active" onclick="filterClar('all',this)">All (4)</div>
-          <div class="filter-tab" onclick="filterClar('PDA',this)">PDA (2)</div>
-          <div class="filter-tab" onclick="filterClar('FDA',this)">FDA (2)</div>
-          <div class="filter-tab" onclick="filterClar('SDA',this)">SDA (0)</div>
-          <div class="filter-tab" onclick="filterClar('DDA',this)">DDA (0)</div>
-          <div class="filter-tab" onclick="filterClar('VI',this)">VI (0)</div>
-          <div class="filter-tab" onclick="filterClar('APDA',this)">APDA (0)</div>
+          <div class="filter-tab active" onclick="filterClar('all',this)">All (15)</div>
+          <div class="filter-tab" onclick="filterClar('PDA',this)">PDA (4)</div>
+          <div class="filter-tab" onclick="filterClar('FDA',this)">FDA (4)</div>
+          <div class="filter-tab" onclick="filterClar('SDA',this)">SDA (2)</div>
+          <div class="filter-tab" onclick="filterClar('DDA',this)">DDA (2)</div>
+          <div class="filter-tab" onclick="filterClar('VI',this)">VI (2)</div>
+          <div class="filter-tab" onclick="filterClar('APDA',this)">APDA (1)</div>
         </div>
         <div id="clar-body" class="tile-body">
           <div id="clar-list">
@@ -724,6 +830,105 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
                   <td>Test Vendor 22</td>
                   <td style="text-align:right;font-variant-numeric:tabular-nums">USD 4,200</td>
                   <td style="text-align:center"><span class="da-pill info">1 day</span></td>
+                </tr>
+                <tr data-ct="SDA" style="cursor:pointer">
+                  <td>TST2600118</td>
+                  <td><span class="da-tier" style="background:#E6FEFB;color:#006559;border:1px solid #00DAC1">SDA</span></td>
+                  <td>Atlantic Hope</td>
+                  <td>Rotterdam</td>
+                  <td>Boskalis Terminal</td>
+                  <td style="text-align:right;font-variant-numeric:tabular-nums">USD 9,750</td>
+                  <td style="text-align:center"><span class="da-pill warn">4 days</span></td>
+                </tr>
+                <tr data-ct="VI" style="cursor:pointer">
+                  <td>TST2600120</td>
+                  <td><span class="da-tier" style="background:#E6FEFB;color:#006559;border:1px solid #00DAC1">VI</span></td>
+                  <td>Crimson Jade</td>
+                  <td>Hamburg</td>
+                  <td>Eurogate Agency</td>
+                  <td style="text-align:right;font-variant-numeric:tabular-nums">USD 5,200</td>
+                  <td style="text-align:center"><span class="da-pill info">2 days</span></td>
+                </tr>
+                <tr data-ct="DDA" style="cursor:pointer">
+                  <td>TST2600124</td>
+                  <td><span class="da-tier dda">DDA</span></td>
+                  <td>Eastern Horizon</td>
+                  <td>Busan</td>
+                  <td>Hanjin Agency</td>
+                  <td style="text-align:right;font-variant-numeric:tabular-nums">USD 28,340</td>
+                  <td style="text-align:center"><span class="da-pill urgent">7 days</span></td>
+                </tr>
+                <tr data-ct="PDA" style="cursor:pointer">
+                  <td>TST2600129</td>
+                  <td><span class="da-tier pda">PDA</span></td>
+                  <td>MSC Voyager</td>
+                  <td>Antwerp</td>
+                  <td>Maersk Agency</td>
+                  <td style="text-align:right;font-variant-numeric:tabular-nums">USD 11,900</td>
+                  <td style="text-align:center"><span class="da-pill warn">5 days</span></td>
+                </tr>
+                <tr data-ct="FDA" style="cursor:pointer">
+                  <td>TST2600131</td>
+                  <td><span class="da-tier fda">FDA</span></td>
+                  <td>Nordic Star</td>
+                  <td>Rotterdam</td>
+                  <td>Boskalis Terminal</td>
+                  <td style="text-align:right;font-variant-numeric:tabular-nums">USD 17,600</td>
+                  <td style="text-align:center"><span class="da-pill info">3 days</span></td>
+                </tr>
+                <tr data-ct="SDA" style="cursor:pointer">
+                  <td>TST2600133</td>
+                  <td><span class="da-tier sda">SDA</span></td>
+                  <td>Pacific Wind</td>
+                  <td>Singapore</td>
+                  <td>Test Vendor-A</td>
+                  <td style="text-align:right;font-variant-numeric:tabular-nums">USD 6,850</td>
+                  <td style="text-align:center"><span class="da-pill info">2 days</span></td>
+                </tr>
+                <tr data-ct="APDA" style="cursor:pointer">
+                  <td>TST2600135</td>
+                  <td><span class="da-tier apda">APDA</span></td>
+                  <td>Crimson Jade</td>
+                  <td>Port Klang</td>
+                  <td>Straits Agency</td>
+                  <td style="text-align:right;font-variant-numeric:tabular-nums">USD 4,320</td>
+                  <td style="text-align:center"><span class="da-pill info">1 day</span></td>
+                </tr>
+                <tr data-ct="DDA" style="cursor:pointer">
+                  <td>TST2600137</td>
+                  <td><span class="da-tier dda">DDA</span></td>
+                  <td>Atlantic Hope</td>
+                  <td>Hamburg</td>
+                  <td>Eurogate Agency</td>
+                  <td style="text-align:right;font-variant-numeric:tabular-nums">USD 23,750</td>
+                  <td style="text-align:center"><span class="da-pill warn">6 days</span></td>
+                </tr>
+                <tr data-ct="VI" style="cursor:pointer">
+                  <td>TST2600139</td>
+                  <td><span class="da-tier vi">VI</span></td>
+                  <td>Eastern Horizon</td>
+                  <td>Busan</td>
+                  <td>Hanjin Agency</td>
+                  <td style="text-align:right;font-variant-numeric:tabular-nums">USD 9,480</td>
+                  <td style="text-align:center"><span class="da-pill info">4 days</span></td>
+                </tr>
+                <tr data-ct="PDA" style="cursor:pointer">
+                  <td>TST2600141</td>
+                  <td><span class="da-tier pda">PDA</span></td>
+                  <td>Test Vessel 3</td>
+                  <td>Singapore</td>
+                  <td>ABC Test Shipping</td>
+                  <td style="text-align:right;font-variant-numeric:tabular-nums">USD 13,200</td>
+                  <td style="text-align:center"><span class="da-pill info">2 days</span></td>
+                </tr>
+                <tr data-ct="FDA" style="cursor:pointer">
+                  <td>TST2600143</td>
+                  <td><span class="da-tier fda">FDA</span></td>
+                  <td>Omicron West</td>
+                  <td>Rotterdam</td>
+                  <td>Boskalis Terminal</td>
+                  <td style="text-align:right;font-variant-numeric:tabular-nums">USD 31,500</td>
+                  <td style="text-align:center"><span class="da-pill urgent">9 days</span></td>
                 </tr>
                 <tr id="clar-empty" style="display:none">
                   <td colspan="7" style="height:100px;text-align:center;vertical-align:middle;color:var(--text-2);font-size:13px;font-weight:500">No records found</td>
@@ -1058,9 +1263,21 @@ function toggleTile(btn, bodyId) {
 // ── Pending approvals type filter ──
 function filterDA(section, type, clickedTab) {
   const tabsEl = document.getElementById(section + '-tabs');
-  if(tabsEl) tabsEl.querySelectorAll('.da-tab').forEach(t => t.classList.remove('active'));
+  if(tabsEl) tabsEl.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
   clickedTab.classList.add('active');
-  const listEl = document.getElementById(section + '-list') || document.querySelector('#pending-body .da-list');
+  const tableEl = document.getElementById(section + '-table');
+  if(tableEl) {
+    let visible = 0;
+    tableEl.querySelectorAll('tbody tr:not(#' + section + '-empty)').forEach(row => {
+      const show = type === 'all' || row.dataset.type === type;
+      row.style.display = show ? '' : 'none';
+      if(show) visible++;
+    });
+    const empty = document.getElementById(section + '-empty');
+    if(empty) empty.style.display = visible === 0 ? '' : 'none';
+    return;
+  }
+  const listEl = document.getElementById(section + '-list');
   if(!listEl) return;
   listEl.querySelectorAll('.da-card').forEach(c => {
     c.style.display = (type === 'all' || c.dataset.type === type) ? '' : 'none';
