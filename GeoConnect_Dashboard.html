@@ -44,7 +44,7 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
 .main{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0;padding-top:16px}
 
 /* TOPBAR */
-.topbar{min-height:52px;background:transparent;display:flex;align-items:center;padding:10px 28px 10px 20px;gap:8px;flex-shrink:0}
+.topbar{min-height:52px;background:transparent;display:flex;align-items:center;padding:10px 20px 10px 28px;gap:8px;flex-shrink:0}
 .topbar-title{font-size:16px;font-weight:700;color:var(--nav);letter-spacing:-.01em}
 .topbar-spacer{flex:1}
 .topbar-right{display:flex;align-items:center;gap:8px}
@@ -406,21 +406,15 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
 </nav>
 
 <div class="main">
-  <!-- Date greeting bar -->
-  <div style="height:34px;background:transparent;display:flex;align-items:center;padding:0 28px;gap:12px;flex-shrink:0">
-    <span style="font-size:12px;font-weight:600;color:var(--nav)">Monday, June 29, 2026</span>
-    <span style="font-size:11px;color:var(--text-2)">·</span>
-    <span style="flex:1"></span>
-    <div class="refreshed-chip">
-      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-      Last refreshed:&nbsp;<strong id="last-refreshed" style="color:var(--text-2)">—</strong>
-    </div>
-  </div>
   <div class="topbar">
-    <div class="topbar-title" style="white-space:nowrap">Welcome, Sahithi Alluru<span style="font-size:13px;font-weight:400;color:var(--text-2);margin-left:8px">here's your operational snapshot for today.</span></div>
+    <div class="topbar-title" style="white-space:nowrap;display:flex;align-items:center;gap:6px">
+      <span style="font-size:12px;font-weight:600;color:var(--nav)">Monday, June 29, 2026</span>
+      <span style="font-size:11px;color:var(--text-2)">·</span>
+      <span>Welcome, Sahithi Alluru</span>
+      <span style="font-size:13px;font-weight:400;color:var(--text-2)">here's your operational snapshot for today.</span>
+    </div>
     <div class="topbar-spacer"></div>
     <div class="topbar-right">
-
       <!-- My Calls: plain text + toggle switch, no user icon -->
       <div class="mycalls-wrap" id="myCallsWrap" onclick="toggleMyCalls()">
         <span class="mycalls-label">My Calls</span>
