@@ -1,0 +1,1143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>GeoServe · Dashboard</title>
+<style>
+@font-face{font-family:'Gilroy';src:url('assets/Gilroy-Regular.woff2') format('woff2');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:'Gilroy';src:url('assets/Gilroy-Medium.woff2') format('woff2');font-weight:500;font-style:normal;font-display:swap}
+@font-face{font-family:'Gilroy';src:url('assets/Gilroy-SemiBold.woff2') format('woff2');font-weight:600;font-style:normal;font-display:swap}
+@font-face{font-family:'Gilroy';src:url('assets/Gilroy-Bold.woff2') format('woff2');font-weight:700;font-style:normal;font-display:swap}
+:root{
+  --brand:#1852FE;--nav:#001E4C;--card:#FFFFFF;--bg:#FAFAFA;
+  --border:#E2E8F0;--text:#0E1A33;--text-2:#5A6B85;--text-3:#94A3B8;
+  --danger:#EF4444;--red-bg:#FEF1F2;--red-mid:#FDE2E2;
+  --success:#22C55E;--green-bg:#E9F9EF;--green-mid:#D3F3DF;
+  --warning:#EAB305;--amber-bg:#FEFCE8;--amber-mid:#FEF9C3;
+  --orange:#FB7D24;--orange-bg:#FFF3EB;
+  --blue-light:#DBEAFE;--blue-mid:#BEDBFE;
+  --teal:#00DAC1;--teal-bg:#E6FEFB;--teal-dark:#008475;
+  --purple:#BC17A2;--purple-bg:#F8E5F5;
+  --shadow-sm:0 1px 2px rgba(0,0,0,.05);
+  --shadow-md:0 4px 6px rgba(0,0,0,.07);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui,sans-serif;color:var(--text);background:var(--bg);font-size:14px;-webkit-font-smoothing:antialiased;overflow:hidden}
+.shell{display:flex;height:100vh;width:100vw;overflow:hidden}
+
+/* NAV */
+.nav-rail{width:60px;min-width:60px;height:100vh;background:#fff;border-right:1px solid #E8ECF0;display:flex;flex-direction:column;align-items:center;padding:14px 0 12px;gap:1px;flex-shrink:0;z-index:20}
+.nav-logo{width:32px;height:32px;display:flex;align-items:center;justify-content:center;margin-bottom:10px}
+.nav-item{width:40px;height:40px;display:flex;align-items:center;justify-content:center;border-radius:10px;cursor:pointer;transition:all .15s;position:relative}
+.nav-item:hover{background:#F1F4F8}
+.nav-item.active{background:#EEF2FF}
+.nav-item svg{width:20px;height:20px;fill:none;stroke:#2C2C3E;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;transition:stroke .15s}
+.nav-item.active svg{stroke:var(--brand)}
+.nav-item:hover svg{stroke:#0E1A33}
+.nav-badge-dot{position:absolute;top:5px;right:5px;width:7px;height:7px;background:var(--danger);border-radius:50%;border:1.5px solid #fff}
+.nav-spacer{flex:1}
+.nav-divider{width:28px;height:1px;background:#E8ECF0;margin:6px 0}
+.nav-avatar{width:34px;height:34px;border-radius:50%;background:var(--blue-light);color:var(--brand);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;cursor:pointer;margin-top:2px;border:2px solid var(--blue-mid)}
+
+/* MAIN */
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0;padding-top:16px}
+
+/* TOPBAR */
+.topbar{height:52px;background:transparent;display:flex;align-items:center;padding:0 28px;gap:10px;flex-shrink:0}
+.topbar-title{font-size:28px;font-weight:700;color:var(--nav);letter-spacing:-.01em}
+.topbar-spacer{flex:1}
+.topbar-right{display:flex;align-items:center;gap:8px}
+.topbar-search{display:flex;align-items:center;gap:8px;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:6px 12px;font-size:13px;color:var(--text-2);cursor:text;width:200px}
+.topbar-search svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:1.75;stroke-linecap:round}
+.icon-btn{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;border:1px solid var(--border);background:var(--card);color:var(--text-2);position:relative}
+.icon-btn svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:1.75;stroke-linecap:round}
+.notif-dot{position:absolute;top:7px;right:7px;width:6px;height:6px;background:var(--danger);border-radius:50%;border:1.5px solid #fff}
+.btn-primary{height:34px;padding:0 14px;background:var(--brand);color:#fff;border:none;border-radius:8px;cursor:pointer;font-family:inherit;font-size:13px;font-weight:600;display:inline-flex;align-items:center;gap:5px}
+.btn-primary svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2.5;stroke-linecap:round}
+.role-switcher{display:flex;align-items:center;gap:5px;padding:4px 8px;background:var(--bg);border:1px solid var(--border);border-radius:8px;font-size:11px;font-weight:600;color:var(--text-2)}
+.role-switcher select{border:none;background:transparent;font-family:inherit;font-size:11px;font-weight:600;color:var(--text);cursor:pointer;outline:none}
+
+/* MY CALLS TOGGLE — text label only, no icon */
+.mycalls-wrap{display:flex;align-items:center;gap:6px;padding:4px 10px;background:var(--bg);border:1px solid var(--border);border-radius:8px;cursor:pointer;user-select:none;transition:all .15s}
+.mycalls-wrap:hover{border-color:#CBD5E1}
+.mycalls-label{font-size:11px;font-weight:600;color:var(--text-2)}
+.toggle-switch{width:28px;height:15px;background:var(--border);border-radius:999px;position:relative;transition:background .2s;flex-shrink:0}
+.toggle-switch .knob{position:absolute;top:2px;left:2px;width:11px;height:11px;border-radius:50%;background:#fff;transition:left .2s;box-shadow:0 1px 2px rgba(0,0,0,.25)}
+.mycalls-wrap.on .toggle-switch{background:var(--brand)}
+.mycalls-wrap.on .knob{left:15px}
+.mycalls-wrap.on .mycalls-label{color:var(--brand);font-weight:700}
+
+/* TABBAR */
+.tabbar{height:40px;background:transparent;display:flex;align-items:stretch;padding:0 28px;justify-content:space-between;flex-shrink:0}
+.tabbar-left{display:flex;align-items:stretch;gap:4px}
+.tab-item{display:inline-flex;align-items:center;gap:6px;padding:0 14px;font-size:13px;font-weight:600;color:var(--text-2);cursor:pointer;border-bottom:2.5px solid transparent;transition:all .15s;white-space:nowrap}
+.tab-item:hover{color:var(--text)}
+.tab-item.active{color:var(--brand);border-bottom-color:var(--brand)}
+.tabbar-right{display:flex;align-items:center;gap:8px}
+.refreshed-chip{font-size:11px;color:var(--text-3);display:flex;align-items:center;gap:4px}
+.refreshed-chip svg{width:11px;height:11px;stroke:currentColor;fill:none;stroke-width:1.75;stroke-linecap:round}
+
+/* CONTENT */
+.content{flex:1;overflow-y:auto;padding:28px;display:flex;flex-direction:column;gap:18px;min-height:0}
+.content::-webkit-scrollbar{width:4px}
+.content::-webkit-scrollbar-thumb{background:#CBD5E1;border-radius:99px}
+.panel{display:none;flex-direction:column;gap:18px}
+.panel.active{display:flex}
+
+/* STAT CARDS ROW */
+.stat-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.scard{background:var(--nav);border:1px solid rgba(255,255,255,.10);border-radius:12px;padding:16px 20px;display:flex;flex-direction:column;gap:6px;cursor:pointer;transition:box-shadow .15s,background .15s;box-shadow:0 4px 6px rgba(0,0,0,.07)}
+.scard:hover{background:#002766;box-shadow:0 8px 16px rgba(0,0,0,.15)}
+.scard-val{font-size:28px;font-weight:800;line-height:1;letter-spacing:-.02em;color:#fff}
+.scard.warn .scard-val{color:var(--orange)}
+.scard.alert .scard-val{color:var(--danger)}
+.scard.blue .scard-val{color:#BEDBFE}
+.scard-lbl{font-size:16px;font-weight:600;color:rgba(255,255,255,.85)}
+.scard-sub{font-size:14px;color:rgba(255,255,255,.45);margin-top:1px}
+.scard.active{background:#0D2F7A;border-color:rgba(255,255,255,.4);border-top:3px solid #fff}
+@media(max-width:600px){.stat-cards{grid-template-columns:repeat(2,1fr)}}
+/* SECTION PANELS */
+.sec-panel{display:none;flex-direction:column;gap:18px}
+.sec-panel.active{display:flex}
+
+/* INFO ICON TOOLTIP */
+.info-icon{display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;border-radius:50%;background:var(--blue-light);color:var(--brand);font-size:9px;font-weight:700;cursor:pointer;position:relative;flex-shrink:0;line-height:1}
+.info-icon::before{content:attr(data-tip);position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);background:var(--nav);color:#fff;font-size:11px;font-weight:500;padding:7px 11px;border-radius:8px;white-space:normal;width:220px;text-align:center;pointer-events:none;opacity:0;transition:opacity .15s;z-index:200;line-height:1.5;box-shadow:0 4px 12px rgba(0,0,0,.2)}
+.info-icon::after{content:'';position:absolute;bottom:calc(100% + 3px);left:50%;transform:translateX(-50%);border:5px solid transparent;border-top-color:var(--nav);pointer-events:none;opacity:0;transition:opacity .15s;z-index:200}
+.info-icon:hover::before,.info-icon:hover::after{opacity:1}
+
+/* TILE CARD */
+.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px;box-shadow:0 1px 2px rgba(0,0,0,.05);display:flex;flex-direction:column}
+.tile-hdr{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px}
+.tile-title{font-size:13px;font-weight:700;color:var(--text);display:flex;align-items:center;gap:5px}
+.tile-actions{display:flex;align-items:center;gap:6px;flex-shrink:0}
+.section-link{font-size:12px;font-weight:600;color:var(--brand);cursor:pointer;display:flex;align-items:center;gap:3px}
+.section-link svg{width:11px;height:11px;stroke:currentColor;fill:none;stroke-width:2.5;stroke-linecap:round}
+.collapse-btn{width:22px;height:22px;border-radius:5px;border:1px solid var(--border);background:var(--bg);cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text-2);flex-shrink:0;transition:all .15s}
+.collapse-btn svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2.5;stroke-linecap:round;transition:transform .2s}
+.collapse-btn.collapsed svg{transform:rotate(-90deg)}
+.tile-body.hidden{display:none}
+.sort-btn{display:flex;align-items:center;gap:4px;padding:2px 8px;background:var(--bg);border:1px solid var(--border);border-radius:6px;font-size:11px;font-weight:600;color:var(--text-2);cursor:pointer}
+.sort-btn svg{width:10px;height:10px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round}
+
+/* GRID */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:stretch}
+.g32{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:stretch}
+
+/* DA CARDS — no tier badge, icon already shows type */
+.da-list{overflow-y:auto;padding-right:2px}
+.da-list::-webkit-scrollbar{width:3px}
+.da-list::-webkit-scrollbar-thumb{background:var(--border);border-radius:99px}
+.da-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:10px 12px;display:flex;align-items:flex-start;gap:9px;cursor:pointer;transition:all .2s;position:relative;overflow:hidden;margin-bottom:6px}
+.da-card:last-child{margin-bottom:0}
+.da-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px}
+.da-card.blue::before{background:var(--brand)}
+.da-card.red::before{background:var(--danger)}
+.da-card.orange::before{background:var(--orange)}
+.da-card.amber::before{background:var(--warning)}
+.da-card:hover{transform:translateY(-1px);box-shadow:var(--shadow-md);border-color:#CBD5E1}
+.da-icon{width:32px;height:32px;min-width:32px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700}
+.da-icon.blue{background:var(--blue-light);color:var(--brand)}
+.da-icon.red{background:var(--red-bg);color:var(--danger)}
+.da-icon.orange{background:var(--orange-bg);color:var(--orange)}
+.da-icon.amber{background:var(--amber-bg);color:#844D0F}
+.da-icon.teal{background:var(--teal-bg);color:var(--teal-dark)}
+.da-body{flex:1;min-width:0}
+.da-r1{display:flex;align-items:center;gap:5px;margin-bottom:3px;flex-wrap:wrap}
+.da-pc{font-size:12.5px;font-weight:700;color:var(--text)}
+.da-tname{font-size:11.5px;font-weight:500;color:var(--text-2)}
+.da-r2{font-size:11.5px;color:var(--text-2);display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.da-r2 span{display:inline-flex;align-items:center;gap:3px}
+.da-r2 svg{width:10px;height:10px;stroke:currentColor;fill:none;stroke-width:1.75;stroke-linecap:round}
+.da-meta{display:flex;flex-direction:column;align-items:flex-end;gap:3px;flex-shrink:0}
+.da-amt{font-size:13px;font-weight:700;color:var(--text)}
+.da-amt-lbl{font-size:10px;color:var(--text-2);text-align:right}
+.da-pill{font-size:10px;font-weight:600;padding:2px 7px;border-radius:999px}
+.da-pill.urgent{background:var(--red-mid);color:var(--danger)}
+.da-pill.warn{background:var(--amber-mid);color:#844D0F}
+.da-pill.ok{background:var(--green-mid);color:#147638}
+.da-pill.info{background:var(--blue-light);color:var(--brand)}
+
+/* CLARIFICATION — with type tabs */
+.da-tabs{display:flex;gap:2px;padding:3px;background:var(--bg);border-radius:8px;border:1px solid var(--border);margin-bottom:8px;flex-wrap:wrap}
+.da-tab{padding:3px 9px;border-radius:6px;font-size:11px;font-weight:600;color:var(--text-2);cursor:pointer;transition:all .12s;display:flex;align-items:center;gap:3px}
+.da-tab:hover{background:rgba(255,255,255,.8);color:var(--text)}
+.da-tab.active{background:var(--card);color:var(--brand);box-shadow:0 1px 2px rgba(0,0,0,.06)}
+.da-tab .ct{font-size:10px;font-weight:700;padding:0 5px;border-radius:999px;background:var(--red-mid);color:var(--danger)}
+.da-tab.active .ct{background:var(--blue-light);color:var(--brand)}
+.da-tab .ct.n{background:var(--border);color:var(--text-2)}
+/* Flush card — table goes edge-to-edge */
+.card-flush{padding:0;overflow:hidden}
+.card-flush .tile-hdr{padding:14px 16px 12px;border-bottom:1px solid #E2E8F0;margin-bottom:0}
+/* Chip-style filter tabs (GeoServe design system) */
+.filter-tabs{display:flex;gap:8px;padding:12px 16px;border-bottom:1px solid #E2E8F0;flex-wrap:wrap}
+.filter-tab{padding:7px 12px;border-radius:6px;background:#F4F7FB;border:1px solid var(--border);font-size:12px;font-weight:600;color:var(--text-2);cursor:pointer;transition:background .12s,color .12s,border-color .12s;white-space:nowrap}
+.filter-tab:hover{background:#EAF1FE;border-color:var(--brand);color:var(--brand)}
+.filter-tab.active{background:#EAF1FE;border-color:var(--brand);color:var(--brand)}
+
+/* CLAR ROWS */
+.clar-row{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid var(--border);cursor:pointer}
+.clar-row:last-child{border-bottom:none}
+.clar-dot{width:7px;height:7px;min-width:7px;border-radius:50%}
+.clar-pc{font-size:12px;font-weight:700;color:var(--text);transition:color .12s}
+.clar-row:hover .clar-pc{color:var(--brand)}
+.clar-info{flex:1;display:flex;align-items:center;gap:4px;flex-wrap:wrap}
+.clar-right{display:flex;flex-direction:column;align-items:flex-end;gap:2px;flex-shrink:0}
+.clar-port{font-size:11px;color:var(--text-2)}
+.da-tier{font-size:10px;font-weight:700;padding:1px 6px;border-radius:4px}
+.da-tier.pda{background:#EEF6FF;color:#1D40AF}
+.da-tier.fda{background:var(--green-mid);color:#0E4F26}
+.da-tier.apda{background:var(--purple-bg);color:var(--purple)}
+.da-tier.sda{background:var(--amber-mid);color:#713E11}
+.da-tier.vi{background:var(--teal-bg);color:var(--teal-dark)}
+
+/* PORT CALLS TABLE */
+.pc-table{width:100%;border-collapse:collapse;font-size:13px}
+.pc-table thead tr{background:#F1F5F9}
+.pc-table thead th{padding:12px 16px;text-align:left;font-size:11px;font-weight:600;color:#64748B;text-transform:uppercase;letter-spacing:.06em;white-space:nowrap;border-bottom:1px solid #E2E8F0;line-height:1.5}
+.pc-table thead th .arr{font-size:10px;color:var(--text-3);margin-left:3px}
+.pc-table tbody tr{background:#fff;border-bottom:1px solid #E2E8F0;cursor:pointer;transition:background .1s}
+.pc-table tbody tr:last-child{border-bottom:none}
+.pc-table tbody tr:hover{background:#EEF6FF}
+.pc-table td{padding:12px 16px;color:#5A6B85;vertical-align:middle;line-height:1.5}
+.pc-table td:first-child{font-weight:600;color:#0E1A33}
+.pc-no-appt{display:inline-flex;padding:2px 7px;border-radius:999px;font-size:10px;font-weight:600;background:var(--red-bg);color:var(--danger);border:1px solid var(--red-mid)}
+
+/* MY STATS */
+.stat-row{display:flex;align-items:center}
+.stat-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 4px}
+.stat-val{font-size:22px;font-weight:700;line-height:1}
+.stat-lbl{font-size:10px;font-weight:500;color:var(--text-2);text-align:center;line-height:1.3}
+.stat-div{width:1px;height:36px;background:var(--border);flex-shrink:0}
+
+/* FIN */
+.fin-hero{background:linear-gradient(135deg,var(--nav) 0%,#1C4ED8 100%);border-radius:12px;padding:18px 22px;color:#fff;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.fin-hero-lbl{font-size:12px;color:rgba(255,255,255,.6);margin-bottom:5px}
+.fin-hero-val{font-size:30px;font-weight:700;color:#fff}
+.fin-hero-sub{font-size:11px;color:rgba(255,255,255,.4);margin-top:3px}
+.fin-hero-right{display:flex;gap:14px;flex-wrap:wrap}
+.fin-hi{display:flex;flex-direction:column;align-items:flex-end;gap:2px}
+.fin-hi-lbl{font-size:12px;font-weight:600;color:rgba(255,255,255,.75)}
+.fin-hi-val{font-size:18px;font-weight:800;color:#fff;letter-spacing:-.01em}
+.fin-sec{font-size:10px;font-weight:700;color:var(--text-2);text-transform:uppercase;letter-spacing:.08em;padding:3px 0;border-bottom:1px solid var(--border);margin-bottom:0}
+.fin-kpi-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px 18px;box-shadow:0 1px 2px rgba(0,0,0,.05);display:flex;flex-direction:column;gap:10px}
+.fin-kpi-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:4px}
+.fin-kpi-val{font-size:24px;font-weight:800;line-height:1;letter-spacing:-.01em}
+.fin-kpi-lbl{font-size:13px;font-weight:600;color:var(--text-2)}
+.fin-kpi-sub{font-size:12px;font-weight:600}
+.sbar-wrap{display:flex;flex-direction:column;gap:8px}
+.sbar-row{display:flex;align-items:center;gap:8px}
+.sbar-lbl{font-size:12px;color:var(--text-2);width:130px;flex-shrink:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sbar-track{flex:1;height:7px;background:var(--bg);border-radius:999px;overflow:hidden;border:1px solid var(--border)}
+.sbar-fill{height:100%;border-radius:999px}
+.sbar-val{font-size:12px;font-weight:600;color:var(--text);width:54px;text-align:right;flex-shrink:0}
+.cur-toggle{display:flex;gap:2px;background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:2px}
+.cur-btn{padding:3px 8px;border-radius:4px;font-size:10px;font-weight:600;cursor:pointer;color:var(--text-2);transition:all .12s}
+.cur-btn.on{background:var(--card);color:var(--brand);box-shadow:0 1px 2px rgba(0,0,0,.06)}
+.atile{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px;display:flex;flex-direction:column;gap:6px;cursor:pointer;position:relative}
+.atile:hover{box-shadow:var(--shadow-md)}
+.atile::after{content:'↗';position:absolute;top:11px;right:11px;font-size:11px;color:var(--text-3)}
+.atile-icon{width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center}
+.atile-icon svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:1.75;stroke-linecap:round}
+.atile-name{font-size:12px;font-weight:600;color:var(--text)}
+.atile-desc{font-size:11px;color:var(--text-2);line-height:1.4}
+
+@media(max-width:900px){.g2,.g32{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="shell">
+<nav class="nav-rail">
+  <!-- 1. Menu -->
+  <div class="nav-item" title="Menu">
+    <svg viewBox="0 0 24 24" fill="none" stroke="#1a1a2e" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="3" y1="6" x2="21" y2="6"/>
+      <line x1="3" y1="12" x2="21" y2="12"/>
+      <line x1="3" y1="18" x2="21" y2="18"/>
+    </svg>
+  </div>
+
+  <!-- 2. Grid (Overview, active) -->
+  <div class="nav-item active" title="Overview">
+    <svg viewBox="0 0 24 24" fill="none">
+      <path d="M6.25 5H8.75C9.4404 5 10 5.5596 10 6.25V8.75C10 9.4404 9.4404 10 8.75 10H6.25C5.5596 10 5 9.4404 5 8.75V6.25C5 5.5596 5.5596 5 6.25 5Z" fill="#1852FE" stroke="#1852FE"/>
+      <path d="M15.25 5H17.75C18.4404 5 19 5.5596 19 6.25V8.75C19 9.4404 18.4404 10 17.75 10H15.25C14.5596 10 14 9.4404 14 8.75V6.25C14 5.5596 14.5596 5 15.25 5Z" fill="#1852FE" stroke="#1852FE"/>
+      <path d="M6.25 14H8.75C9.4404 14 10 14.5596 10 15.25V17.75C10 18.4404 9.4404 19 8.75 19H6.25C5.5596 19 5 18.4404 5 17.75V15.25C5 14.5596 5.5596 14 6.25 14Z" fill="#1852FE" stroke="#1852FE"/>
+      <path d="M15.25 14H17.75C18.4404 14 19 14.5596 19 15.25V17.75C19 18.4404 18.4404 19 17.75 19H15.25C14.5596 19 14 18.4404 14 17.75V15.25C14 14.5596 14.5596 14 15.25 14Z" fill="#1852FE" stroke="#1852FE"/>
+    </svg>
+  </div>
+
+  <!-- 3. Anchor -->
+  <div class="nav-item" title="Home">
+    <svg viewBox="0 0 24 24" fill="none">
+      <path d="M19.25 13.531L18.25 12C18.25 15.452 15.452 18.25 12 18.25C8.548 18.25 5.75 15.452 5.75 12L4.75 13.531" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M12 8.25V19.25" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M12 8.25C12.9665 8.25 13.75 7.4665 13.75 6.5C13.75 5.5335 12.9665 4.75 12 4.75C11.0335 4.75 10.25 5.5335 10.25 6.5C10.25 7.4665 11.0335 8.25 12 8.25Z" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M10.25 11.25H13.75" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </div>
+
+  <!-- 4. Doc + calculator -->
+  <div class="nav-item" title="Invoices">
+    <svg viewBox="0 0 24 24" fill="none">
+      <g clip-path="url(#clip-invoices)">
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M13 20V14C13 13.8296 13.0142 13.6626 13.0415 13.5H8.75C8.336 13.5 8 13.164 8 12.75C8 12.336 8.336 12 8.75 12H13.75C13.7546 12 13.7592 12 13.7638 12.0001C14.3131 11.3863 15.1114 11 16 11H19V9.664C19 9.197 18.818 8.757 18.487 8.427L14.573 4.513C14.242 4.182 13.803 4 13.336 4H7.75C6.233 4 5 5.233 5 6.75V17.25C5 18.767 6.233 20 7.75 20H13ZM13.5065 5.5765C13.5055 5.57675 13.5045 5.577 13.5 5.579H13.501V8.5C13.501 9.05 13.951 9.5 14.501 9.5H17.433C17.434 9.498 17.435 9.495 17.435 9.495L13.513 5.574C13.5085 5.576 13.5075 5.57625 13.5065 5.5765ZM10.75 9H8.75C8.336 9 8 9.336 8 9.75C8 10.164 8.336 10.5 8.75 10.5H10.75C11.164 10.5 11.5 10.164 11.5 9.75C11.5 9.336 11.164 9 10.75 9Z" fill="black"/>
+        <path d="M19.125 12.5H15.875C15.1165 12.5 14.5 13.1165 14.5 13.875V19.125C14.5 19.8835 15.1165 20.5 15.875 20.5H19.125C19.8835 20.5 20.5 19.8835 20.5 19.125V13.875C20.5 13.1165 19.8835 12.5 19.125 12.5ZM16.125 19.25C15.918 19.25 15.75 19.082 15.75 18.875C15.75 18.668 15.918 18.5 16.125 18.5C16.332 18.5 16.5 18.668 16.5 18.875C16.5 19.082 16.332 19.25 16.125 19.25ZM16.125 17.875C15.918 17.875 15.75 17.707 15.75 17.5C15.75 17.293 15.918 17.125 16.125 17.125C16.332 17.125 16.5 17.293 16.5 17.5C16.5 17.707 16.332 17.875 16.125 17.875ZM16.125 16.5C15.918 16.5 15.75 16.332 15.75 16.125C15.75 15.918 15.918 15.75 16.125 15.75C16.332 15.75 16.5 15.918 16.5 16.125C16.5 16.332 16.332 16.5 16.125 16.5ZM17.5 19.25C17.293 19.25 17.125 19.082 17.125 18.875C17.125 18.668 17.293 18.5 17.5 18.5C17.707 18.5 17.875 18.668 17.875 18.875C17.875 19.082 17.707 19.25 17.5 19.25ZM17.5 17.875C17.293 17.875 17.125 17.707 17.125 17.5C17.125 17.293 17.293 17.125 17.5 17.125C17.707 17.125 17.875 17.293 17.875 17.5C17.875 17.707 17.707 17.875 17.5 17.875ZM17.5 16.5C17.293 16.5 17.125 16.332 17.125 16.125C17.125 15.918 17.293 15.75 17.5 15.75C17.707 15.75 17.875 15.918 17.875 16.125C17.875 16.332 17.707 16.5 17.5 16.5ZM19.25 18.875C19.25 19.082 19.082 19.25 18.875 19.25C18.668 19.25 18.5 19.082 18.5 18.875V17.5C18.5 17.293 18.668 17.125 18.875 17.125C19.082 17.125 19.25 17.293 19.25 17.5V18.875ZM18.875 16.5C18.668 16.5 18.5 16.332 18.5 16.125C18.5 15.918 18.668 15.75 18.875 15.75C19.082 15.75 19.25 15.918 19.25 16.125C19.25 16.332 19.082 16.5 18.875 16.5ZM19.25 14.625C19.25 14.832 19.082 15 18.875 15H16.125C15.918 15 15.75 14.832 15.75 14.625V14.125C15.75 13.918 15.918 13.75 16.125 13.75H18.875C19.082 13.75 19.25 13.918 19.25 14.125V14.625Z" fill="black"/>
+      </g>
+      <defs><clipPath id="clip-invoices"><rect width="18" height="18" fill="white" transform="translate(3 3)"/></clipPath></defs>
+    </svg>
+  </div>
+
+  <!-- 5. Aperture / coin -->
+  <div class="nav-item" title="Watchlist">
+    <svg viewBox="0 0 24 24" fill="none">
+      <path d="M12 14.5C13.3807 14.5 14.5 13.3807 14.5 12C14.5 10.6193 13.3807 9.5 12 9.5C10.6193 9.5 9.5 10.6193 9.5 12C9.5 13.3807 10.6193 14.5 12 14.5Z" fill="black"/>
+      <path d="M17.25 6H6.75C5.233 6 4 7.233 4 8.75V15.25C4 16.767 5.233 18 6.75 18H17.25C18.767 18 20 16.767 20 15.25V8.75C20 7.233 18.767 6 17.25 6ZM15.642 16.5H8.358C7.994 15.101 6.899 14.006 5.5 13.642V10.358C6.899 9.994 7.994 8.899 8.358 7.5H15.642C16.006 8.899 17.101 9.994 18.5 10.358V13.642C17.101 14.006 16.006 15.101 15.642 16.5Z" fill="black"/>
+    </svg>
+  </div>
+
+  <!-- 6. Folder -->
+  <div class="nav-item" title="Files">
+    <svg viewBox="0 0 24 24" fill="none">
+      <path d="M18.75 11.5C18.336 11.5 18 11.164 18 10.75V7.75C18 7.061 17.439 6.5 16.75 6.5H8.966C8.552 6.5 8.216 6.164 8.216 5.75C8.216 5.336 8.552 5 8.966 5H16.75C18.266 5 19.5 6.233 19.5 7.75V10.75C19.5 11.164 19.164 11.5 18.75 11.5Z" fill="#212121"/>
+      <path d="M16.75 8H12.512L11.211 6.162C10.696 5.434 9.857 5 8.966 5H7.25C5.733 5 4.5 6.233 4.5 7.75V15.75C4.5 17.267 5.733 18.5 7.25 18.5H16.75C18.267 18.5 19.5 17.267 19.5 15.75V10.75C19.5 9.233 18.267 8 16.75 8Z" fill="#212121"/>
+    </svg>
+  </div>
+
+  <!-- 7. Doc + chart -->
+  <div class="nav-item" title="Reports">
+    <svg viewBox="0 0 24 24" fill="none">
+      <path d="M18.487 8.427L14.572 4.512C14.2442 4.1841 13.7996 4 13.336 4H7.75C6.2312 4 5 5.2312 5 6.75V17.25C5 18.7688 6.2312 20 7.75 20H16.25C17.7688 20 19 18.7688 19 17.25V9.6655C19 9.2009 18.8155 8.7553 18.487 8.427ZM10 16.25C10 16.6641 9.6641 17 9.25 17C8.8359 17 8.5 16.6641 8.5 16.25V13.5C8.5 13.0859 8.8359 12.75 9.25 12.75C9.6641 12.75 10 13.0859 10 13.5V16.25ZM12.75 16.25C12.75 16.6641 12.4141 17 12 17C11.5859 17 11.25 16.6641 11.25 16.25V11C11.25 10.5859 11.5859 10.25 12 10.25C12.4141 10.25 12.75 10.5859 12.75 11V16.25ZM15.5 16.25C15.5 16.6641 15.1641 17 14.75 17C14.3359 17 14 16.6641 14 16.25V14.75C14 14.3359 14.3359 14 14.75 14C15.1641 14 15.5 14.3359 15.5 14.75V16.25ZM17.433 9.5H14.501C13.951 9.5 13.501 9.05 13.501 8.5V5.5791H13.5C13.509 5.5749 13.504 5.5781 13.513 5.574L17.435 9.4951C17.435 9.4951 17.434 9.498 17.433 9.5Z" fill="#212121"/>
+    </svg>
+  </div>
+
+  <!-- 8. Clipboard + check -->
+  <div class="nav-item" title="Approvals">
+    <svg viewBox="0 0 24 24" fill="none">
+      <path d="M15.75 5H15.475C15.352 4.154 14.63 3.5 13.75 3.5H10.25C9.371 3.5 8.648 4.154 8.525 5H8.25C6.733 5 5.5 6.233 5.5 7.75V17.25C5.5 18.767 6.733 20 8.25 20H15.75C17.267 20 18.5 18.767 18.5 17.25V7.75C18.5 6.233 17.267 5 15.75 5ZM10 5.25C10 5.112 10.112 5 10.25 5H13.75C13.888 5 14 5.112 14 5.25V6.25C14 6.388 13.888 6.5 13.75 6.5H10.25C10.112 6.5 10 6.388 10 6.25V5.25ZM15.35 10.7L11.6 15.7C11.464 15.881 11.254 15.991 11.028 15.999C11.019 15.999 11.009 15.999 11 15.999C10.784 15.999 10.578 15.906 10.436 15.743L8.686 13.743C8.413 13.431 8.445 12.958 8.757 12.685C9.069 12.412 9.542 12.443 9.815 12.756L10.956 14.059L14.151 9.799C14.4 9.468 14.87 9.402 15.201 9.649C15.532 9.898 15.599 10.368 15.351 10.699L15.35 10.7Z" fill="#212121"/>
+    </svg>
+  </div>
+
+  <!-- 9. Vessels -->
+  <div class="nav-item" title="Vessels">
+    <svg viewBox="0 0 24 24" fill="none">
+      <path d="M0.822876 19.5005C2.23998 19.5076 3.58527 18.8805 4.48955 17.7891C6.18684 19.8141 8.22499 20.4473 10.25 18.75C10.4644 18.57 11.07 17.9654 11.25 17.75C12.1543 18.8404 12.75 19.25 13.75 19.5" stroke="#212121" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M2.64589 16.8255C3.04074 16.6682 3.3968 16.415 3.6713 16.0573C4.0741 15.5327 4.67681 15.2138 5.32627 15.1815H5.33224C6.06126 15.1815 6.68387 15.4971 7.10954 16.0455C7.57898 16.652 8.26922 17 9.00421 17C9.58206 17 10.143 16.7791 10.5846 16.3784C10.695 16.2782 10.7984 16.1661 10.8909 16.0455C11.3176 15.495 11.9422 15.1793 12.6056 15.1793C13.2769 15.1804 13.9035 15.5003 14.3282 16.0563C14.5957 16.4053 14.9667 16.6617 15.3715 16.8222L15.9314 14.6708C16.1811 13.7249 15.7305 12.7456 14.8821 12.3922L9.26678 10.0533C9.09472 9.98222 8.90376 9.98222 8.7317 10.0533L3.11633 12.3922C2.26895 12.7456 1.81841 13.7249 2.06904 14.674L2.64689 16.8244L2.64589 16.8255Z" fill="#212121"/>
+      <path d="M2.54728 16L2.04294 14.4038C1.88485 13.9023 2.17543 13.3746 2.71427 13.1873L9.00005 11L15.2858 13.1873C15.8236 13.3746 16.1152 13.9023 15.9571 14.4038L15.4528 16" stroke="#212121" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M3.862 13.956V8.88064C3.862 8.32229 4.31515 7.86914 4.8735 7.86914H12.4597C13.0181 7.86914 13.4712 8.32229 13.4712 8.88064V13.956" stroke="#212121" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M10 5H7V7H10V5Z" fill="#212121" stroke="#212121" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M13 19.25C15.5 20.25 16.772 18.9277 17.2071 18C18.0238 19.7213 19.4756 19.9474 20.45 18.5047C20.5532 18.3517 20.6491 18.1831 20.7357 18C21.1708 18.9269 21.8181 19.4608 22.5 19.4548" stroke="#212121" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M16.5 11.5L20.9899 13.1873C21.374 13.3746 21.5823 13.9023 21.4694 14.4038L21.1092 16" stroke="#212121" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M16.5 7.5H18.5H19.8684C20.5 7.5 20.5 8 20.5 8.59366V12.5" stroke="#212121" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M18.5 6.5H17.5V7H18.5V6.5Z" fill="#212121" stroke="#212121" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </div>
+
+  <!-- 10. Analytics (pie) -->
+  <div class="nav-item" title="Analytics">
+    <svg viewBox="0 0 24 24" fill="none">
+      <path d="M12.75 4.03799V10.326L17.436 6.14699C16.18 4.97899 14.553 4.20599 12.75 4.03799Z" fill="#212121"/>
+      <path d="M12.992 12.12L17.125 18.135C18.88 16.666 20 14.462 20 12C20 10.228 19.414 8.59399 18.434 7.26599L12.992 12.12Z" fill="#212121"/>
+      <path d="M11.358 12.389C11.292 12.277 11.25 12.139 11.25 12V4.03799C7.19 4.41799 4 7.84199 4 12C4 16.411 7.589 20 12 20C13.411 20 14.737 19.629 15.889 18.985L11.382 12.425C11.369 12.405 11.358 12.389 11.358 12.389Z" fill="#212121"/>
+    </svg>
+  </div>
+
+  <!-- 11. Agents -->
+  <div class="nav-item" title="Agents">
+    <svg viewBox="0 0 24 24" fill="none">
+      <path d="M15 4.75C14.5 4.75 14.035 4.885 13.62 5.102C14.167 5.847 14.5 6.757 14.5 7.75C14.5 8.743 14.167 9.653 13.62 10.398C14.035 10.615 14.5 10.75 15 10.75C16.654 10.75 18 9.404 18 7.75C18 6.096 16.654 4.75 15 4.75Z" fill="#212121"/>
+      <path d="M10 10.75C11.6569 10.75 13 9.40685 13 7.75C13 6.09315 11.6569 4.75 10 4.75C8.34315 4.75 7 6.09315 7 7.75C7 9.40685 8.34315 10.75 10 10.75Z" fill="#212121"/>
+      <path d="M11.75 16.75C11.75 15.892 12.227 15.121 12.994 14.737L14.323 14.072L14.516 13.686C13.357 12.466 11.743 11.749 10 11.749C7.631 11.749 5.495 13.064 4.425 15.181C4.143 15.738 4.118 16.394 4.356 16.982C4.602 17.589 5.097 18.061 5.714 18.275C7.098 18.755 8.54 18.999 10 18.999C10.966 18.999 11.923 18.882 12.861 18.671C12.178 18.266 11.75 17.552 11.75 16.749V16.75Z" fill="#212121"/>
+      <path d="M20.335 16.079L18.559 15.191L17.671 13.415C17.417 12.907 16.583 12.907 16.329 13.415L15.441 15.191L13.665 16.079C13.411 16.206 13.25 16.466 13.25 16.75C13.25 17.034 13.411 17.294 13.665 17.421L15.441 18.309L16.329 20.085C16.456 20.339 16.716 20.5 17 20.5C17.284 20.5 17.544 20.339 17.671 20.085L18.559 18.309L20.335 17.421C20.589 17.294 20.75 17.034 20.75 16.75C20.75 16.466 20.589 16.206 20.335 16.079Z" fill="#212121"/>
+    </svg>
+  </div>
+
+  <!-- 12. Inbox -->
+  <div class="nav-item" title="Inbox">
+    <svg viewBox="0 0 24 24" fill="none">
+      <path d="M6.8055 16.2901V10.9141C6.8055 10.3618 7.25321 9.91409 7.8055 9.91409H16.1942C16.7465 9.91409 17.1942 10.3618 17.1942 10.9141V16.2901C17.1942 16.8424 16.7465 17.2901 16.1942 17.2901H7.8055C7.25321 17.2901 6.8055 16.8424 6.8055 16.2901Z" fill="black" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M17.2723 6.71194H6.72762C6.17533 6.71194 5.72762 7.15966 5.72762 7.71194V8.91429C5.72762 9.46657 6.17533 9.91429 6.72761 9.91429H17.2723C17.8245 9.91429 18.2723 9.46657 18.2723 8.91429V7.71194C18.2723 7.15966 17.8245 6.71194 17.2723 6.71194Z" fill="black" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M10.3702 12.6924H13.4782" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </div>
+
+  <!-- 13. Compliance -->
+  <div class="nav-item" title="Compliance">
+    <svg viewBox="0 0 24 24" fill="none">
+      <path d="M12 13C13.5188 13 14.75 11.7688 14.75 10.25C14.75 8.73122 13.5188 7.5 12 7.5C10.4812 7.5 9.25 8.73122 9.25 10.25C9.25 11.7688 10.4812 13 12 13Z" fill="#212121"/>
+      <path d="M12.308 19.153C13.048 18.914 14.97 18.217 16.43 17.07C15.732 15.228 13.988 14 12 14C10.034 14 8.30999 15.201 7.57899 17.076C9.03799 18.219 10.954 18.914 11.693 19.153C11.896 19.219 12.106 19.219 12.309 19.153H12.308Z" fill="#212121"/>
+      <path d="M12 19.952C11.819 19.952 11.638 19.924 11.463 19.867C9.945 19.376 5 17.502 5 13.997V7.47798C5 6.71398 5.489 6.04398 6.217 5.81098L11.467 4.13098C11.815 4.01998 12.184 4.01998 12.533 4.13098L17.783 5.81098C18.511 6.04298 19 6.71298 19 7.47798V13.998C19 17.503 14.055 19.376 12.539 19.867C12.362 19.924 12.181 19.952 12 19.952ZM12 5.54698C11.975 5.54698 11.949 5.55098 11.924 5.55898L6.674 7.23898C6.57 7.27198 6.5 7.36798 6.5 7.47698V13.997C6.5 16.554 11.018 18.146 11.924 18.439C11.975 18.456 12.024 18.456 12.078 18.439C12.982 18.146 17.5 16.554 17.5 13.997V7.47798C17.5 7.36898 17.431 7.27298 17.326 7.23998L12.076 5.55998C12.051 5.55198 12.025 5.54798 12 5.54798V5.54698Z" fill="#212121"/>
+    </svg>
+  </div>
+
+  <!-- 14. Monitor -->
+  <div class="nav-item" title="Dashboard">
+    <svg viewBox="0 0 24 24" fill="none">
+      <path d="M16.316 18.052C15.2147 17.6853 14.108 17.4627 13 17.3773V15C13 14.448 12.552 14 12 14C11.448 14 11 14.448 11 15V17.3773C9.89199 17.4627 8.78533 17.6853 7.684 18.052C7.16 18.2267 6.87733 18.7933 7.05066 19.3173C7.22666 19.84 7.78533 20.1253 8.31599 19.9493C10.7587 19.136 13.24 19.136 15.6827 19.9493C15.788 19.984 15.8947 20.0013 15.9987 20.0013C16.4173 20.0013 16.8067 19.736 16.948 19.3173C17.1227 18.7933 16.8387 18.2267 16.3147 18.052H16.316Z" fill="#212121"/>
+      <path d="M16.3333 4H7.66667C5.64162 4 4 5.64162 4 7.66667V12.3333C4 14.3584 5.64162 16 7.66667 16H16.3333C18.3584 16 20 14.3584 20 12.3333V7.66667C20 5.64162 18.3584 4 16.3333 4Z" fill="#212121"/>
+    </svg>
+  </div>
+
+  <div class="nav-spacer"></div>
+  <div class="nav-divider"></div>
+
+  <!-- 15. Open book -->
+  <div class="nav-item" title="Docs">
+    <svg viewBox="0 674.5 56 40" style="width:28px;height:20px">
+      <path d="M28 701.25C28 700.145 28.895 699.25 30 699.25H34.25C34.802 699.25 35.25 698.802 35.25 698.25V688.75C35.25 688.198 34.802 687.75 34.25 687.75H30C28.895 687.75 28 688.645 28 689.75" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M28 701.25V689.75C28 688.645 27.105 687.75 26 687.75H21.75C21.198 687.75 20.75 688.198 20.75 688.75V698.25C20.75 698.802 21.198 699.25 21.75 699.25H26C27.105 699.25 28 700.145 28 701.25Z" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </div>
+
+  <!-- 16. Bell / notification -->
+  <div class="nav-item" title="Notifications" style="position:relative">
+    <svg viewBox="0 712.5 56 40" style="width:28px;height:20px">
+      <path d="M34.75 736.25C33.645 736.25 32.75 735.355 32.75 734.25V729.5C32.75 726.877 30.623 724.75 28 724.75C25.377 724.75 23.25 726.877 23.25 729.5V734.25C23.25 735.355 22.355 736.25 21.25 736.25H34.75Z" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M29.588 738.185C29.493 738.068 29.351 738 29.2 738H26.801C26.65 738 26.508 738.068 26.413 738.185C26.318 738.302 26.281 738.456 26.312 738.603C26.485 739.425 27.18 740 28.001 740C28.822 740 29.517 739.425 29.69 738.603C29.721 738.456 29.683 738.302 29.588 738.185Z" fill="black"/>
+    </svg>
+    <div class="nav-badge-dot"></div>
+  </div>
+
+  <!-- 17. Avatar -->
+  <div class="nav-avatar" title="Account">A</div>
+</nav>
+
+<div class="main">
+  <!-- Date greeting bar -->
+  <div style="height:34px;background:transparent;display:flex;align-items:center;padding:0 28px;gap:12px;flex-shrink:0">
+    <span style="font-size:12px;font-weight:600;color:var(--nav)">Monday, June 29, 2026</span>
+    <span style="font-size:11px;color:var(--text-2)">·</span>
+    <span style="font-size:12px;color:var(--text-2)">Good morning, Sahithi Alluru 👋 — here's your operational snapshot for today.</span>
+    <span style="flex:1"></span>
+    <div class="refreshed-chip">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      Last refreshed:&nbsp;<strong id="last-refreshed" style="color:var(--text-2)">—</strong>
+    </div>
+  </div>
+  <div class="topbar">
+    <div class="topbar-title">Welcome, Sahithi Alluru 👋</div>
+    <div class="topbar-spacer"></div>
+    <div class="topbar-right">
+
+      <!-- My Calls: plain text + toggle switch, no user icon -->
+      <div class="mycalls-wrap" id="myCallsWrap" onclick="toggleMyCalls()">
+        <span class="mycalls-label">My Calls</span>
+        <div class="toggle-switch"><div class="knob"></div></div>
+      </div>
+      <div class="topbar-search">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        Search
+      </div>
+      <div class="icon-btn">
+        <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        <div class="notif-dot"></div>
+      </div>
+      <button class="btn-primary">
+        <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        New Port Call
+      </button>
+    </div>
+  </div>
+
+  <div class="tabbar">
+    <div class="tabbar-left">
+      <div class="tab-item active" id="tab-disb" onclick="switchPage('disbursements',this)">Disbursements</div>
+      <div class="tab-item" id="tab-fin" onclick="switchPage('financials',this)">Financials</div>
+    </div>
+  </div>
+
+  <div class="content">
+
+  <!-- ══════════ DISBURSEMENTS ══════════ -->
+  <div class="panel active" id="panel-disbursements">
+
+    <!-- Summary stat cards -->
+    <div class="stat-cards">
+      <div class="scard warn active" onclick="selectSection('sec-pending',this)">
+        <div class="scard-val">5</div>
+        <div class="scard-lbl">Pending Approval</div>
+        <div class="scard-sub">DAs awaiting sign-off</div>
+      </div>
+      <div class="scard alert" onclick="selectSection('sec-overdue',this)">
+        <div class="scard-val">3</div>
+        <div class="scard-lbl">Overdue DAs</div>
+        <div class="scard-sub">Past agreed deadline</div>
+      </div>
+      <div class="scard neutral" onclick="selectSection('sec-clar',this)">
+        <div class="scard-val">4</div>
+        <div class="scard-lbl">Clarification</div>
+        <div class="scard-sub">Pending agent response</div>
+      </div>
+      <div class="scard blue" onclick="selectSection('sec-appt',this)">
+        <div class="scard-val">5</div>
+        <div class="scard-lbl">Pending Appointment</div>
+        <div class="scard-sub">No agent appointed yet</div>
+      </div>
+    </div>
+
+    <!-- SECTION: Pending Approvals -->
+    <div class="sec-panel active" id="sec-pending">
+      <div class="card">
+        <div class="tile-hdr">
+          <div class="tile-title">
+            <svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:var(--orange);fill:none;stroke-width:2;stroke-linecap:round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            Pending Approval
+            <span class="info-icon" data-tip="DAs submitted by agents awaiting operator sign-off. Sorted by oldest submission first.">i</span>
+          </div>
+          <div class="tile-actions">
+            <div class="sort-btn"><svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="6" y1="12" x2="18" y2="12"/><line x1="9" y1="18" x2="15" y2="18"/></svg>Sort</div>
+            <span class="section-link" title="Full screen" onclick="alert('Full screen')"><svg viewBox="0 0 24 24" style="width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg></span>
+            
+          </div>
+        </div>
+        <div id="pending-body" class="tile-body">
+          <div class="da-tabs" id="pending-tabs">
+            <div class="da-tab active" onclick="filterDA('pending','all',this)">All <span class="ct">8</span></div>
+            <div class="da-tab" onclick="filterDA('pending','PDA',this)">PDA <span class="ct n">1</span></div>
+            <div class="da-tab" onclick="filterDA('pending','FDA',this)">FDA <span class="ct n">2</span></div>
+            <div class="da-tab" onclick="filterDA('pending','SDA',this)">SDA <span class="ct n">1</span></div>
+            <div class="da-tab" onclick="filterDA('pending','DDA',this)">DDA <span class="ct n">1</span></div>
+            <div class="da-tab" onclick="filterDA('pending','VI',this)">VI <span class="ct n">1</span></div>
+            <div class="da-tab" onclick="filterDA('pending','APDA',this)">APDA <span class="ct n">1</span></div>
+          </div>
+          <div class="da-list" id="pending-list" style="max-height:380px">
+            <div class="da-card blue" data-type="FDA">
+              <div class="da-icon blue">FDA</div>
+              <div class="da-body">
+                <div class="da-r1"><span class="da-pc">TST2600082</span><span class="da-tname">· Ops Tier 1</span></div>
+                <div class="da-r2"><span><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>Omicron West</span><span><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>Singapore</span><span><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>ABC Test Shipping</span></div>
+              </div>
+              <div class="da-meta"><div class="da-amt">USD 25,624</div><div class="da-amt-lbl">Balance</div><div class="da-pill info">6 days</div></div>
+            </div>
+            <div class="da-card blue" data-type="FDA">
+              <div class="da-icon blue">FDA</div>
+              <div class="da-body">
+                <div class="da-r1"><span class="da-pc">TST2600113</span><span class="da-tname">· Ops Tier 1</span></div>
+                <div class="da-r2"><span><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>Test Vessel 1</span><span><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>Singapore</span><span><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>ABC Test Shipping</span></div>
+              </div>
+              <div class="da-meta"><div class="da-amt">USD 18,450</div><div class="da-amt-lbl">Balance</div><div class="da-pill info">3 days</div></div>
+            </div>
+            <div class="da-card blue" data-type="APDA">
+              <div class="da-icon blue">APDA</div>
+              <div class="da-body">
+                <div class="da-r1"><span class="da-pc">TST2600067</span><span class="da-tname">· Finance Tier 2</span></div>
+                <div class="da-r2"><span><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>Test Vessel 1</span><span><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>Test Port</span><span><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>ABC Test Shipping</span></div>
+              </div>
+              <div class="da-meta"><div class="da-amt">USD 6,318</div><div class="da-amt-lbl">Total</div><div class="da-pill info">3 days</div></div>
+            </div>
+            <div class="da-card blue" data-type="SDA">
+              <div class="da-icon teal">SDA</div>
+              <div class="da-body">
+                <div class="da-r1"><span class="da-pc">TST2600114</span></div>
+                <div class="da-r2"><span><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>Test Vessel 1</span><span><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>Test Port</span><span><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>Keppel Smit</span></div>
+              </div>
+              <div class="da-meta"><div class="da-amt">USD 637</div><div class="da-amt-lbl">Balance</div><div class="da-pill ok">Today</div></div>
+            </div>
+            <div class="da-card blue" data-type="PDA">
+              <div class="da-icon blue">PDA</div>
+              <div class="da-body">
+                <div class="da-r1"><span class="da-pc">TST2600117</span></div>
+                <div class="da-r2"><span><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>Test Vessel 1</span><span><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>Test Port</span><span><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>Test Vendor 22</span></div>
+              </div>
+              <div class="da-meta"><div class="da-amt">USD 4,200</div><div class="da-amt-lbl">Total</div><div class="da-pill info">1 day</div></div>
+            </div>
+            <div class="da-card blue" data-type="DDA">
+              <div class="da-icon blue">DDA</div>
+              <div class="da-body">
+                <div class="da-r1"><span class="da-pc">TST2600119</span><span class="da-tname">· Finance Tier 1</span></div>
+                <div class="da-r2"><span><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>Nordic Star</span><span><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>Rotterdam</span><span><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>Boskalis Terminal</span></div>
+              </div>
+              <div class="da-meta"><div class="da-amt">USD 11,750</div><div class="da-amt-lbl">Total</div><div class="da-pill info">4 days</div></div>
+            </div>
+            <div class="da-card blue" data-type="VI">
+              <div class="da-icon teal">VI</div>
+              <div class="da-body">
+                <div class="da-r1"><span class="da-pc">TST2600121</span><span class="da-tname">· Ops Tier 2</span></div>
+                <div class="da-r2"><span><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>Pacific Wind</span><span><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>Singapore</span><span><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>Test Vendor-A</span></div>
+              </div>
+              <div class="da-meta"><div class="da-amt">USD 9,880</div><div class="da-amt-lbl">Balance</div><div class="da-pill warn">5 days</div></div>
+            </div>
+            <div class="da-card blue" data-type="APDA">
+              <div class="da-icon blue">APDA</div>
+              <div class="da-body">
+                <div class="da-r1"><span class="da-pc">TST2600122</span></div>
+                <div class="da-r2"><span><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>Atlantic Hope</span><span><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>Hamburg</span><span><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>Eurogate Agency</span></div>
+              </div>
+              <div class="da-meta"><div class="da-amt">USD 3,415</div><div class="da-amt-lbl">Total</div><div class="da-pill warn">6 days</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div><!-- /sec-pending -->
+
+    <!-- SECTION: Port Calls — Pending Appointment -->
+    <div class="sec-panel" id="sec-appt">
+      <div class="card">
+        <div class="tile-hdr">
+          <div class="tile-title">
+            <svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:var(--brand);fill:none;stroke-width:2;stroke-linecap:round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            Port Calls — Pending Appointment
+            <span class="info-icon" data-tip="Port calls where no agent has been appointed yet. Sorted by ETA (earliest first).">i</span>
+          </div>
+          <div class="tile-actions">
+            <span class="section-link" title="Full screen" onclick="alert('Full screen')"><svg viewBox="0 0 24 24" style="width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg></span>
+            
+          </div>
+        </div>
+        <div id="pc-body" class="tile-body">
+          <table class="pc-table" id="pc-table">
+            <thead>
+              <tr>
+                <th onclick="sortTable('pc-table',0)">Vessel <span class="arr">↕</span></th>
+                <th onclick="sortTable('pc-table',1)">Voyage <span class="arr">↕</span></th>
+                <th onclick="sortTable('pc-table',2)">Port <span class="arr">↕</span></th>
+                <th onclick="sortTable('pc-table',3)">ETA <span class="arr">↑</span></th>
+                <th onclick="sortTable('pc-table',4)">Seq <span class="arr">↕</span></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>Omicron West</td><td>V026-04</td><td>Singapore</td><td>02 Jul 2026</td><td>001</td></tr>
+              <tr><td>Nordic Star</td><td>NS-2026-07</td><td>Rotterdam</td><td>04 Jul 2026</td><td>003</td></tr>
+              <tr><td>Pacific Wind</td><td>PW-114</td><td>Hamburg</td><td>06 Jul 2026</td><td>002</td></tr>
+              <tr><td>Atlantic Hope</td><td>AH-038</td><td>Test Port</td><td>08 Jul 2026</td><td>001</td></tr>
+              <tr><td>Test Vessel 3</td><td>TV3-22</td><td>Singapore</td><td>10 Jul 2026</td><td>004</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div><!-- /sec-appt -->
+
+    <!-- SECTION: Overdue DAs -->
+    <div class="sec-panel" id="sec-overdue">
+      <div class="card">
+        <div class="tile-hdr">
+          <div class="tile-title">
+            <svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:var(--danger);fill:none;stroke-width:2;stroke-linecap:round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            Overdue DAs
+            <span class="info-icon" data-tip="FDA not received from agent beyond the agreed number of days after the vessel sailed.">i</span>
+          </div>
+          <div class="tile-actions">
+            <span class="section-link" title="Full screen" onclick="alert('Full screen')"><svg viewBox="0 0 24 24" style="width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg></span>
+            
+          </div>
+        </div>
+        <div id="overdue-body" class="tile-body">
+          <div class="da-card red">
+            <div class="da-icon red">FDA</div>
+            <div class="da-body">
+              <div class="da-r1"><span class="da-pc">TST2600082</span></div>
+              <div class="da-r2"><span><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>Omicron West</span><span><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>Singapore</span><span><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/></svg>12 Jun</span></div>
+            </div>
+            <div class="da-meta"><div class="da-amt">USD 38,720</div><div class="da-amt-lbl">PDA Total: $42,310</div><div class="da-pill urgent">12 days</div></div>
+          </div>
+          <div class="da-card orange">
+            <div class="da-icon orange">SDA</div>
+            <div class="da-body">
+              <div class="da-r1"><span class="da-pc">TST2600114</span></div>
+              <div class="da-r2"><span><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>Test Vessel 1</span><span><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>Test Port</span><span><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/></svg>24 Jun</span></div>
+            </div>
+            <div class="da-meta"><div class="da-amt">USD 8,640</div><div class="da-amt-lbl">PDA Total: $9,200</div><div class="da-pill warn">5 days</div></div>
+          </div>
+          <div class="da-card amber">
+            <div class="da-icon amber">VI</div>
+            <div class="da-body">
+              <div class="da-r1"><span class="da-pc">TST2600023</span></div>
+              <div class="da-r2"><span><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>Test Vessel 3</span><span><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>Singapore</span><span><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/></svg>27 Jun</span></div>
+            </div>
+            <div class="da-meta"><div class="da-amt">USD 50,420</div><div class="da-amt-lbl">PDA Total: $52,100</div><div class="da-pill warn">2 days</div></div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /sec-overdue -->
+
+    <!-- SECTION: Under Clarification -->
+    <div class="sec-panel" id="sec-clar">
+      <div class="card card-flush">
+        <div class="tile-hdr">
+          <div class="tile-title">
+            <svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:var(--warning);fill:none;stroke-width:2;stroke-linecap:round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            Under Clarification
+            <span class="info-icon" data-tip="Clarifications raised with agent or operator. DA/VI are in Query status pending response.">i</span>
+          </div>
+          <div class="tile-actions">
+            <span class="section-link" title="Full screen" onclick="alert('Full screen')"><svg viewBox="0 0 24 24" style="width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg></span>
+          </div>
+        </div>
+        <div id="clar-tabs" class="filter-tabs">
+          <div class="filter-tab active" onclick="filterClar('all',this)">All (4)</div>
+          <div class="filter-tab" onclick="filterClar('PDA',this)">PDA (2)</div>
+          <div class="filter-tab" onclick="filterClar('FDA',this)">FDA (2)</div>
+          <div class="filter-tab" onclick="filterClar('SDA',this)">SDA (0)</div>
+          <div class="filter-tab" onclick="filterClar('DDA',this)">DDA (0)</div>
+          <div class="filter-tab" onclick="filterClar('VI',this)">VI (0)</div>
+          <div class="filter-tab" onclick="filterClar('APDA',this)">APDA (0)</div>
+        </div>
+        <div id="clar-body" class="tile-body">
+          <div id="clar-list">
+            <table class="pc-table" id="clar-table">
+              <thead>
+                <tr>
+                  <th>Port Call</th>
+                  <th>Type</th>
+                  <th>Vessel</th>
+                  <th>Port</th>
+                  <th>Agent</th>
+                  <th style="text-align:right">Amount</th>
+                  <th style="text-align:center">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr data-ct="PDA" style="cursor:pointer">
+                  <td>TST2600111</td>
+                  <td><span class="da-tier pda">PDA</span></td>
+                  <td>Omicron West</td>
+                  <td>Singapore</td>
+                  <td>ABC Test Shipping</td>
+                  <td style="text-align:right;font-variant-numeric:tabular-nums">USD 15,400</td>
+                  <td style="text-align:center"><span class="da-pill urgent">8 days</span></td>
+                </tr>
+                <tr data-ct="FDA" style="cursor:pointer">
+                  <td>TST2600112</td>
+                  <td><span class="da-tier fda">FDA</span></td>
+                  <td>Nordic Star</td>
+                  <td>Singapore</td>
+                  <td>Keppel Smit</td>
+                  <td style="text-align:right;font-variant-numeric:tabular-nums">USD 22,180</td>
+                  <td style="text-align:center"><span class="da-pill warn">6 days</span></td>
+                </tr>
+                <tr data-ct="FDA" style="cursor:pointer">
+                  <td>TST2600113</td>
+                  <td><span class="da-tier fda">FDA</span></td>
+                  <td>Test Vessel 1</td>
+                  <td>Singapore</td>
+                  <td>ABC Test Shipping</td>
+                  <td style="text-align:right;font-variant-numeric:tabular-nums">USD 18,450</td>
+                  <td style="text-align:center"><span class="da-pill warn">3 days</span></td>
+                </tr>
+                <tr data-ct="PDA" style="cursor:pointer">
+                  <td>TST2600117</td>
+                  <td><span class="da-tier pda">PDA</span></td>
+                  <td>Pacific Wind</td>
+                  <td>Test Port</td>
+                  <td>Test Vendor 22</td>
+                  <td style="text-align:right;font-variant-numeric:tabular-nums">USD 4,200</td>
+                  <td style="text-align:center"><span class="da-pill info">1 day</span></td>
+                </tr>
+                <tr id="clar-empty" style="display:none">
+                  <td colspan="7" style="height:100px;text-align:center;vertical-align:middle;color:var(--text-2);font-size:13px;font-weight:500">No records found</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div><!-- /sec-clar -->
+
+    <!-- My Statistics — always visible -->
+    <div class="card">
+      <div class="tile-hdr" style="margin-bottom:12px">
+        <div class="tile-title">
+          <svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:var(--brand);fill:none;stroke-width:2;stroke-linecap:round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          My Statistics
+          <span style="font-size:11px;font-weight:400;color:var(--text-2)">· June 2026</span>
+          <span class="info-icon" data-tip="Your port call activity and approval performance this month.">i</span>
+        </div>
+        
+      </div>
+      <div id="stats-body" class="tile-body">
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px">
+          <div style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:4px">
+            <div style="font-size:11px;font-weight:500;color:var(--text-2)">Port Calls Created</div>
+            <div style="font-size:28px;font-weight:700;color:var(--brand);line-height:1">6</div>
+            <div style="font-size:10px;color:var(--text-3)">This month</div>
+          </div>
+          <div style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:4px">
+            <div style="font-size:11px;font-weight:500;color:var(--text-2)">Approved</div>
+            <div style="font-size:28px;font-weight:700;color:var(--success);line-height:1">8</div>
+            <div style="font-size:10px;color:var(--text-3)">DAs approved</div>
+          </div>
+          <div style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:4px">
+            <div style="font-size:11px;font-weight:500;color:var(--text-2)">Rejected</div>
+            <div style="font-size:28px;font-weight:700;color:var(--danger);line-height:1">1</div>
+            <div style="font-size:10px;color:var(--text-3)">DAs rejected</div>
+          </div>
+          <div style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:4px">
+            <div style="font-size:11px;font-weight:500;color:var(--text-2)">Avg. to Approve</div>
+            <div style="font-size:28px;font-weight:700;color:var(--text);line-height:1">1.8<span style="font-size:14px;font-weight:500;color:var(--text-2)">d</span></div>
+            <div style="font-size:10px;color:var(--text-3)">Average turnaround</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /panel-disbursements -->
+
+
+  <!-- ══════════ FINANCIALS ══════════ -->
+  <div class="panel" id="panel-financials">
+
+    <!-- Cash Position Hero -->
+    <div class="fin-hero">
+      <div>
+        <div class="fin-hero-lbl">Available Balance</div>
+        <div class="fin-hero-val">USD 32,005.36</div>
+        <div class="fin-hero-sub">As of June 29, 2026 · All agents &amp; vendors</div>
+      </div>
+      <div class="fin-hero-right">
+        <div class="fin-hi"><div class="fin-hi-lbl">Approved Forecast</div><div class="fin-hi-val">USD 23,694</div></div>
+        <div class="fin-hi"><div class="fin-hi-lbl">Under Approval</div><div class="fin-hi-val">USD 48,650</div></div>
+        <div class="fin-hi"><div class="fin-hi-lbl">In Process</div><div class="fin-hi-val">USD 237,409</div></div>
+        <div class="fin-hi"><div class="fin-hi-lbl">Projected Balance</div><div class="fin-hi-val" style="color:#FCA5A5">–USD 277,748</div></div>
+      </div>
+    </div>
+
+    <!-- YTD Savings KPI strip -->
+    <div class="fin-sec">Savings Performance · YTD</div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px">
+      <div class="fin-kpi-card">
+        <div class="fin-kpi-icon" style="background:var(--green-bg)"><svg viewBox="0 0 24 24" style="width:20px;height:20px;stroke:#147638;fill:none;stroke-width:2;stroke-linecap:round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
+        <div class="fin-kpi-val" style="color:var(--success)">$150K</div>
+        <div class="fin-kpi-lbl">YTD Savings</div>
+      </div>
+      <div class="fin-kpi-card">
+        <div class="fin-kpi-icon" style="background:var(--blue-light)"><svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:var(--brand);fill:none;stroke-width:2;stroke-linecap:round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+        <div class="fin-kpi-val" style="color:var(--brand)">$75K</div>
+        <div class="fin-kpi-lbl">Cashflow Savings</div>
+        <div class="fin-kpi-sub" style="color:var(--success)">★ Record savings</div>
+      </div>
+      <div class="fin-kpi-card">
+        <div class="fin-kpi-icon" style="background:var(--purple-bg)"><svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:var(--purple);fill:none;stroke-width:2;stroke-linecap:round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div>
+        <div class="fin-kpi-val" style="color:var(--purple)">$25K</div>
+        <div class="fin-kpi-lbl">DA Savings</div>
+        <div class="fin-kpi-sub" style="color:var(--success)">★ Record savings</div>
+      </div>
+      <div class="fin-kpi-card">
+        <div class="fin-kpi-icon" style="background:var(--teal-bg)"><svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:var(--teal-dark);fill:none;stroke-width:2;stroke-linecap:round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+        <div class="fin-kpi-val" style="color:var(--teal-dark)">$50K</div>
+        <div class="fin-kpi-lbl">Contractual Savings</div>
+        <div class="fin-kpi-sub" style="color:var(--success)">★ Record · Direct contract</div>
+      </div>
+    </div>
+
+    <!-- ROW A: Savings by Type | By Agent / Vendor -->
+    <div class="fin-sec">Savings Breakdown</div>
+    <div class="g2">
+      <div class="card">
+        <div class="tile-hdr"><div class="tile-title">Savings by Type <span style="font-size:11px;font-weight:400;color:var(--text-2)">· Month to date</span></div></div>
+        <div id="sav-body" class="tile-body">
+          <div class="sbar-wrap">
+            <div class="sbar-row"><div class="sbar-lbl">Contractual Discount</div><div class="sbar-track"><div class="sbar-fill" style="width:85%;background:var(--blue-mid)"></div></div><div class="sbar-val">$55.9K</div></div>
+            <div class="sbar-row"><div class="sbar-lbl">Hidden Cost</div><div class="sbar-track"><div class="sbar-fill" style="width:40%;background:var(--nav)"></div></div><div class="sbar-val">$5.3K</div></div>
+            <div class="sbar-row"><div class="sbar-lbl">Agent Error</div><div class="sbar-track"><div class="sbar-fill" style="width:30%;background:var(--nav)"></div></div><div class="sbar-val">$2.7K</div></div>
+            <div class="sbar-row"><div class="sbar-lbl">Escalated Cost</div><div class="sbar-track"><div class="sbar-fill" style="width:18%;background:var(--nav)"></div></div><div class="sbar-val">$1.3K</div></div>
+            <div class="sbar-row"><div class="sbar-lbl">Negotiation</div><div class="sbar-track"><div class="sbar-fill" style="width:8%;background:var(--nav)"></div></div><div class="sbar-val">$0.4K</div></div>
+          </div>
+          <div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border);display:flex;justify-content:space-between"><span style="font-size:11px;color:var(--text-2)">Saving per Port Call</span><span style="font-size:13px;font-weight:700;color:var(--success)">$556</span></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="tile-hdr"><div class="tile-title">By Agent / Vendor</div></div>
+        <div id="agent-body" class="tile-body">
+          <div class="sbar-wrap">
+            <div class="sbar-row"><div class="sbar-lbl">ABC Test Shipping</div><div class="sbar-track"><div class="sbar-fill" style="width:100%;background:var(--brand)"></div></div><div class="sbar-val">$307K</div></div>
+            <div class="sbar-row"><div class="sbar-lbl">Keppel Smit</div><div class="sbar-track"><div class="sbar-fill" style="width:12%;background:var(--nav)"></div></div><div class="sbar-val">$37K</div></div>
+            <div class="sbar-row"><div class="sbar-lbl">Test Vendor 22</div><div class="sbar-track"><div class="sbar-fill" style="width:8%;background:var(--nav)"></div></div><div class="sbar-val">$24K</div></div>
+            <div class="sbar-row"><div class="sbar-lbl">Test Vendor -A</div><div class="sbar-track"><div class="sbar-fill" style="width:4%;background:var(--nav)"></div></div><div class="sbar-val">$12K</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ROW B: Contractual Discount | Cash Spent by Currency -->
+    <div class="fin-sec">Contractual &amp; Currency</div>
+    <div class="g2">
+      <div class="card">
+        <div class="tile-hdr"><div class="tile-title">Contractual Discount <span style="font-size:11px;font-weight:400;color:var(--text-2)">· Total: $1,434,340</span></div><div class="tile-actions"><span class="section-link" title="Full screen" onclick="alert('Full screen')"><svg viewBox="0 0 24 24" style="width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg></span></div></div>
+        <div id="contr-body" class="tile-body">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+            <div style="position:relative;width:64px;height:64px;flex-shrink:0">
+              <svg viewBox="0 0 36 36" style="width:64px;height:64px;transform:rotate(-90deg)">
+                <circle cx="18" cy="18" r="15.9" fill="none" stroke="#E2E8F0" stroke-width="3.5"/>
+                <circle cx="18" cy="18" r="15.9" fill="none" stroke="#1852FE" stroke-width="3.5" stroke-dasharray="62.1 37.9" stroke-linecap="round"/>
+                <circle cx="18" cy="18" r="15.9" fill="none" stroke="#BEDBFE" stroke-width="3.5" stroke-dasharray="37.9 62.1" stroke-dashoffset="-62.1"/>
+              </svg>
+              <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--nav)">62%</div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:6px;flex:1">
+              <div style="display:flex;justify-content:space-between;align-items:center"><div style="display:flex;align-items:center;gap:5px"><span style="width:8px;height:8px;border-radius:2px;background:var(--brand);display:inline-block"></span><span style="font-size:12px;color:var(--text-2)">GeoConnect Contract</span></div><span style="font-size:12px;font-weight:700">$890,450</span></div>
+              <div style="display:flex;justify-content:space-between;align-items:center"><div style="display:flex;align-items:center;gap:5px"><span style="width:8px;height:8px;border-radius:2px;background:var(--blue-mid);display:inline-block"></span><span style="font-size:12px;color:var(--text-2)">My Contracts</span></div><span style="font-size:12px;font-weight:700">$543,890</span></div>
+            </div>
+          </div>
+          <div style="font-size:10px;font-weight:700;color:var(--text-2);text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px">Vendor Invoices</div>
+          <table style="width:100%;border-collapse:collapse;font-size:11.5px">
+            <thead><tr style="border-bottom:1px solid var(--border)"><th style="text-align:left;padding:4px;font-size:10px;color:var(--text-2);font-weight:600">VI No.</th><th style="text-align:right;padding:4px;font-size:10px;color:var(--text-2);font-weight:600">DA Amt</th><th style="text-align:right;padding:4px;font-size:10px;color:var(--success);font-weight:600">Discount</th></tr></thead>
+            <tbody>
+              <tr style="border-bottom:1px solid var(--border)"><td style="padding:4px;font-weight:500">VI-2026-0041</td><td style="text-align:right;padding:4px">$124,500</td><td style="text-align:right;padding:4px;color:var(--success);font-weight:600">$12,450</td></tr>
+              <tr style="border-bottom:1px solid var(--border)"><td style="padding:4px;font-weight:500">VI-2026-0038</td><td style="text-align:right;padding:4px">$87,320</td><td style="text-align:right;padding:4px;color:var(--success);font-weight:600">$7,859</td></tr>
+              <tr style="border-bottom:1px solid var(--border)"><td style="padding:4px;font-weight:500">VI-2026-0035</td><td style="text-align:right;padding:4px">$212,450</td><td style="text-align:right;padding:4px;color:var(--success);font-weight:600">$19,121</td></tr>
+              <tr><td style="padding:4px;font-weight:500">VI-2026-0027</td><td style="text-align:right;padding:4px">$145,670</td><td style="text-align:right;padding:4px;color:var(--success);font-weight:600">$13,110</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="card">
+        <div class="tile-hdr">
+          <div class="tile-title">Cash Spent by Currency</div>
+          <div class="tile-actions">
+            <div class="cur-toggle"><div class="cur-btn on" id="cur-mtd" onclick="setCurrency('MTD')">MTD</div><div class="cur-btn" id="cur-ytd" onclick="setCurrency('YTD')">YTD</div></div>
+            
+          </div>
+        </div>
+        <div id="cur-body" class="tile-body">
+          <div id="cur-label" style="font-size:11px;color:var(--text-2);margin-bottom:8px">June 2026 disbursements · USD equivalent</div>
+          <div id="cur-mtd-data" class="sbar-wrap">
+            <div class="sbar-row"><div class="sbar-lbl" style="display:flex;align-items:center;gap:4px"><span style="width:7px;height:7px;border-radius:50%;background:#1852FE;display:inline-block"></span>USD</div><div class="sbar-track"><div class="sbar-fill" style="width:52%;background:#1852FE"></div></div><div style="display:flex;flex-direction:column;align-items:flex-end;width:72px;flex-shrink:0"><span class="sbar-val">$1.4M</span><span style="font-size:10px;color:var(--text-3)">52.1%</span></div></div>
+            <div class="sbar-row"><div class="sbar-lbl" style="display:flex;align-items:center;gap:4px"><span style="width:7px;height:7px;border-radius:50%;background:#3B81F6;display:inline-block"></span>EUR</div><div class="sbar-track"><div class="sbar-fill" style="width:18%;background:#3B81F6"></div></div><div style="display:flex;flex-direction:column;align-items:flex-end;width:72px;flex-shrink:0"><span class="sbar-val">$490K</span><span style="font-size:10px;color:var(--text-3)">18.1%</span></div></div>
+            <div class="sbar-row"><div class="sbar-lbl" style="display:flex;align-items:center;gap:4px"><span style="width:7px;height:7px;border-radius:50%;background:#00DAC1;display:inline-block"></span>SGD</div><div class="sbar-track"><div class="sbar-fill" style="width:12%;background:#00DAC1"></div></div><div style="display:flex;flex-direction:column;align-items:flex-end;width:72px;flex-shrink:0"><span class="sbar-val">$320K</span><span style="font-size:10px;color:var(--text-3)">11.8%</span></div></div>
+            <div class="sbar-row"><div class="sbar-lbl" style="display:flex;align-items:center;gap:4px"><span style="width:7px;height:7px;border-radius:50%;background:#BC17A2;display:inline-block"></span>AED</div><div class="sbar-track"><div class="sbar-fill" style="width:9%;background:#BC17A2"></div></div><div style="display:flex;flex-direction:column;align-items:flex-end;width:72px;flex-shrink:0"><span class="sbar-val">$240K</span><span style="font-size:10px;color:var(--text-3)">8.9%</span></div></div>
+            <div class="sbar-row"><div class="sbar-lbl" style="display:flex;align-items:center;gap:4px"><span style="width:7px;height:7px;border-radius:50%;background:#FB7D24;display:inline-block"></span>GBP</div><div class="sbar-track"><div class="sbar-fill" style="width:6%;background:#FB7D24"></div></div><div style="display:flex;flex-direction:column;align-items:flex-end;width:72px;flex-shrink:0"><span class="sbar-val">$178K</span><span style="font-size:10px;color:var(--text-3)">6.6%</span></div></div>
+          </div>
+          <div id="cur-ytd-data" class="sbar-wrap" style="display:none">
+            <div class="sbar-row"><div class="sbar-lbl" style="display:flex;align-items:center;gap:4px"><span style="width:7px;height:7px;border-radius:50%;background:#1852FE;display:inline-block"></span>USD</div><div class="sbar-track"><div class="sbar-fill" style="width:55%;background:#1852FE"></div></div><div style="display:flex;flex-direction:column;align-items:flex-end;width:72px;flex-shrink:0"><span class="sbar-val">$18.2M</span><span style="font-size:10px;color:var(--text-3)">55.3%</span></div></div>
+            <div class="sbar-row"><div class="sbar-lbl" style="display:flex;align-items:center;gap:4px"><span style="width:7px;height:7px;border-radius:50%;background:#3B81F6;display:inline-block"></span>EUR</div><div class="sbar-track"><div class="sbar-fill" style="width:17%;background:#3B81F6"></div></div><div style="display:flex;flex-direction:column;align-items:flex-end;width:72px;flex-shrink:0"><span class="sbar-val">$5.7M</span><span style="font-size:10px;color:var(--text-3)">17.2%</span></div></div>
+            <div class="sbar-row"><div class="sbar-lbl" style="display:flex;align-items:center;gap:4px"><span style="width:7px;height:7px;border-radius:50%;background:#00DAC1;display:inline-block"></span>SGD</div><div class="sbar-track"><div class="sbar-fill" style="width:10%;background:#00DAC1"></div></div><div style="display:flex;flex-direction:column;align-items:flex-end;width:72px;flex-shrink:0"><span class="sbar-val">$3.5M</span><span style="font-size:10px;color:var(--text-3)">10.5%</span></div></div>
+            <div class="sbar-row"><div class="sbar-lbl" style="display:flex;align-items:center;gap:4px"><span style="width:7px;height:7px;border-radius:50%;background:#BC17A2;display:inline-block"></span>AED</div><div class="sbar-track"><div class="sbar-fill" style="width:9%;background:#BC17A2"></div></div><div style="display:flex;flex-direction:column;align-items:flex-end;width:72px;flex-shrink:0"><span class="sbar-val">$2.9M</span><span style="font-size:10px;color:var(--text-3)">8.8%</span></div></div>
+            <div class="sbar-row"><div class="sbar-lbl" style="display:flex;align-items:center;gap:4px"><span style="width:7px;height:7px;border-radius:50%;background:#FB7D24;display:inline-block"></span>GBP</div><div class="sbar-track"><div class="sbar-fill" style="width:6%;background:#FB7D24"></div></div><div style="display:flex;flex-direction:column;align-items:flex-end;width:72px;flex-shrink:0"><span class="sbar-val">$2.0M</span><span style="font-size:10px;color:var(--text-3)">6.0%</span></div></div>
+          </div>
+          <div style="margin-top:10px;padding-top:8px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center">
+            <span style="font-size:11px;color:var(--text-2)" id="cur-total-lbl">Total MTD disbursements</span>
+            <span style="font-size:14px;font-weight:700;color:var(--text)" id="cur-total-val">$2,693,000</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ROW C: Recovery Summary (full width) -->
+    <div class="fin-sec">Balance Recoveries</div>
+    <div class="card">
+      <div class="tile-hdr"><div class="tile-title">Recovery Summary <span style="font-size:11px;font-weight:400;color:var(--text-2)">· YTD</span></div><div class="tile-actions"><span class="section-link" title="Full screen" onclick="alert('Full screen')"><svg viewBox="0 0 24 24" style="width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg></span></div></div>
+      <div id="recov-body" class="tile-body">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">
+          <div style="background:var(--green-bg);border:1px solid var(--green-mid);border-radius:8px;padding:12px;text-align:center"><div style="font-size:18px;font-weight:700;color:#147638">$292,560</div><div style="font-size:10px;color:#147638;margin-top:2px">Total Recovered</div></div>
+          <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px;text-align:center"><div style="font-size:18px;font-weight:700">$48,320</div><div style="font-size:10px;color:var(--text-2);margin-top:2px">Pending Recovery</div></div>
+
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;padding:5px 4px;border-bottom:1px solid var(--border);font-size:10px;font-weight:600;color:var(--text-2);text-transform:uppercase;letter-spacing:.04em"><span>Port Call</span><span>Agent</span><span style="text-align:right">Amount</span><span style="text-align:right">Status</span></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;padding:8px 4px;border-bottom:1px solid var(--border);font-size:12px;align-items:center"><span style="font-weight:600">TST2600045</span><span style="color:var(--text-2)">ABC Shipping</span><span style="text-align:right;font-weight:600">$84,320</span><span style="text-align:right"><span style="background:var(--green-mid);color:#147638;font-size:10px;font-weight:700;padding:2px 7px;border-radius:999px">Received</span></span></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;padding:8px 4px;border-bottom:1px solid var(--border);font-size:12px;align-items:center"><span style="font-weight:600">TST2600038</span><span style="color:var(--text-2)">Keppel Smit</span><span style="text-align:right;font-weight:600">$52,450</span><span style="text-align:right"><span style="background:var(--green-mid);color:#147638;font-size:10px;font-weight:700;padding:2px 7px;border-radius:999px">Received</span></span></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;padding:8px 4px;border-bottom:1px solid var(--border);font-size:12px;align-items:center"><span style="font-weight:600">TST2600051</span><span style="color:var(--text-2)">Test Vendor-A</span><span style="text-align:right;font-weight:600">$48,320</span><span style="text-align:right"><span style="background:var(--amber-mid);color:#844D0F;font-size:10px;font-weight:700;padding:2px 7px;border-radius:999px">Pending</span></span></div>
+
+      </div>
+    </div>
+
+
+    <!-- Analytics Modules -->
+    <div class="fin-sec">Analytics Modules</div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px">
+      <div class="atile">
+        <div class="atile-icon" style="background:var(--blue-light)">
+          <svg viewBox="0 0 24 24" style="stroke:var(--brand)"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        </div>
+        <div class="atile-name">PDA Timeline</div>
+        <div class="atile-desc">Submissions vs approvals by month</div>
+      </div>
+      <div class="atile">
+        <div class="atile-icon" style="background:var(--green-bg)">
+          <svg viewBox="0 0 24 24" style="stroke:#147638"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        </div>
+        <div class="atile-name">FDA Timeline</div>
+        <div class="atile-desc">Final DA status &amp; approval rates</div>
+      </div>
+      <div class="atile">
+        <div class="atile-icon" style="background:var(--amber-bg)">
+          <svg viewBox="0 0 24 24" style="stroke:#844D0F"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+        </div>
+        <div class="atile-name">Cash Proj. Calendar</div>
+        <div class="atile-desc">Monthly payment schedule view</div>
+      </div>
+      <div class="atile">
+        <div class="atile-icon" style="background:var(--red-bg)">
+          <svg viewBox="0 0 24 24" style="stroke:var(--danger)"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
+        <div class="atile-name">Overdue FDA Report</div>
+        <div class="atile-desc">Outstanding final DAs past sailed</div>
+      </div>
+      <div class="atile">
+        <div class="atile-icon" style="background:var(--teal-bg)">
+          <svg viewBox="0 0 24 24" style="stroke:var(--teal-dark)"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+        </div>
+        <div class="atile-name">SDA Timeline</div>
+        <div class="atile-desc">Supplementary DA trends</div>
+      </div>
+      <div class="atile">
+        <div class="atile-icon" style="background:var(--purple-bg)">
+          <svg viewBox="0 0 24 24" style="stroke:var(--purple)"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
+        <div class="atile-name">Cost Savings</div>
+        <div class="atile-desc">Savings by type, port &amp; agent</div>
+      </div>
+      <div class="atile">
+        <div class="atile-icon" style="background:var(--blue-light)">
+          <svg viewBox="0 0 24 24" style="stroke:var(--brand)"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+        </div>
+        <div class="atile-name">Cash Projection</div>
+        <div class="atile-desc">Full projection planner &amp; calendar</div>
+      </div>
+      <div class="atile">
+        <div class="atile-icon" style="background:var(--green-bg)">
+          <svg viewBox="0 0 24 24" style="stroke:#147638"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <div class="atile-name">VI Timeline</div>
+        <div class="atile-desc">Vendor invoice status &amp; recovery</div>
+      </div>
+    </div>
+
+  </div><!-- /panel-financials -->
+
+  </div><!-- /content -->
+</div><!-- /main -->
+</div><!-- /shell -->
+
+<script>
+// ── Last refreshed: date + time + GMT ──
+(function(){
+  const el = document.getElementById('last-refreshed');
+  if(!el) return;
+  const now = new Date();
+  const days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const d = days[now.getUTCDay()];
+  const date = now.getUTCDate();
+  const mon = months[now.getUTCMonth()];
+  const yr = now.getUTCFullYear();
+  let h = now.getUTCHours(), m = now.getUTCMinutes();
+  const ampm = h>=12?'PM':'AM';
+  h = (h%12)||12;
+  const mm = m<10?'0'+m:m;
+  el.textContent = d+', '+date+' '+mon+' '+yr+' · '+h+':'+mm+' '+ampm+' GMT';
+})();
+
+// ── Stat card → section switching ──
+function selectSection(id, el) {
+  document.querySelectorAll('.scard').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  document.querySelectorAll('.sec-panel').forEach(p => p.classList.remove('active'));
+  const panel = document.getElementById(id);
+  if(panel){ panel.classList.add('active'); }
+}
+
+// ── Page tab switching — fixed ──
+function switchPage(name, el) {
+  // Hide all panels
+  document.querySelectorAll('.panel').forEach(p => { p.style.display='none'; p.classList.remove('active'); });
+  // Deactivate all tabs
+  document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
+  // Show target panel
+  const panel = document.getElementById('panel-' + name);
+  if(panel) { panel.style.display='flex'; panel.classList.add('active'); }
+  // Activate tab
+  if(el) el.classList.add('active');
+}
+
+// ── My Calls toggle ──
+function toggleMyCalls() {
+  const w = document.getElementById('myCallsWrap');
+  w.classList.toggle('on');
+}
+
+// ── Tile collapse ──
+function toggleTile(btn, bodyId) {
+  const body = document.getElementById(bodyId);
+  if(!body) return;
+  body.classList.toggle('hidden');
+  btn.classList.toggle('collapsed');
+}
+
+// ── Pending approvals type filter ──
+function filterDA(section, type, clickedTab) {
+  const tabsEl = document.getElementById(section + '-tabs');
+  if(tabsEl) tabsEl.querySelectorAll('.da-tab').forEach(t => t.classList.remove('active'));
+  clickedTab.classList.add('active');
+  const listEl = document.getElementById(section + '-list') || document.querySelector('#pending-body .da-list');
+  if(!listEl) return;
+  listEl.querySelectorAll('.da-card').forEach(c => {
+    c.style.display = (type === 'all' || c.dataset.type === type) ? '' : 'none';
+  });
+}
+
+// ── Clarification type filter (only on clarification section) ──
+function filterClar(type, clickedTab) {
+  document.querySelectorAll('#clar-tabs .filter-tab').forEach(t => t.classList.remove('active'));
+  clickedTab.classList.add('active');
+  let visible = 0;
+  document.querySelectorAll('#clar-table tbody tr:not(#clar-empty)').forEach(row => {
+    const show = type === 'all' || row.dataset.ct === type;
+    row.style.display = show ? '' : 'none';
+    if(show) visible++;
+  });
+  const empty = document.getElementById('clar-empty');
+  if(empty) empty.style.display = visible === 0 ? '' : 'none';
+}
+
+// ── Table sort ──
+function sortTable(tableId, colIdx) {
+  const table = document.getElementById(tableId);
+  if(!table) return;
+  const tbody = table.querySelector('tbody');
+  const rows = [...tbody.querySelectorAll('tr')];
+  const asc = table.dataset.sortCol == colIdx && table.dataset.sortDir === 'asc' ? false : true;
+  table.dataset.sortCol = colIdx;
+  table.dataset.sortDir = asc ? 'asc' : 'desc';
+  rows.sort((a,b) => {
+    const ta = a.cells[colIdx]?.textContent.trim() || '';
+    const tb = b.cells[colIdx]?.textContent.trim() || '';
+    return asc ? ta.localeCompare(tb) : tb.localeCompare(ta);
+  });
+  rows.forEach(r => tbody.appendChild(r));
+  table.querySelectorAll('th .arr').forEach((arr,i) => {
+    arr.textContent = i === colIdx ? (asc ? '↑' : '↓') : '↕';
+  });
+}
+
+// ── Currency toggle ──
+function setCurrency(mode) {
+  const mtdD = document.getElementById('cur-mtd-data');
+  const ytdD = document.getElementById('cur-ytd-data');
+  const mtdB = document.getElementById('cur-mtd');
+  const ytdB = document.getElementById('cur-ytd');
+  const lbl = document.getElementById('cur-label');
+  const tl = document.getElementById('cur-total-lbl');
+  const tv = document.getElementById('cur-total-val');
+  if(mode === 'MTD') {
+    mtdD.style.display = ''; ytdD.style.display = 'none';
+    mtdB.classList.add('on'); ytdB.classList.remove('on');
+    lbl.textContent = 'June 2026 disbursements · USD equivalent';
+    tl.textContent = 'Total MTD disbursements';
+    tv.textContent = '$2,693,000';
+  } else {
+    mtdD.style.display = 'none'; ytdD.style.display = '';
+    ytdB.classList.add('on'); mtdB.classList.remove('on');
+    lbl.textContent = 'YTD 2026 disbursements · USD equivalent';
+    tl.textContent = 'Total YTD disbursements';
+    tv.textContent = '$32,901,440';
+  }
+}
+
+// ── Role ──
+function applyRole(role) {
+  const finTab = document.getElementById('tab-fin');
+  if(role === 'operator') { if(finTab) finTab.style.display = 'none'; }
+  else { if(finTab) finTab.style.display = ''; }
+}
+
+// Ensure correct initial state
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('.panel').forEach(p => { p.style.display='none'; p.classList.remove('active'); });
+  const disb = document.getElementById('panel-disbursements');
+  if(disb) { disb.style.display='flex'; disb.classList.add('active'); }
+});
+</script>
+</body>
+</html>
