@@ -205,7 +205,7 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
 .health-tile:hover .health-tile-arrow{opacity:1;transform:translate(-50%,-50%) translateX(0)}
 .health-tile-val{font-size:22px;font-weight:800;color:var(--text);line-height:1;font-variant-numeric:tabular-nums}
 .health-tile-bottom{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:auto}
-.health-tile-bar{height:6px;width:52%;background:var(--bg);border-radius:99px;overflow:hidden;flex-shrink:0}
+.health-tile-bar{height:6px;width:52%;background:#fff;border-radius:99px;overflow:hidden;flex-shrink:0}
 .health-tile-bar-fill{height:100%;border-radius:99px;width:0;transition:width 1s var(--ease-out) .2s}
 .reveal.in .health-tile-bar-fill{width:var(--w)}
 .health-tile-trend{font-size:10px;font-weight:700;white-space:nowrap;text-align:right}
@@ -663,7 +663,7 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
               </div>
               <div class="health-tile-val">15</div>
               <div class="health-tile-bottom">
-                <div class="health-tile-bar"><div class="health-tile-bar-fill" style="--w:60%;background:var(--purple)"></div></div>
+                <div class="health-tile-bar"><div class="health-tile-bar-fill" style="--w:60%;background:#1852FE"></div></div>
                 <span class="health-tile-trend neg">▲ 2 since yesterday</span>
               </div>
             </div>
@@ -677,7 +677,7 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
               </div>
               <div class="health-tile-val">27</div>
               <div class="health-tile-bottom">
-                <div class="health-tile-bar"><div class="health-tile-bar-fill" style="--w:78%;background:var(--success)"></div></div>
+                <div class="health-tile-bar"><div class="health-tile-bar-fill" style="--w:78%;background:#4274FF"></div></div>
                 <span class="health-tile-trend pos">▲ 8 vs last month</span>
               </div>
             </div>
@@ -691,7 +691,7 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
               </div>
               <div class="health-tile-val">1.8<span style="font-size:12px;font-weight:600;color:var(--text-2)">d</span></div>
               <div class="health-tile-bottom">
-                <div class="health-tile-bar"><div class="health-tile-bar-fill" style="--w:70%;background:var(--brand)"></div></div>
+                <div class="health-tile-bar"><div class="health-tile-bar-fill" style="--w:70%;background:#0A3BC4"></div></div>
                 <span class="health-tile-trend pos">▼ 0.4d faster</span>
               </div>
             </div>
@@ -705,7 +705,7 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
               </div>
               <div class="health-tile-val">9</div>
               <div class="health-tile-bottom">
-                <div class="health-tile-bar"><div class="health-tile-bar-fill" style="--w:85%;background:var(--teal-dark)"></div></div>
+                <div class="health-tile-bar"><div class="health-tile-bar-fill" style="--w:85%;background:#6B9BFF"></div></div>
                 <span class="health-tile-trend pos">▲ 22% vs last month</span>
               </div>
             </div>
@@ -806,7 +806,7 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
 
       <!-- TRENDS & ACTIVITY -->
       <div class="section-lbl">Trends &amp; Activity</div>
-      <div style="display:grid;grid-template-columns:1.7fr 1fr;gap:16px;align-items:start">
+      <div style="display:grid;grid-template-columns:2fr 1fr;gap:16px;align-items:start">
         <div class="chart-card reveal">
           <div class="chart-card-hdr">
             <div>
@@ -815,9 +815,14 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
             </div>
             <div style="display:flex;align-items:center;gap:12px">
               <div class="chart-legend2"><span class="leg2"><i style="background:var(--brand)"></i>Submitted</span><span class="leg2"><i style="background:var(--teal-dark)"></i>Approved</span></div>
-              <div class="period-tabs"><div class="period-tab active">Week</div><div class="period-tab">Month</div><div class="period-tab">Quarter</div></div>
+              <div class="period-tabs">
+                <div class="period-tab active" onclick="switchChartPeriod('week',this)">Week</div>
+                <div class="period-tab" onclick="switchChartPeriod('month',this)">Month</div>
+                <div class="period-tab" onclick="switchChartPeriod('quarter',this)">Quarter</div>
+              </div>
             </div>
           </div>
+          <div id="chart-subtitle" style="font-size:11.5px;color:var(--text-2);margin-top:2px;margin-bottom:4px">Weekly totals across all vessels and ports</div>
           <svg viewBox="0 0 640 190" style="width:100%;height:auto;margin-top:6px" id="main-chart">
             <defs><linearGradient id="grad-main" x1="0" y1="0" x2="0" y2="1">
               <stop offset="0%" stop-color="#1852FE" stop-opacity=".16"/><stop offset="100%" stop-color="#1852FE" stop-opacity="0"/>
@@ -829,17 +834,19 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
             <g font-size="10" fill="#94A3B8" font-family="Gilroy,sans-serif">
               <text x="32" y="164" text-anchor="end">0</text><text x="32" y="129" text-anchor="end">10</text>
               <text x="32" y="94" text-anchor="end">20</text><text x="32" y="59" text-anchor="end">30</text><text x="32" y="24" text-anchor="end">40</text>
-              <text x="60" y="182">W1</text><text x="140" y="182">W2</text><text x="220" y="182">W3</text><text x="300" y="182">W4</text>
-              <text x="380" y="182">W5</text><text x="460" y="182">W6</text><text x="540" y="182">W7</text><text x="612" y="182">W8</text>
             </g>
-            <path class="trend-fill2" fill="url(#grad-main)" d="M62,104 L142,90 L222,97 L302,69 L382,79 L462,55 L542,62 L618,41 L618,160 L62,160 Z"/>
-            <path class="trend-line2" d="M62,104 L142,90 L222,97 L302,69 L382,79 L462,55 L542,62 L618,41"/>
-            <path class="trend-line3" d="M62,125 L142,111 L222,118 L302,97 L382,104 L462,83 L542,90 L618,69"/>
+            <g id="chart-xlabels" font-size="10" fill="#94A3B8" font-family="Gilroy,sans-serif">
+              <text x="62"  y="182">W1</text><text x="142" y="182">W2</text><text x="222" y="182">W3</text><text x="302" y="182">W4</text>
+              <text x="382" y="182">W5</text><text x="462" y="182">W6</text><text x="542" y="182">W7</text><text x="618" y="182">W8</text>
+            </g>
+            <path id="chart-area"  class="trend-fill2" fill="url(#grad-main)" d="M62,104 L142,90 L222,97 L302,69 L382,79 L462,55 L542,62 L618,41 L618,160 L62,160 Z"/>
+            <path id="chart-line1" class="trend-line2" d="M62,104 L142,90 L222,97 L302,69 L382,79 L462,55 L542,62 L618,41"/>
+            <path id="chart-line2" class="trend-line3" d="M62,125 L142,111 L222,118 L302,97 L382,104 L462,83 L542,90 L618,69"/>
           </svg>
           <div class="chart-foot-stats">
-            <div class="cfoot-item"><span class="cfoot-val">USD 341K</span><span class="cfoot-lbl">Total Disbursed</span></div>
-            <div class="cfoot-item"><span class="cfoot-val" style="color:#147638">27</span><span class="cfoot-lbl">Approved this month</span></div>
-            <div class="cfoot-item"><span class="cfoot-val" style="color:var(--slate)">3</span><span class="cfoot-lbl">Rejected this month</span></div>
+            <div class="cfoot-item"><span class="cfoot-val" id="stat-disbursed">USD 341K</span><span class="cfoot-lbl">Total Disbursed</span></div>
+            <div class="cfoot-item"><span class="cfoot-val" id="stat-approved" style="color:#147638">27</span><span class="cfoot-lbl" id="stat-approved-lbl">Approved this month</span></div>
+            <div class="cfoot-item"><span class="cfoot-val" id="stat-rejected" style="color:var(--slate)">3</span><span class="cfoot-lbl" id="stat-rejected-lbl">Rejected this month</span></div>
           </div>
         </div>
 
@@ -1247,6 +1254,97 @@ function cashHover(idx){
     r.classList.toggle('dim', !match);
   });
 }
+
+// ── Chart period switcher ──
+(function(){
+  const CHART = {
+    week: {
+      labels: ['W1','W2','W3','W4','W5','W6','W7','W8'],
+      xs:     [62, 142, 222, 302, 382, 462, 542, 618],
+      sub1:   [104, 90, 97, 69, 79, 55, 62, 41],   // submitted (lower y = higher)
+      sub2:   [125, 111, 118, 97, 104, 83, 90, 69], // approved
+      disbursed: 'USD 341K', approved: '27', rejected: '3',
+      subText: 'Weekly totals across all vessels and ports',
+      approvedLbl: 'Approved this week', rejectedLbl: 'Rejected this week'
+    },
+    month: {
+      labels: ['Jan','Feb','Mar','Apr','May','Jun'],
+      xs:     [70, 182, 294, 406, 518, 618],
+      sub1:   [111, 90, 76, 83, 62, 48],
+      sub2:   [132, 111, 97, 104, 83, 69],
+      disbursed: 'USD 1.4M', approved: '112', rejected: '9',
+      subText: 'Monthly disbursement submissions vs approvals',
+      approvedLbl: 'Approved this year', rejectedLbl: 'Rejected this year'
+    },
+    quarter: {
+      labels: ['Q1','Q2','Q3','Q4'],
+      xs:     [120, 306, 492, 618],
+      sub1:   [97, 76, 62, 41],
+      sub2:   [118, 97, 83, 62],
+      disbursed: 'USD 4.1M', approved: '374', rejected: '28',
+      subText: 'Quarterly performance — submissions vs approvals',
+      approvedLbl: 'Approved (YTD)', rejectedLbl: 'Rejected (YTD)'
+    }
+  };
+
+  function polyline(xs, ys){
+    return xs.map((x,i) => (i===0?'M':'L')+x+','+ys[i]).join(' ');
+  }
+  function area(xs, ys){
+    return polyline(xs,ys)+' L'+xs[xs.length-1]+',160 L'+xs[0]+',160 Z';
+  }
+
+  window.switchChartPeriod = function(period, tabEl){
+    const d = CHART[period];
+    if(!d) return;
+
+    // update tabs
+    document.querySelectorAll('.period-tab').forEach(t => t.classList.remove('active'));
+    tabEl.classList.add('active');
+
+    // update x-axis labels
+    const ns = 'http://www.w3.org/2000/svg';
+    const grp = document.getElementById('chart-xlabels');
+    while(grp.firstChild) grp.removeChild(grp.firstChild);
+    d.labels.forEach((lbl,i) => {
+      const t = document.createElementNS(ns,'text');
+      t.setAttribute('x', d.xs[i]);
+      t.setAttribute('y', '182');
+      t.textContent = lbl;
+      grp.appendChild(t);
+    });
+
+    // update paths
+    document.getElementById('chart-line1').setAttribute('d', polyline(d.xs, d.sub1));
+    document.getElementById('chart-line2').setAttribute('d', polyline(d.xs, d.sub2));
+    document.getElementById('chart-area').setAttribute('d', area(d.xs, d.sub1));
+
+    // update footer stats
+    document.getElementById('stat-disbursed').textContent  = d.disbursed;
+    document.getElementById('stat-approved').textContent   = d.approved;
+    document.getElementById('stat-rejected').textContent   = d.rejected;
+    document.getElementById('stat-approved-lbl').textContent = d.approvedLbl;
+    document.getElementById('stat-rejected-lbl').textContent = d.rejectedLbl;
+
+    // update subtitle
+    document.getElementById('chart-subtitle').textContent = d.subText;
+
+    // re-animate line stroke
+    ['chart-line1','chart-line2'].forEach(id => {
+      const el = document.getElementById(id);
+      const len = el.getTotalLength ? el.getTotalLength() : 600;
+      el.style.strokeDasharray  = len;
+      el.style.strokeDashoffset = len;
+      el.style.transition = 'none';
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          el.style.transition = 'stroke-dashoffset .7s cubic-bezier(.4,0,.2,1)';
+          el.style.strokeDashoffset = '0';
+        });
+      });
+    });
+  };
+})();
 
 // ── Role selector ──
 function toggleRolePop(e){
