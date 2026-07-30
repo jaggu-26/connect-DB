@@ -923,52 +923,54 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
       <!-- FINANCIAL PANEL -->
       <div id="dash-panel-financial" style="display:none;flex-direction:column;gap:18px">
 
-        <!-- Cash Position Hero -->
-        <div class="fin-hero">
+        <!-- Cash Position — styled as a card matching the dashboard -->
+        <div class="card" style="background:var(--nav);border-color:var(--nav);flex-direction:row;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap">
           <div>
-            <div class="fin-hero-lbl">Available Balance</div>
-            <div class="fin-hero-val">USD 32,005.36</div>
-            <div class="fin-hero-sub">As of June 29, 2026 · All agents &amp; vendors</div>
+            <div style="font-size:11px;font-weight:600;color:rgba(255,255,255,.55);margin-bottom:6px;text-transform:uppercase;letter-spacing:.06em">Available Balance</div>
+            <div style="font-size:28px;font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1">USD 32,005.36</div>
+            <div style="font-size:11px;color:rgba(255,255,255,.4);margin-top:5px">As of June 29, 2026 · All agents &amp; vendors</div>
           </div>
-          <div class="fin-hero-right">
-            <div class="fin-hi"><div class="fin-hi-lbl">Approved Forecast</div><div class="fin-hi-val">USD 23,694</div></div>
-            <div class="fin-hi"><div class="fin-hi-lbl">Under Approval</div><div class="fin-hi-val">USD 48,650</div></div>
-            <div class="fin-hi"><div class="fin-hi-lbl">In Process</div><div class="fin-hi-val">USD 237,409</div></div>
-            <div class="fin-hi"><div class="fin-hi-lbl">Projected Balance</div><div class="fin-hi-val" style="color:#FCA5A5">–USD 277,748</div></div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px 32px">
+            <div><div style="font-size:10.5px;color:rgba(255,255,255,.55);margin-bottom:3px">Approved Forecast</div><div style="font-size:16px;font-weight:700;color:#fff">USD 23,694</div></div>
+            <div><div style="font-size:10.5px;color:rgba(255,255,255,.55);margin-bottom:3px">Under Approval</div><div style="font-size:16px;font-weight:700;color:#fff">USD 48,650</div></div>
+            <div><div style="font-size:10.5px;color:rgba(255,255,255,.55);margin-bottom:3px">In Process</div><div style="font-size:16px;font-weight:700;color:#fff">USD 237,409</div></div>
+            <div><div style="font-size:10.5px;color:rgba(255,255,255,.55);margin-bottom:3px">Projected Balance</div><div style="font-size:16px;font-weight:700;color:#FCA5A5">–USD 277,748</div></div>
           </div>
         </div>
 
-        <!-- YTD Savings KPI strip -->
-        <div class="fin-sec">Savings Performance · YTD</div>
-        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px">
-          <div class="fin-kpi-card">
-            <div class="fin-kpi-icon" style="background:var(--green-bg)"><svg viewBox="0 0 24 24" style="width:20px;height:20px;stroke:#147638;fill:none;stroke-width:2;stroke-linecap:round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
-            <div class="fin-kpi-val" style="color:var(--success)">$150K</div>
-            <div class="fin-kpi-lbl">YTD Savings</div>
-          </div>
-          <div class="fin-kpi-card">
-            <div class="fin-kpi-icon" style="background:var(--blue-light)"><svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:var(--brand);fill:none;stroke-width:2;stroke-linecap:round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
-            <div class="fin-kpi-val" style="color:var(--brand)">$75K</div>
-            <div class="fin-kpi-lbl">Cashflow Savings</div>
-            <div class="fin-kpi-sub" style="color:var(--success)">★ Record savings</div>
-          </div>
-          <div class="fin-kpi-card">
-            <div class="fin-kpi-icon" style="background:var(--purple-bg)"><svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:var(--purple);fill:none;stroke-width:2;stroke-linecap:round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div>
-            <div class="fin-kpi-val" style="color:var(--purple)">$25K</div>
-            <div class="fin-kpi-lbl">DA Savings</div>
-            <div class="fin-kpi-sub" style="color:var(--success)">★ Record savings</div>
-          </div>
-          <div class="fin-kpi-card">
-            <div class="fin-kpi-icon" style="background:var(--teal-bg)"><svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:var(--teal-dark);fill:none;stroke-width:2;stroke-linecap:round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
-            <div class="fin-kpi-val" style="color:var(--teal-dark)">$50K</div>
-            <div class="fin-kpi-lbl">Contractual Savings</div>
-            <div class="fin-kpi-sub" style="color:var(--success)">★ Record · Direct contract</div>
+        <!-- Savings Performance KPIs — single card, health-tile pattern -->
+        <div class="section-lbl">Savings Performance · YTD</div>
+        <div class="card" style="padding:12px 16px">
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:0;divide-x:var(--border)">
+            <div style="display:flex;flex-direction:column;gap:6px;padding:8px 16px 8px 0;border-right:1px solid var(--border)">
+              <div style="width:32px;height:32px;border-radius:8px;background:var(--green-bg);display:flex;align-items:center;justify-content:center"><svg viewBox="0 0 24 24" style="width:15px;height:15px;stroke:#147638;fill:none;stroke-width:2;stroke-linecap:round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
+              <div style="font-size:22px;font-weight:800;color:var(--success);line-height:1;letter-spacing:-.01em">$150K</div>
+              <div style="font-size:12px;font-weight:600;color:var(--text-2)">YTD Savings</div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:6px;padding:8px 16px;border-right:1px solid var(--border)">
+              <div style="width:32px;height:32px;border-radius:8px;background:var(--blue-light);display:flex;align-items:center;justify-content:center"><svg viewBox="0 0 24 24" style="width:15px;height:15px;stroke:var(--brand);fill:none;stroke-width:2;stroke-linecap:round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+              <div style="font-size:22px;font-weight:800;color:var(--brand);line-height:1;letter-spacing:-.01em">$75K</div>
+              <div style="font-size:12px;font-weight:600;color:var(--text-2)">Cashflow Savings</div>
+              <div style="font-size:11px;font-weight:600;color:var(--success)">★ Record savings</div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:6px;padding:8px 16px;border-right:1px solid var(--border)">
+              <div style="width:32px;height:32px;border-radius:8px;background:var(--purple-bg);display:flex;align-items:center;justify-content:center"><svg viewBox="0 0 24 24" style="width:15px;height:15px;stroke:var(--purple);fill:none;stroke-width:2;stroke-linecap:round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div>
+              <div style="font-size:22px;font-weight:800;color:var(--purple);line-height:1;letter-spacing:-.01em">$25K</div>
+              <div style="font-size:12px;font-weight:600;color:var(--text-2)">DA Savings</div>
+              <div style="font-size:11px;font-weight:600;color:var(--success)">★ Record savings</div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:6px;padding:8px 0 8px 16px">
+              <div style="width:32px;height:32px;border-radius:8px;background:var(--teal-bg);display:flex;align-items:center;justify-content:center"><svg viewBox="0 0 24 24" style="width:15px;height:15px;stroke:var(--teal-dark);fill:none;stroke-width:2;stroke-linecap:round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+              <div style="font-size:22px;font-weight:800;color:var(--teal-dark);line-height:1;letter-spacing:-.01em">$50K</div>
+              <div style="font-size:12px;font-weight:600;color:var(--text-2)">Contractual Savings</div>
+              <div style="font-size:11px;font-weight:600;color:var(--success)">★ Record · Direct contract</div>
+            </div>
           </div>
         </div>
 
         <!-- Savings Breakdown -->
-        <div class="fin-sec">Savings Breakdown</div>
-        <div class="g2">
+        <div class="section-lbl">Savings Breakdown</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px">
           <div class="card">
             <div class="tile-hdr"><div class="tile-title">Savings by Type <span style="font-size:11px;font-weight:400;color:var(--text-2)">· Month to date</span></div></div>
             <div class="sbar-wrap">
@@ -992,8 +994,8 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
         </div>
 
         <!-- Contractual & Currency -->
-        <div class="fin-sec">Contractual &amp; Currency</div>
-        <div class="g2">
+        <div class="section-lbl">Contractual &amp; Currency</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px">
           <div class="card">
             <div class="tile-hdr"><div class="tile-title">Contractual Discount <span style="font-size:11px;font-weight:400;color:var(--text-2)">· Total: $1,434,340</span></div></div>
             <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
@@ -1051,12 +1053,12 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
         </div>
 
         <!-- Balance Recoveries -->
-        <div class="fin-sec">Balance Recoveries</div>
+        <div class="section-lbl">Balance Recoveries</div>
         <div class="card">
           <div class="tile-hdr"><div class="tile-title">Recovery Summary <span style="font-size:11px;font-weight:400;color:var(--text-2)">· YTD</span></div></div>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">
-            <div style="background:var(--green-bg);border:1px solid var(--green-mid);border-radius:8px;padding:12px;text-align:center"><div style="font-size:18px;font-weight:700;color:#147638">$292,560</div><div style="font-size:10px;color:#147638;margin-top:2px">Total Recovered</div></div>
-            <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px;text-align:center"><div style="font-size:18px;font-weight:700">$48,320</div><div style="font-size:10px;color:var(--text-2);margin-top:2px">Pending Recovery</div></div>
+            <div style="background:var(--green-bg);border:1px solid var(--green-mid);border-radius:10px;padding:12px;text-align:center"><div style="font-size:18px;font-weight:700;color:#147638">$292,560</div><div style="font-size:10px;color:#147638;margin-top:2px">Total Recovered</div></div>
+            <div style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:12px;text-align:center"><div style="font-size:18px;font-weight:700">$48,320</div><div style="font-size:10px;color:var(--text-2);margin-top:2px">Pending Recovery</div></div>
           </div>
           <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;padding:5px 4px;border-bottom:1px solid var(--border);font-size:10px;font-weight:600;color:var(--text-2);text-transform:uppercase;letter-spacing:.04em"><span>Port Call</span><span>Agent</span><span style="text-align:right">Amount</span><span style="text-align:right">Status</span></div>
           <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;padding:8px 4px;border-bottom:1px solid var(--border);font-size:12px;align-items:center"><span style="font-weight:600">TST2600045</span><span style="color:var(--text-2)">ABC Shipping</span><span style="text-align:right;font-weight:600">$84,320</span><span style="text-align:right"><span style="background:var(--green-mid);color:#147638;font-size:10px;font-weight:700;padding:2px 7px;border-radius:999px">Received</span></span></div>
@@ -1065,8 +1067,8 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
         </div>
 
         <!-- Analytics Modules -->
-        <div class="fin-sec">Analytics Modules</div>
-        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px">
+        <div class="section-lbl">Analytics Modules</div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:18px">
           <div class="atile"><div class="atile-icon" style="background:var(--blue-light)"><svg viewBox="0 0 24 24" style="stroke:var(--brand)"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div><div class="atile-name">PDA Timeline</div><div class="atile-desc">Submissions vs approvals by month</div></div>
           <div class="atile"><div class="atile-icon" style="background:var(--green-bg)"><svg viewBox="0 0 24 24" style="stroke:#147638"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div><div class="atile-name">FDA Timeline</div><div class="atile-desc">Final DA status &amp; approval rates</div></div>
           <div class="atile"><div class="atile-icon" style="background:var(--amber-bg)"><svg viewBox="0 0 24 24" style="stroke:#844D0F"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div><div class="atile-name">Cash Proj. Calendar</div><div class="atile-desc">Monthly payment schedule view</div></div>
