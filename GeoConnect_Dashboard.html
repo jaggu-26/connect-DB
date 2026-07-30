@@ -426,6 +426,44 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
   *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
   .reveal{opacity:1;transform:none}
 }
+/* ── Dashboard tabs (Disbursements / Financial) ── */
+.dash-tabs{display:flex;gap:0;border-bottom:2px solid var(--border);margin-bottom:18px}
+.dash-tab{padding:10px 20px;font-size:13px;font-weight:700;color:var(--text-2);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;transition:color .15s,border-color .15s}
+.dash-tab.active{color:var(--brand);border-bottom-color:var(--brand)}
+.dash-tab:hover:not(.active){color:var(--text)}
+/* ── Financial panel components ── */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:stretch}
+.fin-hero{background:linear-gradient(135deg,var(--nav) 0%,#1C4ED8 100%);border-radius:12px;padding:18px 22px;color:#fff;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.fin-hero-lbl{font-size:12px;color:rgba(255,255,255,.6);margin-bottom:5px}
+.fin-hero-val{font-size:30px;font-weight:700;color:#fff}
+.fin-hero-sub{font-size:11px;color:rgba(255,255,255,.4);margin-top:3px}
+.fin-hero-right{display:flex;gap:14px;flex-wrap:wrap}
+.fin-hi{display:flex;flex-direction:column;align-items:flex-end;gap:2px}
+.fin-hi-lbl{font-size:12px;font-weight:600;color:rgba(255,255,255,.75)}
+.fin-hi-val{font-size:18px;font-weight:800;color:#fff;letter-spacing:-.01em}
+.fin-sec{font-size:10px;font-weight:700;color:var(--text-2);text-transform:uppercase;letter-spacing:.08em;padding:3px 0;border-bottom:1px solid var(--border);margin-bottom:0;margin-top:6px}
+.fin-kpi-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px 18px;box-shadow:0 1px 2px rgba(0,0,0,.05);display:flex;flex-direction:column;gap:10px}
+.fin-kpi-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:4px}
+.fin-kpi-val{font-size:24px;font-weight:800;line-height:1;letter-spacing:-.01em}
+.fin-kpi-lbl{font-size:13px;font-weight:600;color:var(--text-2)}
+.fin-kpi-sub{font-size:12px;font-weight:600}
+.sbar-wrap{display:flex;flex-direction:column;gap:8px}
+.sbar-row{display:flex;align-items:center;gap:8px}
+.sbar-lbl{font-size:12px;color:var(--text-2);width:130px;flex-shrink:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sbar-track{flex:1;height:7px;background:var(--bg);border-radius:999px;overflow:hidden;border:1px solid var(--border)}
+.sbar-fill{height:100%;border-radius:999px}
+.sbar-val{font-size:12px;font-weight:600;color:var(--text);width:54px;text-align:right;flex-shrink:0}
+.cur-toggle{display:flex;gap:2px;background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:2px}
+.cur-btn{padding:3px 8px;border-radius:4px;font-size:10px;font-weight:600;cursor:pointer;color:var(--text-2);transition:all .12s}
+.cur-btn.on{background:var(--card);color:var(--brand);box-shadow:0 1px 2px rgba(0,0,0,.06)}
+.atile{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px;display:flex;flex-direction:column;gap:6px;cursor:pointer;position:relative}
+.atile:hover{box-shadow:var(--shadow-md)}
+.atile::after{content:'↗';position:absolute;top:11px;right:11px;font-size:11px;color:var(--text-3)}
+.atile-icon{width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center}
+.atile-icon svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:1.75;stroke-linecap:round}
+.atile-name{font-size:12px;font-weight:600;color:var(--text)}
+.atile-desc{font-size:11px;color:var(--text-2);line-height:1.4}
+@media(max-width:900px){.g2{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -581,6 +619,15 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
   <div class="content" id="content">
     <!-- VIEW: OVERVIEW -->
     <div class="view active" id="view-dashboard">
+
+      <!-- DASHBOARD TABS -->
+      <div class="dash-tabs">
+        <div class="dash-tab active" onclick="switchDashTab('disbursements',this)">Disbursements</div>
+        <div class="dash-tab" onclick="switchDashTab('financial',this)">Financial</div>
+      </div>
+
+      <!-- DISBURSEMENTS PANEL -->
+      <div id="dash-panel-disbursements" style="display:flex;flex-direction:column;gap:18px">
 
       <!-- SITUATION REPORT -->
       <div class="situation-hdr">
@@ -871,7 +918,166 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
         </div>
       </div>
 
+      </div><!-- /dash-panel-disbursements -->
 
+      <!-- FINANCIAL PANEL -->
+      <div id="dash-panel-financial" style="display:none;flex-direction:column;gap:18px">
+
+        <!-- Cash Position Hero -->
+        <div class="fin-hero">
+          <div>
+            <div class="fin-hero-lbl">Available Balance</div>
+            <div class="fin-hero-val">USD 32,005.36</div>
+            <div class="fin-hero-sub">As of June 29, 2026 · All agents &amp; vendors</div>
+          </div>
+          <div class="fin-hero-right">
+            <div class="fin-hi"><div class="fin-hi-lbl">Approved Forecast</div><div class="fin-hi-val">USD 23,694</div></div>
+            <div class="fin-hi"><div class="fin-hi-lbl">Under Approval</div><div class="fin-hi-val">USD 48,650</div></div>
+            <div class="fin-hi"><div class="fin-hi-lbl">In Process</div><div class="fin-hi-val">USD 237,409</div></div>
+            <div class="fin-hi"><div class="fin-hi-lbl">Projected Balance</div><div class="fin-hi-val" style="color:#FCA5A5">–USD 277,748</div></div>
+          </div>
+        </div>
+
+        <!-- YTD Savings KPI strip -->
+        <div class="fin-sec">Savings Performance · YTD</div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px">
+          <div class="fin-kpi-card">
+            <div class="fin-kpi-icon" style="background:var(--green-bg)"><svg viewBox="0 0 24 24" style="width:20px;height:20px;stroke:#147638;fill:none;stroke-width:2;stroke-linecap:round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
+            <div class="fin-kpi-val" style="color:var(--success)">$150K</div>
+            <div class="fin-kpi-lbl">YTD Savings</div>
+          </div>
+          <div class="fin-kpi-card">
+            <div class="fin-kpi-icon" style="background:var(--blue-light)"><svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:var(--brand);fill:none;stroke-width:2;stroke-linecap:round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+            <div class="fin-kpi-val" style="color:var(--brand)">$75K</div>
+            <div class="fin-kpi-lbl">Cashflow Savings</div>
+            <div class="fin-kpi-sub" style="color:var(--success)">★ Record savings</div>
+          </div>
+          <div class="fin-kpi-card">
+            <div class="fin-kpi-icon" style="background:var(--purple-bg)"><svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:var(--purple);fill:none;stroke-width:2;stroke-linecap:round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div>
+            <div class="fin-kpi-val" style="color:var(--purple)">$25K</div>
+            <div class="fin-kpi-lbl">DA Savings</div>
+            <div class="fin-kpi-sub" style="color:var(--success)">★ Record savings</div>
+          </div>
+          <div class="fin-kpi-card">
+            <div class="fin-kpi-icon" style="background:var(--teal-bg)"><svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:var(--teal-dark);fill:none;stroke-width:2;stroke-linecap:round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+            <div class="fin-kpi-val" style="color:var(--teal-dark)">$50K</div>
+            <div class="fin-kpi-lbl">Contractual Savings</div>
+            <div class="fin-kpi-sub" style="color:var(--success)">★ Record · Direct contract</div>
+          </div>
+        </div>
+
+        <!-- Savings Breakdown -->
+        <div class="fin-sec">Savings Breakdown</div>
+        <div class="g2">
+          <div class="card">
+            <div class="tile-hdr"><div class="tile-title">Savings by Type <span style="font-size:11px;font-weight:400;color:var(--text-2)">· Month to date</span></div></div>
+            <div class="sbar-wrap">
+              <div class="sbar-row"><div class="sbar-lbl">Contractual Discount</div><div class="sbar-track"><div class="sbar-fill" style="width:85%;background:var(--blue-mid)"></div></div><div class="sbar-val">$55.9K</div></div>
+              <div class="sbar-row"><div class="sbar-lbl">Hidden Cost</div><div class="sbar-track"><div class="sbar-fill" style="width:40%;background:var(--nav)"></div></div><div class="sbar-val">$5.3K</div></div>
+              <div class="sbar-row"><div class="sbar-lbl">Agent Error</div><div class="sbar-track"><div class="sbar-fill" style="width:30%;background:var(--nav)"></div></div><div class="sbar-val">$2.7K</div></div>
+              <div class="sbar-row"><div class="sbar-lbl">Escalated Cost</div><div class="sbar-track"><div class="sbar-fill" style="width:18%;background:var(--nav)"></div></div><div class="sbar-val">$1.3K</div></div>
+              <div class="sbar-row"><div class="sbar-lbl">Negotiation</div><div class="sbar-track"><div class="sbar-fill" style="width:8%;background:var(--nav)"></div></div><div class="sbar-val">$0.4K</div></div>
+            </div>
+            <div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border);display:flex;justify-content:space-between"><span style="font-size:11px;color:var(--text-2)">Saving per Port Call</span><span style="font-size:13px;font-weight:700;color:var(--success)">$556</span></div>
+          </div>
+          <div class="card">
+            <div class="tile-hdr"><div class="tile-title">By Agent / Vendor</div></div>
+            <div class="sbar-wrap">
+              <div class="sbar-row"><div class="sbar-lbl">ABC Test Shipping</div><div class="sbar-track"><div class="sbar-fill" style="width:100%;background:var(--brand)"></div></div><div class="sbar-val">$307K</div></div>
+              <div class="sbar-row"><div class="sbar-lbl">Keppel Smit</div><div class="sbar-track"><div class="sbar-fill" style="width:12%;background:var(--nav)"></div></div><div class="sbar-val">$37K</div></div>
+              <div class="sbar-row"><div class="sbar-lbl">Test Vendor 22</div><div class="sbar-track"><div class="sbar-fill" style="width:8%;background:var(--nav)"></div></div><div class="sbar-val">$24K</div></div>
+              <div class="sbar-row"><div class="sbar-lbl">Test Vendor -A</div><div class="sbar-track"><div class="sbar-fill" style="width:4%;background:var(--nav)"></div></div><div class="sbar-val">$12K</div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Contractual & Currency -->
+        <div class="fin-sec">Contractual &amp; Currency</div>
+        <div class="g2">
+          <div class="card">
+            <div class="tile-hdr"><div class="tile-title">Contractual Discount <span style="font-size:11px;font-weight:400;color:var(--text-2)">· Total: $1,434,340</span></div></div>
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+              <div style="position:relative;width:64px;height:64px;flex-shrink:0">
+                <svg viewBox="0 0 36 36" style="width:64px;height:64px;transform:rotate(-90deg)">
+                  <circle cx="18" cy="18" r="15.9" fill="none" stroke="#E2E8F0" stroke-width="3.5"/>
+                  <circle cx="18" cy="18" r="15.9" fill="none" stroke="#1852FE" stroke-width="3.5" stroke-dasharray="62.1 37.9" stroke-linecap="round"/>
+                  <circle cx="18" cy="18" r="15.9" fill="none" stroke="#BEDBFE" stroke-width="3.5" stroke-dasharray="37.9 62.1" stroke-dashoffset="-62.1"/>
+                </svg>
+                <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--nav)">62%</div>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:6px;flex:1">
+                <div style="display:flex;justify-content:space-between;align-items:center"><div style="display:flex;align-items:center;gap:5px"><span style="width:8px;height:8px;border-radius:2px;background:var(--brand);display:inline-block"></span><span style="font-size:12px;color:var(--text-2)">GeoConnect Contract</span></div><span style="font-size:12px;font-weight:700">$890,450</span></div>
+                <div style="display:flex;justify-content:space-between;align-items:center"><div style="display:flex;align-items:center;gap:5px"><span style="width:8px;height:8px;border-radius:2px;background:var(--blue-mid);display:inline-block"></span><span style="font-size:12px;color:var(--text-2)">My Contracts</span></div><span style="font-size:12px;font-weight:700">$543,890</span></div>
+              </div>
+            </div>
+            <div style="font-size:10px;font-weight:700;color:var(--text-2);text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px">Vendor Invoices</div>
+            <table style="width:100%;border-collapse:collapse;font-size:11.5px">
+              <thead><tr style="border-bottom:1px solid var(--border)"><th style="text-align:left;padding:4px;font-size:10px;color:var(--text-2);font-weight:600">VI No.</th><th style="text-align:right;padding:4px;font-size:10px;color:var(--text-2);font-weight:600">DA Amt</th><th style="text-align:right;padding:4px;font-size:10px;color:var(--success);font-weight:600">Discount</th></tr></thead>
+              <tbody>
+                <tr style="border-bottom:1px solid var(--border)"><td style="padding:4px;font-weight:500">VI-2026-0041</td><td style="text-align:right;padding:4px">$124,500</td><td style="text-align:right;padding:4px;color:var(--success);font-weight:600">$12,450</td></tr>
+                <tr style="border-bottom:1px solid var(--border)"><td style="padding:4px;font-weight:500">VI-2026-0038</td><td style="text-align:right;padding:4px">$87,320</td><td style="text-align:right;padding:4px;color:var(--success);font-weight:600">$7,859</td></tr>
+                <tr style="border-bottom:1px solid var(--border)"><td style="padding:4px;font-weight:500">VI-2026-0035</td><td style="text-align:right;padding:4px">$212,450</td><td style="text-align:right;padding:4px;color:var(--success);font-weight:600">$19,121</td></tr>
+                <tr><td style="padding:4px;font-weight:500">VI-2026-0027</td><td style="text-align:right;padding:4px">$145,670</td><td style="text-align:right;padding:4px;color:var(--success);font-weight:600">$13,110</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="card">
+            <div class="tile-hdr">
+              <div class="tile-title">Cash Spent by Currency</div>
+              <div class="tile-actions">
+                <div class="cur-toggle"><div class="cur-btn on" id="cur-mtd" onclick="setCurrency('MTD')">MTD</div><div class="cur-btn" id="cur-ytd" onclick="setCurrency('YTD')">YTD</div></div>
+              </div>
+            </div>
+            <div id="cur-label" style="font-size:11px;color:var(--text-2);margin-bottom:8px">June 2026 disbursements · USD equivalent</div>
+            <div id="cur-mtd-data" class="sbar-wrap">
+              <div class="sbar-row"><div class="sbar-lbl" style="display:flex;align-items:center;gap:4px"><span style="width:7px;height:7px;border-radius:50%;background:#1852FE;display:inline-block"></span>USD</div><div class="sbar-track"><div class="sbar-fill" style="width:52%;background:#1852FE"></div></div><div style="display:flex;flex-direction:column;align-items:flex-end;width:72px;flex-shrink:0"><span class="sbar-val">$1.4M</span><span style="font-size:10px;color:var(--text-3)">52.1%</span></div></div>
+              <div class="sbar-row"><div class="sbar-lbl" style="display:flex;align-items:center;gap:4px"><span style="width:7px;height:7px;border-radius:50%;background:#3B81F6;display:inline-block"></span>EUR</div><div class="sbar-track"><div class="sbar-fill" style="width:18%;background:#3B81F6"></div></div><div style="display:flex;flex-direction:column;align-items:flex-end;width:72px;flex-shrink:0"><span class="sbar-val">$490K</span><span style="font-size:10px;color:var(--text-3)">18.1%</span></div></div>
+              <div class="sbar-row"><div class="sbar-lbl" style="display:flex;align-items:center;gap:4px"><span style="width:7px;height:7px;border-radius:50%;background:#00DAC1;display:inline-block"></span>SGD</div><div class="sbar-track"><div class="sbar-fill" style="width:12%;background:#00DAC1"></div></div><div style="display:flex;flex-direction:column;align-items:flex-end;width:72px;flex-shrink:0"><span class="sbar-val">$320K</span><span style="font-size:10px;color:var(--text-3)">11.8%</span></div></div>
+              <div class="sbar-row"><div class="sbar-lbl" style="display:flex;align-items:center;gap:4px"><span style="width:7px;height:7px;border-radius:50%;background:#BC17A2;display:inline-block"></span>AED</div><div class="sbar-track"><div class="sbar-fill" style="width:9%;background:#BC17A2"></div></div><div style="display:flex;flex-direction:column;align-items:flex-end;width:72px;flex-shrink:0"><span class="sbar-val">$240K</span><span style="font-size:10px;color:var(--text-3)">8.9%</span></div></div>
+              <div class="sbar-row"><div class="sbar-lbl" style="display:flex;align-items:center;gap:4px"><span style="width:7px;height:7px;border-radius:50%;background:#FB7D24;display:inline-block"></span>GBP</div><div class="sbar-track"><div class="sbar-fill" style="width:6%;background:#FB7D24"></div></div><div style="display:flex;flex-direction:column;align-items:flex-end;width:72px;flex-shrink:0"><span class="sbar-val">$178K</span><span style="font-size:10px;color:var(--text-3)">6.6%</span></div></div>
+            </div>
+            <div id="cur-ytd-data" class="sbar-wrap" style="display:none">
+              <div class="sbar-row"><div class="sbar-lbl" style="display:flex;align-items:center;gap:4px"><span style="width:7px;height:7px;border-radius:50%;background:#1852FE;display:inline-block"></span>USD</div><div class="sbar-track"><div class="sbar-fill" style="width:55%;background:#1852FE"></div></div><div style="display:flex;flex-direction:column;align-items:flex-end;width:72px;flex-shrink:0"><span class="sbar-val">$18.2M</span><span style="font-size:10px;color:var(--text-3)">55.3%</span></div></div>
+              <div class="sbar-row"><div class="sbar-lbl" style="display:flex;align-items:center;gap:4px"><span style="width:7px;height:7px;border-radius:50%;background:#3B81F6;display:inline-block"></span>EUR</div><div class="sbar-track"><div class="sbar-fill" style="width:17%;background:#3B81F6"></div></div><div style="display:flex;flex-direction:column;align-items:flex-end;width:72px;flex-shrink:0"><span class="sbar-val">$5.7M</span><span style="font-size:10px;color:var(--text-3)">17.2%</span></div></div>
+              <div class="sbar-row"><div class="sbar-lbl" style="display:flex;align-items:center;gap:4px"><span style="width:7px;height:7px;border-radius:50%;background:#00DAC1;display:inline-block"></span>SGD</div><div class="sbar-track"><div class="sbar-fill" style="width:10%;background:#00DAC1"></div></div><div style="display:flex;flex-direction:column;align-items:flex-end;width:72px;flex-shrink:0"><span class="sbar-val">$3.5M</span><span style="font-size:10px;color:var(--text-3)">10.5%</span></div></div>
+              <div class="sbar-row"><div class="sbar-lbl" style="display:flex;align-items:center;gap:4px"><span style="width:7px;height:7px;border-radius:50%;background:#BC17A2;display:inline-block"></span>AED</div><div class="sbar-track"><div class="sbar-fill" style="width:9%;background:#BC17A2"></div></div><div style="display:flex;flex-direction:column;align-items:flex-end;width:72px;flex-shrink:0"><span class="sbar-val">$2.9M</span><span style="font-size:10px;color:var(--text-3)">8.8%</span></div></div>
+              <div class="sbar-row"><div class="sbar-lbl" style="display:flex;align-items:center;gap:4px"><span style="width:7px;height:7px;border-radius:50%;background:#FB7D24;display:inline-block"></span>GBP</div><div class="sbar-track"><div class="sbar-fill" style="width:6%;background:#FB7D24"></div></div><div style="display:flex;flex-direction:column;align-items:flex-end;width:72px;flex-shrink:0"><span class="sbar-val">$2.0M</span><span style="font-size:10px;color:var(--text-3)">6.0%</span></div></div>
+            </div>
+            <div style="margin-top:10px;padding-top:8px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center">
+              <span style="font-size:11px;color:var(--text-2)" id="cur-total-lbl">Total MTD disbursements</span>
+              <span style="font-size:14px;font-weight:700;color:var(--text)" id="cur-total-val">$2,693,000</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Balance Recoveries -->
+        <div class="fin-sec">Balance Recoveries</div>
+        <div class="card">
+          <div class="tile-hdr"><div class="tile-title">Recovery Summary <span style="font-size:11px;font-weight:400;color:var(--text-2)">· YTD</span></div></div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">
+            <div style="background:var(--green-bg);border:1px solid var(--green-mid);border-radius:8px;padding:12px;text-align:center"><div style="font-size:18px;font-weight:700;color:#147638">$292,560</div><div style="font-size:10px;color:#147638;margin-top:2px">Total Recovered</div></div>
+            <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px;text-align:center"><div style="font-size:18px;font-weight:700">$48,320</div><div style="font-size:10px;color:var(--text-2);margin-top:2px">Pending Recovery</div></div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;padding:5px 4px;border-bottom:1px solid var(--border);font-size:10px;font-weight:600;color:var(--text-2);text-transform:uppercase;letter-spacing:.04em"><span>Port Call</span><span>Agent</span><span style="text-align:right">Amount</span><span style="text-align:right">Status</span></div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;padding:8px 4px;border-bottom:1px solid var(--border);font-size:12px;align-items:center"><span style="font-weight:600">TST2600045</span><span style="color:var(--text-2)">ABC Shipping</span><span style="text-align:right;font-weight:600">$84,320</span><span style="text-align:right"><span style="background:var(--green-mid);color:#147638;font-size:10px;font-weight:700;padding:2px 7px;border-radius:999px">Received</span></span></div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;padding:8px 4px;border-bottom:1px solid var(--border);font-size:12px;align-items:center"><span style="font-weight:600">TST2600038</span><span style="color:var(--text-2)">Keppel Smit</span><span style="text-align:right;font-weight:600">$52,450</span><span style="text-align:right"><span style="background:var(--green-mid);color:#147638;font-size:10px;font-weight:700;padding:2px 7px;border-radius:999px">Received</span></span></div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;padding:8px 4px;font-size:12px;align-items:center"><span style="font-weight:600">TST2600051</span><span style="color:var(--text-2)">Test Vendor-A</span><span style="text-align:right;font-weight:600">$48,320</span><span style="text-align:right"><span style="background:var(--amber-mid);color:#844D0F;font-size:10px;font-weight:700;padding:2px 7px;border-radius:999px">Pending</span></span></div>
+        </div>
+
+        <!-- Analytics Modules -->
+        <div class="fin-sec">Analytics Modules</div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px">
+          <div class="atile"><div class="atile-icon" style="background:var(--blue-light)"><svg viewBox="0 0 24 24" style="stroke:var(--brand)"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div><div class="atile-name">PDA Timeline</div><div class="atile-desc">Submissions vs approvals by month</div></div>
+          <div class="atile"><div class="atile-icon" style="background:var(--green-bg)"><svg viewBox="0 0 24 24" style="stroke:#147638"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div><div class="atile-name">FDA Timeline</div><div class="atile-desc">Final DA status &amp; approval rates</div></div>
+          <div class="atile"><div class="atile-icon" style="background:var(--amber-bg)"><svg viewBox="0 0 24 24" style="stroke:#844D0F"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div><div class="atile-name">Cash Proj. Calendar</div><div class="atile-desc">Monthly payment schedule view</div></div>
+          <div class="atile"><div class="atile-icon" style="background:var(--red-bg)"><svg viewBox="0 0 24 24" style="stroke:var(--danger)"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><div class="atile-name">Overdue FDA Report</div><div class="atile-desc">Outstanding final DAs past sailed</div></div>
+          <div class="atile"><div class="atile-icon" style="background:var(--teal-bg)"><svg viewBox="0 0 24 24" style="stroke:var(--teal-dark)"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></div><div class="atile-name">SDA Timeline</div><div class="atile-desc">Supplementary DA trends</div></div>
+          <div class="atile"><div class="atile-icon" style="background:var(--purple-bg)"><svg viewBox="0 0 24 24" style="stroke:var(--purple)"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div><div class="atile-name">Cost Savings</div><div class="atile-desc">Savings by type, port &amp; agent</div></div>
+          <div class="atile"><div class="atile-icon" style="background:var(--blue-light)"><svg viewBox="0 0 24 24" style="stroke:var(--brand)"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div><div class="atile-name">Cash Projection</div><div class="atile-desc">Full projection planner &amp; calendar</div></div>
+          <div class="atile"><div class="atile-icon" style="background:var(--green-bg)"><svg viewBox="0 0 24 24" style="stroke:#147638"><polyline points="20 6 9 17 4 12"/></svg></div><div class="atile-name">VI Timeline</div><div class="atile-desc">Vendor invoice status &amp; recovery</div></div>
+        </div>
+
+      </div><!-- /dash-panel-financial -->
 
     </div>
     <!-- VIEW: DETAIL PAGES -->
@@ -1235,6 +1441,41 @@ function toggleMyCalls(){
 }
 
 // ── Cash exposure donut ↔ legend hover linking ──
+// ── Dashboard tab switcher ──
+function switchDashTab(panel, tabEl){
+  document.querySelectorAll('.dash-tab').forEach(t => t.classList.remove('active'));
+  tabEl.classList.add('active');
+  const dis = document.getElementById('dash-panel-disbursements');
+  const fin = document.getElementById('dash-panel-financial');
+  if(panel === 'disbursements'){
+    dis.style.display = 'flex'; fin.style.display = 'none';
+  } else {
+    dis.style.display = 'none'; fin.style.display = 'flex';
+  }
+}
+
+// ── Currency toggle ──
+function setCurrency(mode){
+  const mtdD = document.getElementById('cur-mtd-data');
+  const ytdD = document.getElementById('cur-ytd-data');
+  const mtdB = document.getElementById('cur-mtd');
+  const ytdB = document.getElementById('cur-ytd');
+  const lbl  = document.getElementById('cur-label');
+  const tl   = document.getElementById('cur-total-lbl');
+  const tv   = document.getElementById('cur-total-val');
+  if(mode === 'MTD'){
+    mtdD.style.display=''; ytdD.style.display='none';
+    mtdB.classList.add('on'); ytdB.classList.remove('on');
+    lbl.textContent='June 2026 disbursements · USD equivalent';
+    tl.textContent='Total MTD disbursements'; tv.textContent='$2,693,000';
+  } else {
+    mtdD.style.display='none'; ytdD.style.display='';
+    ytdB.classList.add('on'); mtdB.classList.remove('on');
+    lbl.textContent='YTD 2026 disbursements · USD equivalent';
+    tl.textContent='Total YTD disbursements'; tv.textContent='$32,901,440';
+  }
+}
+
 function cashHover(idx){
   const segs = document.querySelectorAll('.cash-seg');
   const rows = document.querySelectorAll('.cash-legend-row');
