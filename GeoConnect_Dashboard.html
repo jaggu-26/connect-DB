@@ -1499,7 +1499,20 @@ function switchDashTab(panel, tabEl){
     dis.style.display = 'flex'; fin.style.display = 'none';
   } else {
     dis.style.display = 'none'; fin.style.display = 'flex';
+    syncFinCardHeight();
   }
+}
+function syncFinCardHeight(){
+  // Make financial sit-cards exactly as tall as disbursements sit-cards
+  const dis = document.getElementById('dash-panel-disbursements');
+  const fin = document.getElementById('dash-panel-financial');
+  dis.style.display = 'flex';
+  const refH = dis.querySelector('.situation-grid .sit-card').getBoundingClientRect().height;
+  dis.style.display = 'none';
+  fin.querySelectorAll('.situation-grid .sit-card').forEach(c => {
+    c.style.height = refH + 'px';
+    c.style.boxSizing = 'border-box';
+  });
 }
 
 // ── Currency toggle ──
