@@ -923,74 +923,54 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
       <!-- FINANCIAL PANEL -->
       <div id="dash-panel-financial" style="display:none;flex-direction:column;gap:18px">
 
-        <!-- Cash Position — 4 cards, same structure as situation-stats-row -->
-        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:18px;align-items:stretch">
+        <!-- Cash Position — sit-card style matching Disbursements priority cards -->
+        <div class="situation-grid">
 
-          <!-- Approved Forecast -->
-          <div class="card reveal" style="gap:0">
-            <div class="tile-hdr" style="margin-bottom:12px">
-              <div class="tile-title">Approved Forecast</div>
-              <div style="background:var(--green-bg);color:#147638;font-size:10px;font-weight:700;padding:2px 8px;border-radius:999px;white-space:nowrap">Ready</div>
-            </div>
-            <div class="health-tile-val" style="font-size:22px;color:var(--text);margin-bottom:4px">USD 23,694</div>
-            <div style="font-size:11.5px;color:var(--text-2);line-height:1.5;flex:1">6 approved DAs · ready to disburse</div>
-            <div style="height:6px;background:#fff;border-radius:99px;overflow:hidden;margin:12px 0;border:1px solid var(--border)">
-              <div style="height:100%;width:18%;background:var(--success);border-radius:99px"></div>
-            </div>
-            <div style="display:flex;align-items:center;justify-content:space-between">
-              <span style="font-size:11px;color:var(--text-2)">of total pipeline</span>
-              <span style="font-size:11px;font-weight:700;color:var(--success)">18%</span>
+          <!-- Available Balance — main card (navy/brand, like sit-urgent) -->
+          <div class="sit-card" style="background:linear-gradient(135deg,var(--nav) 0%,#1C4ED8 100%);border-color:transparent;color:#fff;box-shadow:0 10px 26px rgba(24,82,254,.28);cursor:default">
+            <span class="sit-badge" style="color:rgba(255,255,255,.8)"><span class="sit-dot"></span>Available Balance</span>
+            <div class="sit-val" style="font-size:30px;color:#fff">USD 32,005.36</div>
+            <div class="sit-lbl" style="color:rgba(255,255,255,.9)">Current cash position across all agents &amp; vendors.</div>
+            <div class="sit-sub" style="color:rgba(255,255,255,.65)">As of June 29, 2026 · All accounts</div>
+            <div class="sit-actions">
+              <button class="sit-btn" style="background:#fff;color:var(--nav)" onclick="fireToast('Opening balance breakdown',event)">View breakdown</button>
+              <button class="sit-btn sit-btn-ghostred" style="border-color:rgba(255,255,255,.35);color:#fff;background:rgba(255,255,255,.12)">Add funds</button>
             </div>
           </div>
 
-          <!-- Under Approval -->
-          <div class="card reveal" style="gap:0">
-            <div class="tile-hdr" style="margin-bottom:12px">
-              <div class="tile-title">Under Approval</div>
-              <div style="background:var(--amber-mid);color:#844D0F;font-size:10px;font-weight:700;padding:2px 8px;border-radius:999px;white-space:nowrap">Pending</div>
-            </div>
-            <div class="health-tile-val" style="font-size:22px;color:var(--text);margin-bottom:4px">USD 48,650</div>
-            <div style="font-size:11.5px;color:var(--text-2);line-height:1.5;flex:1">15 DAs awaiting sign-off · oldest 6 days</div>
-            <div style="height:6px;background:#fff;border-radius:99px;overflow:hidden;margin:12px 0;border:1px solid var(--border)">
-              <div style="height:100%;width:38%;background:var(--warning);border-radius:99px"></div>
-            </div>
-            <div style="display:flex;align-items:center;justify-content:space-between">
-              <span style="font-size:11px;color:var(--text-2)">Avg wait time</span>
-              <span style="font-size:11px;font-weight:700;color:#C07C1A">2.3 days</span>
+          <!-- Under Approval — amber/warn -->
+          <div class="sit-card">
+            <span class="sit-badge sit-warn"><span class="sit-dot"></span>Under Approval</span>
+            <div class="sit-val">USD 48,650</div>
+            <div class="sit-lbl">DAs awaiting financial sign-off.</div>
+            <div class="sit-sub">15 items · oldest waiting 6 days · USD 172K total</div>
+            <div class="sit-actions">
+              <button class="sit-btn sit-btn-orange" onclick="fireToast('Opening approval queue',event)"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Review &amp; approve</button>
+              <button class="sit-btn sit-btn-outline" onclick="fireToast('Snoozed for 4 hours',event)">Snooze</button>
             </div>
           </div>
 
-          <!-- In Process -->
-          <div class="card reveal" style="gap:0">
-            <div class="tile-hdr" style="margin-bottom:12px">
-              <div class="tile-title">In Process</div>
-              <div style="background:var(--blue-light);color:var(--brand);font-size:10px;font-weight:700;padding:2px 8px;border-radius:999px;white-space:nowrap">Active</div>
-            </div>
-            <div class="health-tile-val" style="font-size:22px;color:var(--text);margin-bottom:4px">USD 237,409</div>
-            <div style="font-size:11.5px;color:var(--text-2);line-height:1.5;flex:1">34 active port calls · 8 ports</div>
-            <div style="height:6px;background:#fff;border-radius:99px;overflow:hidden;margin:12px 0;border:1px solid var(--border)">
-              <div style="height:100%;width:74%;background:var(--brand);border-radius:99px"></div>
-            </div>
-            <div style="display:flex;align-items:center;justify-content:space-between">
-              <span style="font-size:11px;color:var(--text-2)">Largest single DA</span>
-              <span style="font-size:11px;font-weight:700;color:var(--brand)">USD 42,110</span>
+          <!-- In Process — teal/info -->
+          <div class="sit-card">
+            <span class="sit-badge sit-info"><span class="sit-dot"></span>In Process</span>
+            <div class="sit-val">USD 237,409</div>
+            <div class="sit-lbl">Disbursements currently being processed.</div>
+            <div class="sit-sub">34 active port calls · 8 ports · largest DA USD 42,110</div>
+            <div class="sit-actions">
+              <button class="sit-btn sit-btn-teal" onclick="fireToast('Opening port calls',event)"><svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>View all</button>
+              <button class="sit-btn sit-btn-outline" onclick="fireToast('Downloading report',event)">Export</button>
             </div>
           </div>
 
-          <!-- Projected Balance -->
-          <div class="card reveal" style="gap:0;border-color:#FECACA">
-            <div class="tile-hdr" style="margin-bottom:12px">
-              <div class="tile-title">Projected Balance</div>
-              <div style="background:#FEE2E2;color:var(--danger);font-size:10px;font-weight:700;padding:2px 8px;border-radius:999px;white-space:nowrap">Alert</div>
-            </div>
-            <div class="health-tile-val" style="font-size:22px;color:var(--danger);margin-bottom:4px">–USD 277,748</div>
-            <div style="font-size:11.5px;color:var(--text-2);line-height:1.5;flex:1">Below available balance — action needed</div>
-            <div style="height:6px;background:#fff;border-radius:99px;overflow:hidden;margin:12px 0;border:1px solid #FECACA">
-              <div style="height:100%;width:100%;background:var(--danger);border-radius:99px"></div>
-            </div>
-            <div style="display:flex;align-items:center;justify-content:space-between">
-              <span style="font-size:11px;color:var(--text-2)">Shortfall vs available</span>
-              <span style="font-size:11px;font-weight:700;color:var(--danger)">↓ USD 309,753</span>
+          <!-- Projected Balance — red/urgent alert -->
+          <div class="sit-card sit-urgent">
+            <span class="sit-badge"><span class="sit-dot"></span>Projected Balance — Alert</span>
+            <div class="sit-val">–USD 277,748</div>
+            <div class="sit-lbl">Balance will go negative after all commitments.</div>
+            <div class="sit-sub" style="color:rgba(255,255,255,.75)">USD 309,753 shortfall · action required before month-end</div>
+            <div class="sit-actions">
+              <button class="sit-btn sit-btn-onred" onclick="fireToast('Opening cash forecast',event)"><svg viewBox="0 0 24 24"><path d="M7 17l9.2-9.2M17 17V7H7"/></svg>Review forecast</button>
+              <button class="sit-btn sit-btn-ghostred" onclick="fireToast('Add funds flow opened',event)">Add funds</button>
             </div>
           </div>
 
