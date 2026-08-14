@@ -652,6 +652,15 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
         </div>
       </div>
       <div class="situation-grid">
+        <div class="sit-card" onclick="goDetail('view-pending','Pending Approval',event)">
+          <span class="sit-badge sit-warn"><span class="sit-dot"></span>Act Now — Approvals</span>
+          <div class="sit-val" data-count="15">0</div>
+          <div class="sit-lbl">DAs are waiting for your sign-off.</div>
+          <div class="sit-sub">Oldest waiting 6 days · USD 172K total value</div>
+          <div class="sit-actions">
+            <button class="sit-btn sit-btn-orange" onclick="event.stopPropagation();goDetail('view-pending','Pending Approval',event)"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Review &amp; Approve</button>
+          </div>
+        </div>
         <div class="sit-card sit-urgent" onclick="goDetail('view-overdue','Overdue DAs',event)">
           <span class="sit-badge"><span class="sit-dot"></span>Act Now — Overdue</span>
           <div class="sit-val" data-count="5">0</div>
@@ -660,16 +669,6 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
           <div class="sit-actions">
             <button class="sit-btn sit-btn-onred" onclick="fireToast('Escalated all 5 overdue DAs',event)"><svg viewBox="0 0 24 24"><path d="M7 17l9.2-9.2M17 17V7H7"/></svg>Escalate all 5</button>
             <button class="sit-btn sit-btn-ghostred" onclick="event.stopPropagation();goDetail('view-overdue','Overdue DAs',event)">Review <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
-          </div>
-        </div>
-        <div class="sit-card" onclick="goDetail('view-pending','Pending Approval',event)">
-          <span class="sit-badge sit-warn"><span class="sit-dot"></span>Clear Today — Approvals</span>
-          <div class="sit-val" data-count="15">0</div>
-          <div class="sit-lbl">DAs are waiting for your sign-off.</div>
-          <div class="sit-sub">Oldest waiting 6 days · USD 172K total value</div>
-          <div class="sit-actions">
-            <button class="sit-btn sit-btn-orange" onclick="event.stopPropagation();goDetail('view-pending','Pending Approval',event)"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Review &amp; approve</button>
-            <button class="sit-btn sit-btn-outline" onclick="fireToast('Snoozed pending approvals for 4 hours',event)">Snooze</button>
           </div>
         </div>
         <div class="sit-card" onclick="goDetail('view-appt','Pending Appointment',event)">
