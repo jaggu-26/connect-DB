@@ -667,6 +667,16 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
             </div>
           </div>
         </div>
+        <div class="sit-card" onclick="goDetail('view-appt','Pending Appointment',event)">
+          <span class="sit-badge sit-info"><span class="sit-dot"></span>Pending Appointments</span>
+          <div class="sit-val" data-count="8">0</div>
+          <div class="sit-lbl">Vessels arriving without an agent appointed.</div>
+          <div class="sit-sub">2 due today · furthest ETA in 16 days</div>
+          <div class="sit-actions">
+            <button class="sit-btn sit-btn-teal" onclick="event.stopPropagation();goDetail('view-appt','Pending Appointment',event)"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Assign agents</button>
+            <button class="sit-btn sit-btn-outline" onclick="event.stopPropagation();goDetail('view-appt','Pending Appointment',event)">View schedule</button>
+          </div>
+        </div>
         <div class="sit-card" onclick="goDetail('view-overdue','Overdue DAs',event)">
           <span class="sit-badge sit-warn"><span class="sit-dot"></span>Act Now — Overdue</span>
           <div class="sit-val" data-count="5">0</div>
@@ -675,16 +685,6 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
           <div class="sit-actions">
             <button class="sit-btn sit-btn-orange" onclick="fireToast('Escalated all 5 overdue DAs',event)"><svg viewBox="0 0 24 24"><path d="M7 17l9.2-9.2M17 17V7H7"/></svg>Escalate all 5</button>
             <button class="sit-btn sit-btn-outline" onclick="event.stopPropagation();goDetail('view-overdue','Overdue DAs',event)">Review <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
-          </div>
-        </div>
-        <div class="sit-card" onclick="goDetail('view-appt','Pending Appointment',event)">
-          <span class="sit-badge sit-info"><span class="sit-dot"></span>Prepare — No Appointment</span>
-          <div class="sit-val" data-count="8">0</div>
-          <div class="sit-lbl">Vessels arriving without an agent appointed.</div>
-          <div class="sit-sub">2 due today · furthest ETA in 16 days</div>
-          <div class="sit-actions">
-            <button class="sit-btn sit-btn-teal" onclick="event.stopPropagation();goDetail('view-appt','Pending Appointment',event)"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Assign agents</button>
-            <button class="sit-btn sit-btn-outline" onclick="event.stopPropagation();goDetail('view-appt','Pending Appointment',event)">View schedule</button>
           </div>
         </div>
         <div class="sit-card sit-milestone">
