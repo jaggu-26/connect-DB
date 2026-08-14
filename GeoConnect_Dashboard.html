@@ -413,7 +413,7 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
 .dtable td.pc-id{font-weight:700;color:var(--text)}
 .dtable td.num{text-align:right;font-variant-numeric:tabular-nums;color:var(--text)}
 .dtable td.mid{text-align:center}
-.dtable td.actions{display:flex;gap:6px;justify-content:flex-end}
+.dtable td.actions{display:flex;gap:6px;justify-content:flex-start}
 @media(max-width:900px){.insight-bento{grid-template-columns:1fr}.insight-wide{grid-column:span 1}}
 .area-line{stroke:var(--brand)}
 
@@ -637,21 +637,6 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
           <div class="dash-welcome">Welcome, <span class="welcome-name">Sahithi Alluru</span>!</div>
           <div class="situation-sub">3 things need your attention before you do anything else.</div>
         </div>
-        <div class="role-select-outer">
-          <span class="role-label">Role</span>
-          <div class="role-select-wrap" id="roleSelectWrap">
-            <button class="role-select-btn" onclick="toggleRolePop(event)">
-              <span class="role-select-val" id="roleSelectVal">Operator</span>
-              <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
-            </button>
-            <div class="role-pop" id="rolePop">
-              <div class="role-opt active" data-role="Operator" onclick="setRole('Operator',this)"><span>Operator</span><svg class="role-check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
-              <div class="role-opt" data-role="Principal" onclick="setRole('Principal',this)"><span>Principal</span><svg class="role-check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
-              <div class="role-opt" data-role="Backoffice" onclick="setRole('Backoffice',this)"><span>Backoffice</span><svg class="role-check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
-              <div class="role-opt" data-role="Finance" onclick="setRole('Finance',this)"><span>Finance</span><svg class="role-check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
-            </div>
-          </div>
-        </div>
       </div>
       <div class="situation-grid">
         <div class="sit-card sit-urgent" onclick="goDetail('view-pending','Pending Approval',event)">
@@ -678,7 +663,7 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
           </div>
         </div>
         <div class="sit-card" onclick="goDetail('view-overdue','Overdue DAs',event)">
-          <span class="sit-badge sit-warn"><span class="sit-dot"></span>Act Now</span>
+          <span class="sit-badge sit-warn"><span class="sit-dot"></span>Overdue</span>
           <div class="sit-val" data-count="5">0</div>
           <div class="sit-lbl">FDAs not received from agents past their deadline.</div>
           <div class="sit-sub">USD 151K outstanding · oldest is 12 days overdue</div>
@@ -1157,7 +1142,7 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
       <div class="table-card" id="pending-list">
         <table class="dtable">
           <thead>
-            <tr><th>Port Call</th><th>Type</th><th>Vessel</th><th>Port</th><th>Agent</th><th class="num">Amount</th><th class="mid">Days</th><th>Actions</th></tr>
+            <tr><th>Port Call</th><th>Type</th><th>Vessel</th><th>Port</th><th>Agent</th><th class="num">Amount</th><th class="mid">Days</th><th style="text-align:left">Actions</th></tr>
           </thead>
           <tbody>
             <tr data-type="FDA"><td class="pc-id">TST2600082</td><td><span class="da-tier fda">FDA</span></td><td>Omicron West</td><td>Singapore</td><td>ABC Test Shipping</td><td class="num">USD 25,624</td><td class="mid"><span class="da-pill info">6 days</span></td><td class="actions"><button class="btn-mini btn-approve" onclick="fireToast('Approved TST2600082',event)">Approve</button><button class="btn-mini btn-reject" onclick="fireToast('Rejected',event)">Reject</button></td></tr>
