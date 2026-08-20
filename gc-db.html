@@ -53,20 +53,20 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
 /* ═══ TOPBAR ═══ */
 .topbar{min-height:38px;background:transparent;display:flex;align-items:center;padding:8px 28px 4px;gap:8px;flex-shrink:0;position:relative;z-index:5}
 .topbar-title{font-size:16px;font-weight:700;color:var(--nav);letter-spacing:-.01em;white-space:nowrap;display:flex;align-items:center;gap:8px;min-width:0;overflow:hidden;text-overflow:ellipsis}
-.date-chip{font-size:10px;font-weight:600;color:var(--text-3);flex-shrink:0;display:inline-flex;align-items:center;gap:5px}
+.date-chip{font-size:12px;font-weight:600;color:var(--text-3);flex-shrink:0;display:inline-flex;align-items:center;gap:5px}
 .welcome-name{background:linear-gradient(90deg,var(--nav) 0%,var(--brand) 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
 .topbar-spacer{flex:1}
 .topbar-right{display:flex;align-items:center;gap:16px}
-.last-updated{font-size:11.5px;font-weight:600;color:var(--text-3);white-space:nowrap;flex-shrink:0}
+.last-updated{font-size:11.5px;font-weight:600;color:var(--text-3);white-space:nowrap;flex-shrink:0;align-self:flex-end}
 @media(max-width:1100px){.last-updated{display:none}}
-.topbar-search{display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:0 12px;height:36px;font-size:13px;color:var(--text-2);cursor:text;width:230px;transition:box-shadow .25s var(--ease),border-color .25s var(--ease)}
+.topbar-search{display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border);border-radius:4px;padding:0 12px;height:36px;font-size:13px;color:var(--text-2);cursor:text;width:230px;transition:box-shadow .25s var(--ease),border-color .25s var(--ease)}
 .topbar-search:hover{border-color:#C7D5EE}
 .topbar-search:focus-within{border-color:var(--brand);box-shadow:0 0 0 3px rgba(24,82,254,.12)}
 .topbar-search input{border:none;outline:none;background:transparent;font-family:inherit;font-size:13px;color:var(--text);width:100%}
 .topbar-search svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:1.75;stroke-linecap:round;flex-shrink:0}
-.btn-primary{height:36px;padding:0 16px;background:linear-gradient(135deg,var(--brand) 0%,#0B3FE0 100%);color:#fff;border:none;border-radius:10px;cursor:pointer;font-family:inherit;font-size:13px;font-weight:600;display:inline-flex;align-items:center;gap:6px;position:relative;overflow:hidden;transition:transform .2s var(--ease),box-shadow .25s var(--ease);box-shadow:0 2px 8px rgba(24,82,254,.28)}
+.btn-primary{height:36px;padding:0 16px;background:linear-gradient(135deg,var(--brand) 0%,#0B3FE0 100%);color:#fff;border:none;border-radius:4px;cursor:pointer;font-family:inherit;font-size:13px;font-weight:600;display:inline-flex;align-items:center;gap:6px;position:relative;overflow:hidden;transition:transform .2s var(--ease),box-shadow .25s var(--ease);box-shadow:none}
 .btn-primary::after{content:'';position:absolute;top:0;left:-80%;width:50%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.35),transparent);transform:skewX(-20deg);transition:left .5s var(--ease)}
-.btn-primary:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(24,82,254,.4)}
+.btn-primary:hover{box-shadow:none}
 .btn-primary:hover::after{left:130%}
 .btn-primary:active{transform:translateY(0) scale(.97)}
 .btn-primary svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2.5;stroke-linecap:round}
@@ -110,13 +110,13 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
 .card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px;box-shadow:var(--shadow-sm);display:flex;flex-direction:column;transition:box-shadow .3s var(--ease);min-width:0}
 .card:hover{box-shadow:var(--shadow-md)}
 .tile-hdr{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px}
-.tile-title{font-size:14px;font-weight:700;color:var(--text);display:flex;align-items:center;gap:6px}
+.tile-title{font-size:16px;font-weight:700;color:var(--text);display:flex;align-items:center;gap:6px}
 .tile-link{font-size:12px;font-weight:700;color:var(--brand);cursor:pointer;display:flex;align-items:center;gap:3px;padding:4px 6px;border-radius:6px;transition:background .2s}
 .tile-link:hover{background:#EEF4FF}
 .tile-link svg{width:11px;height:11px;stroke:currentColor;fill:none;stroke-width:2.5;stroke-linecap:round}
 
 /* ═══ SITUATION REPORT ═══ */
-.dash-welcome{font-size:24px;font-weight:600;color:var(--nav);letter-spacing:-.01em;white-space:nowrap}
+.dash-welcome{font-size:28px;font-weight:600;color:var(--nav);letter-spacing:-.01em;white-space:nowrap}
 .situation-hdr{display:flex;align-items:flex-end;justify-content:space-between;gap:10px;flex-wrap:wrap}
 .role-select-outer{display:flex;align-items:center;gap:8px;flex-shrink:0}
 .role-label{font-size:12px;font-weight:600;color:var(--text-2)}
@@ -134,13 +134,13 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
 .role-opt.active{background:var(--bg);color:var(--brand)}
 .role-check{width:14px;height:14px;stroke:var(--brand);fill:none;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0;display:none}
 .role-opt.active .role-check{display:block}
-.situation-sub{font-size:12.5px;font-weight:600;color:var(--text-2);margin-top:2px}
+.situation-sub{font-size:16px;font-weight:600;color:var(--text-2);margin-top:2px}
 .situation-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}.situation-grid .sit-card{height:220px;box-sizing:border-box}
 .sit-card.sit-milestone{background:linear-gradient(150deg,#FFFBEF 0%,#FDF1CF 55%,#FCE8B5 100%);border:1px solid #F0D890;overflow:hidden;position:relative;cursor:default}
 .sit-card.sit-milestone::after{content:'';position:absolute;top:-36px;right:-36px;width:130px;height:130px;border-radius:50%;background:radial-gradient(circle,rgba(217,119,6,.20) 0%,transparent 70%);pointer-events:none}
 .sit-card.sit-milestone::before{content:'✦';position:absolute;top:16px;right:22px;font-size:13px;color:#D9A521;opacity:.8}
-.milestone-icon{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#F6B93B 0%,#D97706 50%,#F6B93B 100%);background-size:220% 220%;background-position:0% 50%;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 16px rgba(217,119,6,.35);flex-shrink:0;position:relative;z-index:1;animation:trophyShine 5s linear infinite}
-.milestone-icon svg{width:21px;height:21px;stroke:#fff;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;transform-origin:70% 90%;animation:trophyWave 5s ease-in-out infinite}
+.milestone-icon{width:52px;height:52px;border-radius:6px;background:linear-gradient(135deg,#F6B93B 0%,#D97706 50%,#F6B93B 100%);background-size:220% 220%;background-position:0% 50%;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 16px rgba(217,119,6,.35);flex-shrink:0;position:relative;z-index:1;animation:trophyShine 5s linear infinite}
+.milestone-icon svg{width:30px;height:30px;stroke:#fff;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;transform-origin:70% 90%;animation:trophyWave 5s ease-in-out infinite}
 @keyframes trophyWave{
   0%,26%,100%{transform:rotate(0deg) translateY(0)}
   4%{transform:rotate(-16deg) translateY(-2px)}
@@ -157,12 +157,12 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
 }
 .sit-badge.sit-gold{color:#B45309}
 .milestone-headline{font-size:19px;font-weight:800;color:#78350F;line-height:1.15;margin-top:8px;position:relative;z-index:1}
-.milestone-sub{font-size:11.5px;color:#92400E;line-height:1.5;position:relative;z-index:1}
+.milestone-sub{font-size:16px;color:#92400E;line-height:1.5;position:relative;z-index:1}
 .milestone-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:auto;padding-top:10px;position:relative;z-index:1}
-.milestone-chip{font-size:10.5px;font-weight:700;padding:4px 10px;border-radius:999px;background:rgba(217,119,6,.14);color:#92400E;white-space:nowrap}
+.milestone-chip{font-size:12px;font-weight:700;padding:4px 10px;border-radius:999px;background:rgba(217,119,6,.14);color:#92400E;white-space:nowrap}
 .sit-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px;display:flex;flex-direction:column;gap:8px;position:relative;overflow:hidden;box-shadow:var(--shadow-sm);transition:box-shadow .3s var(--ease),transform .3s var(--ease);cursor:pointer}
 .sit-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-md)}
-.sit-card.sit-urgent{background:linear-gradient(135deg,#EF4444 0%,#C0261C 100%);border-color:transparent;color:#fff;box-shadow:0 10px 26px rgba(220,38,38,.28)}
+.sit-card.sit-urgent{background:linear-gradient(135deg,#EF4444 0%,#C0261C 100%);border-color:transparent;color:#fff;box-shadow:none}
 .sit-card.sit-urgent::after{content:'';position:absolute;top:-50px;right:-50px;width:170px;height:170px;border-radius:50%;background:rgba(255,255,255,.08);pointer-events:none}
 .sit-badge{display:inline-flex;align-items:center;gap:6px;font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;position:relative;z-index:1}
 .sit-badge .sit-dot{width:6px;height:6px;border-radius:50%;background:currentColor;flex-shrink:0}
@@ -170,15 +170,15 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
 .sit-badge.sit-warn{color:var(--orange)}
 .sit-badge.sit-info{color:var(--teal-dark)}
 .sit-val{font-size:38px;font-weight:800;line-height:1;letter-spacing:-.02em;font-variant-numeric:tabular-nums;position:relative;z-index:1}
-.sit-lbl{font-size:13.5px;font-weight:700;position:relative;z-index:1}
-.sit-sub{font-size:11.5px;line-height:1.5;position:relative;z-index:1}
+.sit-lbl{font-size:16px;font-weight:700;position:relative;z-index:1}
+.sit-sub{font-size:14px;line-height:1.5;position:relative;z-index:1}
 .sit-card.sit-urgent .sit-sub{color:rgba(255,255,255,.75)}
 .sit-card:not(.sit-urgent) .sit-sub{color:var(--text-2)}
 .sit-actions{display:flex;gap:8px;margin-top:auto;padding-top:4px;position:relative;z-index:1}
-.sit-btn{height:32px;padding:0 13px;border-radius:8px;font-size:12px;font-weight:700;font-family:inherit;cursor:pointer;border:none;display:inline-flex;align-items:center;gap:5px;transition:all .18s var(--ease);white-space:nowrap}
+.sit-btn{height:34px;padding:0 16px;border-radius:4px;font-size:12px;font-weight:700;font-family:inherit;cursor:pointer;border:none;display:inline-flex;align-items:center;gap:5px;transition:all .18s var(--ease);white-space:nowrap}
 .sit-btn:active{transform:scale(.95)}
 .sit-btn svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2.3;stroke-linecap:round}
-.sit-btn-onred{background:#fff;color:var(--danger)}
+.sit-btn-onred{background:#fff;color:var(--danger);border:1px solid rgba(255,255,255,.6)}
 .sit-btn-onred:hover{background:#FEE2E2}
 .sit-btn-ghostred{background:rgba(255,255,255,.14);color:#fff;border:1px solid rgba(255,255,255,.35)}
 .sit-btn-ghostred:hover{background:rgba(255,255,255,.24)}
@@ -186,8 +186,8 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
 .sit-btn-orange:hover{background:#E56A0F;box-shadow:0 3px 10px rgba(251,125,36,.3)}
 .sit-btn-teal{background:var(--teal-dark);color:#fff}
 .sit-btn-teal:hover{background:#00695A;box-shadow:0 3px 10px rgba(0,132,117,.25)}
-.sit-btn-outline{background:var(--bg);color:var(--text-2);border:1px solid var(--border)}
-.sit-btn-outline:hover{background:#fff;color:var(--text);border-color:#C7D5EE}
+.sit-btn-outline{background:var(--blue-light);color:var(--brand);border:1px solid var(--brand)}
+.sit-btn-outline:hover{background:var(--blue-mid);border-color:var(--brand)}
 
 .situation-stats-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px}
 
@@ -350,7 +350,7 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
 .tl-time{font-size:10px;color:var(--text-3);margin-top:2px}
 
 /* ═══ BUTTONS (mini action) ═══ */
-.btn-mini{height:28px;padding:0 11px;border-radius:7px;font-size:11.5px;font-weight:700;font-family:inherit;cursor:pointer;border:none;transition:all .18s var(--ease);white-space:nowrap}
+.btn-mini{height:30px;padding:0 14px;border-radius:4px;font-size:11.5px;font-weight:700;font-family:inherit;cursor:pointer;border:none;transition:all .18s var(--ease);white-space:nowrap}
 .btn-mini:active{transform:scale(.94)}
 .btn-approve{background:var(--brand);color:#fff}
 .btn-approve:hover{background:#0B3FE0;box-shadow:0 3px 10px rgba(24,82,254,.3)}
@@ -360,8 +360,8 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
 .btn-resolve:hover{background:#CA9304;box-shadow:0 3px 10px rgba(234,179,5,.3)}
 .btn-appoint{background:var(--teal-dark);color:#fff}
 .btn-appoint:hover{background:#00695A}
-.btn-ghost{background:var(--bg);color:var(--text-2);border:1px solid var(--border)}
-.btn-ghost:hover{background:#fff;color:var(--text);border-color:#C7D5EE}
+.btn-ghost{background:var(--blue-light);color:var(--brand);border:1px solid var(--brand)}
+.btn-ghost:hover{background:var(--blue-mid);border-color:var(--brand)}
 .btn-reject{background:#FEE2E2;color:#C0261C;border:1px solid #FECACA}
 .btn-reject:hover{background:#FECACA;color:#991B1B}
 
@@ -429,9 +429,9 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
   .reveal{opacity:1;transform:none}
 }
 /* ── Dashboard tabs (Disbursements / Financial) ── */
-.dash-tabs{display:flex;align-items:center;gap:2px;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:3px}
-.dash-tab{padding:6px 18px;font-size:13px;font-weight:700;color:var(--text-2);cursor:pointer;border-radius:9px;transition:all .18s var(--ease);white-space:nowrap}
-.dash-tab.active{background:var(--brand);color:#fff;box-shadow:0 2px 8px rgba(24,82,254,.25)}
+.dash-tabs{display:flex;align-items:center;gap:2px;background:var(--card);border:1px solid var(--border);border-radius:4px;padding:3px}
+.dash-tab{padding:6px 18px;font-size:13px;font-weight:700;color:var(--text-2);cursor:pointer;border-radius:4px;transition:all .18s var(--ease);white-space:nowrap}
+.dash-tab.active{background:#374151;color:#fff;box-shadow:0 2px 8px rgba(55,65,81,.25)}
 .dash-tab:hover:not(.active){color:var(--text);background:var(--bg)}
 /* ── Financial panel components ── */
 .g2{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:stretch}
@@ -592,7 +592,7 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
 <div class="main">
   <div class="topbar">
     <div class="topbar-title">
-      <span class="date-chip">Tuesday, July 22, 2026</span>
+      <span class="date-chip" id="live-date"></span>
     </div>
     <div class="topbar-spacer"></div>
     <div class="dash-tabs" id="dash-tabs-bar" style="position:absolute;left:50%;transform:translateX(-50%)">
@@ -601,7 +601,6 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
     </div>
     <div class="topbar-spacer"></div>
     <div class="topbar-right">
-      <span class="last-updated">Last Updated: 21 Jul 2026, 06:27 GMT</span>
       <div class="mycalls-wrap" id="myCallsWrap" onclick="toggleMyCalls()">
         <span class="mycalls-label">My Calls</span>
         <div class="toggle-switch"><div class="knob"></div></div>
@@ -637,6 +636,7 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
           <div class="dash-welcome">Welcome, <span class="welcome-name">Sahithi Alluru</span>!</div>
           <div class="situation-sub">3 things need your attention before you do anything else.</div>
         </div>
+        <span class="last-updated">Last Updated: 21 Jul 2026, 06:27 GMT</span>
       </div>
       <div class="situation-grid">
         <div class="sit-card sit-urgent" onclick="goDetail('view-pending','Pending Approval',event)">
@@ -673,12 +673,27 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
           </div>
         </div>
         <div class="sit-card sit-milestone">
-          <div class="milestone-icon">
-            <svg viewBox="0 0 24 24"><path d="M8 21h8"/><path d="M12 17v4"/><path d="M7 4h10v5a5 5 0 0 1-10 0V4z"/><path d="M17 5h2a2 2 0 0 1 2 2c0 2-2 4-4 4"/><path d="M7 5H5a2 2 0 0 0-2 2c0 2 2 4 4 4"/></svg>
+          <span class="sit-badge sit-gold"><span class="sit-dot"></span>Milestone — June 2026</span>
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:5px;margin-top:10px">
+            <div class="milestone-icon">
+              <svg viewBox="0 0 24 24"><path d="M8 21h8"/><path d="M12 17v4"/><path d="M7 4h10v5a5 5 0 0 1-10 0V4z"/><path d="M17 5h2a2 2 0 0 1 2 2c0 2-2 4-4 4"/><path d="M7 5H5a2 2 0 0 0-2 2c0 2 2 4 4 4"/></svg>
+            </div>
+            <div class="milestone-headline">Your best month yet!</div>
           </div>
-          <span class="sit-badge sit-gold" style="margin-top:8px"><span class="sit-dot"></span>Milestone — June 2026</span>
-          <div class="milestone-headline">Your best month yet!</div>
-          <div class="milestone-sub">27 DAs approved · 1.8d avg turnaround — 18% faster than last month.</div>
+          <div style="margin-top:auto;display:flex;gap:36px">
+            <div style="display:flex;flex-direction:column">
+              <span style="font-size:18px;font-weight:800;color:#78350F;line-height:1.1">27 DAs</span>
+              <span style="font-size:12px;font-weight:600;color:#92400E">approved</span>
+            </div>
+            <div style="display:flex;flex-direction:column">
+              <span style="font-size:18px;font-weight:800;color:#78350F;line-height:1.1">1.8d</span>
+              <span style="font-size:12px;font-weight:600;color:#92400E">avg</span>
+            </div>
+            <div style="display:flex;flex-direction:column">
+              <span style="font-size:18px;font-weight:800;color:#78350F;line-height:1.1">18%</span>
+              <span style="font-size:12px;font-weight:600;color:#92400E">faster</span>
+            </div>
+          </div>
           <div class="milestone-chips">
             <span class="milestone-chip">▲ 8 vs last month</span>
             <span class="milestone-chip">🔥 12-day streak</span>
@@ -752,8 +767,7 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
         <div class="card reveal">
           <div class="cash-hdr">
             <div>
-              <div class="cash-label">Cash</div>
-              <div class="cash-title">Outstanding exposure</div>
+              <div class="cash-title" style="font-size:16px">Cash Outstanding exposure</div>
             </div>
             <span class="cash-trend-chip">▲ 6% vs last month</span>
           </div>
@@ -914,7 +928,7 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
       <div id="dash-panel-financial" style="display:none;flex-direction:column;gap:18px">
 
         <!-- Financial header — mirrors Disbursements situation-hdr -->
-        <div class="situation-hdr">
+        <div class="situation-hdr" style="margin-bottom:18px">
           <div>
             <div class="dash-welcome">Cash Position <span class="welcome-name">— June 2026</span></div>
             <div class="situation-sub">USD 48,650 pending approval &amp; USD 277,748 projected shortfall need action before month-end.</div>
@@ -974,50 +988,86 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
 
         </div>
 
-        <!-- Savings Performance KPIs — single card, health-tile pattern -->
-        <div class="section-lbl">Savings Performance · YTD</div>
-        <div class="card" style="padding:12px 16px">
-          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:0;divide-x:var(--border)">
-            <div style="display:flex;flex-direction:column;gap:6px;padding:8px 16px 8px 0;border-right:1px solid var(--border)">
-              <div style="width:32px;height:32px;border-radius:8px;background:var(--green-bg);display:flex;align-items:center;justify-content:center"><svg viewBox="0 0 24 24" style="width:15px;height:15px;stroke:#147638;fill:none;stroke-width:2;stroke-linecap:round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
-              <div style="font-size:22px;font-weight:800;color:var(--success);line-height:1;letter-spacing:-.01em">$150K</div>
-              <div style="font-size:12px;font-weight:600;color:var(--text-2)">YTD Savings</div>
+        <!-- Savings Performance KPIs — Operational Health style -->
+        <div class="card">
+          <div class="tile-hdr"><div class="tile-title">Savings Performance <span style="font-size:11px;font-weight:400;color:var(--text-2)">· YTD</span></div></div>
+          <div style="display:flex;gap:0">
+            <div class="health-tiles" style="flex:1">
+              <div class="health-tile">
+                <div class="health-tile-top">
+                  <span class="health-tile-lbl">YTD Savings</span>
+                  <div class="health-tile-icon" style="background:var(--green-bg);color:#147638">
+                    <svg class="health-tile-default" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    <svg class="health-tile-arrow" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                  </div>
+                </div>
+                <div class="health-tile-val" style="color:var(--success)">$150K</div>
+                <div class="health-tile-bottom">
+                  <div class="health-tile-bar"><div class="health-tile-bar-fill reveal" style="--w:75%;background:var(--success)"></div></div>
+                  <span class="health-tile-trend pos">▲ 18% vs last year</span>
+                </div>
+              </div>
+              <div class="health-tile">
+                <div class="health-tile-top">
+                  <span class="health-tile-lbl">Cashflow Savings</span>
+                  <div class="health-tile-icon" style="background:var(--blue-light);color:var(--brand)">
+                    <svg class="health-tile-default" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                    <svg class="health-tile-arrow" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                  </div>
+                </div>
+                <div class="health-tile-val" style="color:var(--brand)">$75K</div>
+                <div class="health-tile-bottom">
+                  <div class="health-tile-bar"><div class="health-tile-bar-fill reveal" style="--w:50%;background:var(--brand)"></div></div>
+                  <span class="health-tile-trend pos">★ Record savings</span>
+                </div>
+              </div>
+              <div class="health-tile">
+                <div class="health-tile-top">
+                  <span class="health-tile-lbl">DA Savings</span>
+                  <div class="health-tile-icon" style="background:var(--purple-bg);color:var(--purple)">
+                    <svg class="health-tile-default" viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+                    <svg class="health-tile-arrow" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                  </div>
+                </div>
+                <div class="health-tile-val" style="color:var(--purple)">$25K</div>
+                <div class="health-tile-bottom">
+                  <div class="health-tile-bar"><div class="health-tile-bar-fill reveal" style="--w:25%;background:var(--purple)"></div></div>
+                  <span class="health-tile-trend pos">★ Record savings</span>
+                </div>
+              </div>
+              <div class="health-tile">
+                <div class="health-tile-top">
+                  <span class="health-tile-lbl">Contractual Savings</span>
+                  <div class="health-tile-icon" style="background:var(--teal-bg);color:var(--teal-dark)">
+                    <svg class="health-tile-default" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                    <svg class="health-tile-arrow" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                  </div>
+                </div>
+                <div class="health-tile-val" style="color:var(--teal-dark)">$50K</div>
+                <div class="health-tile-bottom">
+                  <div class="health-tile-bar"><div class="health-tile-bar-fill reveal" style="--w:33%;background:var(--teal-dark)"></div></div>
+                  <span class="health-tile-trend pos">★ Record · Direct contract</span>
+                </div>
+              </div>
             </div>
-            <div style="display:flex;flex-direction:column;gap:6px;padding:8px 16px;border-right:1px solid var(--border)">
-              <div style="width:32px;height:32px;border-radius:8px;background:var(--blue-light);display:flex;align-items:center;justify-content:center"><svg viewBox="0 0 24 24" style="width:15px;height:15px;stroke:var(--brand);fill:none;stroke-width:2;stroke-linecap:round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
-              <div style="font-size:22px;font-weight:800;color:var(--brand);line-height:1;letter-spacing:-.01em">$75K</div>
-              <div style="font-size:12px;font-weight:600;color:var(--text-2)">Cashflow Savings</div>
-              <div style="font-size:11px;font-weight:600;color:var(--success)">★ Record savings</div>
-            </div>
-            <div style="display:flex;flex-direction:column;gap:6px;padding:8px 16px;border-right:1px solid var(--border)">
-              <div style="width:32px;height:32px;border-radius:8px;background:var(--purple-bg);display:flex;align-items:center;justify-content:center"><svg viewBox="0 0 24 24" style="width:15px;height:15px;stroke:var(--purple);fill:none;stroke-width:2;stroke-linecap:round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div>
-              <div style="font-size:22px;font-weight:800;color:var(--purple);line-height:1;letter-spacing:-.01em">$25K</div>
-              <div style="font-size:12px;font-weight:600;color:var(--text-2)">DA Savings</div>
-              <div style="font-size:11px;font-weight:600;color:var(--success)">★ Record savings</div>
-            </div>
-            <div style="display:flex;flex-direction:column;gap:6px;padding:8px 0 8px 16px">
-              <div style="width:32px;height:32px;border-radius:8px;background:var(--teal-bg);display:flex;align-items:center;justify-content:center"><svg viewBox="0 0 24 24" style="width:15px;height:15px;stroke:var(--teal-dark);fill:none;stroke-width:2;stroke-linecap:round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
-              <div style="font-size:22px;font-weight:800;color:var(--teal-dark);line-height:1;letter-spacing:-.01em">$50K</div>
-              <div style="font-size:12px;font-weight:600;color:var(--text-2)">Contractual Savings</div>
-              <div style="font-size:11px;font-weight:600;color:var(--success)">★ Record · Direct contract</div>
+            <!-- Savings by Type — right panel -->
+            <div style="flex:0 0 220px;border-left:1px solid var(--border);padding-left:18px;margin-left:8px;display:flex;flex-direction:column;gap:10px">
+              <div style="font-size:13px;font-weight:700;color:var(--text)">Savings by Type <span style="font-size:11px;font-weight:400;color:var(--text-2)">· MTD</span></div>
+              <div class="sbar-wrap">
+                <div class="sbar-row"><div class="sbar-lbl">Contractual Discount</div><div class="sbar-track"><div class="sbar-fill" style="width:85%;background:var(--blue-mid)"></div></div><div class="sbar-val">$55.9K</div></div>
+                <div class="sbar-row"><div class="sbar-lbl">Hidden Cost</div><div class="sbar-track"><div class="sbar-fill" style="width:40%;background:var(--nav)"></div></div><div class="sbar-val">$5.3K</div></div>
+                <div class="sbar-row"><div class="sbar-lbl">Agent Error</div><div class="sbar-track"><div class="sbar-fill" style="width:30%;background:var(--nav)"></div></div><div class="sbar-val">$2.7K</div></div>
+                <div class="sbar-row"><div class="sbar-lbl">Escalated Cost</div><div class="sbar-track"><div class="sbar-fill" style="width:18%;background:var(--nav)"></div></div><div class="sbar-val">$1.3K</div></div>
+                <div class="sbar-row"><div class="sbar-lbl">Negotiation</div><div class="sbar-track"><div class="sbar-fill" style="width:8%;background:var(--nav)"></div></div><div class="sbar-val">$0.4K</div></div>
+              </div>
+              <div style="margin-top:auto;padding-top:10px;border-top:1px solid var(--border);display:flex;justify-content:space-between"><span style="font-size:11px;color:var(--text-2)">Saving per Port Call</span><span style="font-size:13px;font-weight:700;color:var(--success)">$556</span></div>
             </div>
           </div>
         </div>
 
         <!-- Savings Breakdown -->
         <div class="section-lbl">Savings Breakdown</div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px">
-          <div class="card">
-            <div class="tile-hdr"><div class="tile-title">Savings by Type <span style="font-size:11px;font-weight:400;color:var(--text-2)">· Month to date</span></div></div>
-            <div class="sbar-wrap">
-              <div class="sbar-row"><div class="sbar-lbl">Contractual Discount</div><div class="sbar-track"><div class="sbar-fill" style="width:85%;background:var(--blue-mid)"></div></div><div class="sbar-val">$55.9K</div></div>
-              <div class="sbar-row"><div class="sbar-lbl">Hidden Cost</div><div class="sbar-track"><div class="sbar-fill" style="width:40%;background:var(--nav)"></div></div><div class="sbar-val">$5.3K</div></div>
-              <div class="sbar-row"><div class="sbar-lbl">Agent Error</div><div class="sbar-track"><div class="sbar-fill" style="width:30%;background:var(--nav)"></div></div><div class="sbar-val">$2.7K</div></div>
-              <div class="sbar-row"><div class="sbar-lbl">Escalated Cost</div><div class="sbar-track"><div class="sbar-fill" style="width:18%;background:var(--nav)"></div></div><div class="sbar-val">$1.3K</div></div>
-              <div class="sbar-row"><div class="sbar-lbl">Negotiation</div><div class="sbar-track"><div class="sbar-fill" style="width:8%;background:var(--nav)"></div></div><div class="sbar-val">$0.4K</div></div>
-            </div>
-            <div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border);display:flex;justify-content:space-between"><span style="font-size:11px;color:var(--text-2)">Saving per Port Call</span><span style="font-size:13px;font-weight:700;color:var(--success)">$556</span></div>
-          </div>
+        <div style="display:grid;grid-template-columns:1fr;gap:18px">
           <div class="card">
             <div class="tile-hdr"><div class="tile-title">By Agent / Vendor</div></div>
             <div class="sbar-wrap">
@@ -1692,6 +1742,25 @@ document.addEventListener('DOMContentLoaded', function(){
   staggerRows(document.getElementById('view-dashboard'));
   initReveals(document.getElementById('view-dashboard'));
 });
+
+(function(){
+  const el = document.getElementById('live-date');
+  const DAYS = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  function updateDate(){
+    const now = new Date();
+    const day = DAYS[now.getDay()];
+    const month = MONTHS[now.getMonth()];
+    const date = now.getDate();
+    const year = now.getFullYear();
+    const hh = String(now.getHours()).padStart(2,'0');
+    const mm = String(now.getMinutes()).padStart(2,'0');
+    const ss = String(now.getSeconds()).padStart(2,'0');
+    el.textContent = `${day}, ${month} ${date}, ${year} · ${hh}:${mm}:${ss} GMT`;
+  }
+  updateDate();
+  setInterval(updateDate, 1000);
+})();
 </script>
 </body>
 </html>
