@@ -1,0 +1,1771 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>GeoServe · Dashboard</title>
+<style>
+@font-face{font-family:'Gilroy';src:url('assets/Gilroy-Regular.woff2') format('woff2');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:'Gilroy';src:url('assets/Gilroy-Medium.woff2') format('woff2');font-weight:500;font-style:normal;font-display:swap}
+@font-face{font-family:'Gilroy';src:url('assets/Gilroy-SemiBold.woff2') format('woff2');font-weight:600;font-style:normal;font-display:swap}
+@font-face{font-family:'Gilroy';src:url('assets/Gilroy-Bold.woff2') format('woff2');font-weight:700;font-style:normal;font-display:swap}
+:root{
+  --brand:#1852FE;--brand-2:#3B81F6;--nav:#001E4C;--card:#FFFFFF;--bg:#F5F7FB;
+  --border:#E2E8F0;--text:#0E1A33;--text-2:#5A6B85;--text-3:#94A3B8;--slate:#475569;--slate-bg:#F1F5F9;--slate-mid:#E2E8F0;
+  --danger:#EF4444;--red-bg:#FEF1F2;--red-mid:#FDE2E2;
+  --success:#22C55E;--green-bg:#E9F9EF;--green-mid:#D3F3DF;
+  --warning:#EAB305;--amber-bg:#FEFCE8;--amber-mid:#FEF9C3;
+  --orange:#FB7D24;--orange-bg:#FFF3EB;
+  --blue-light:#DBEAFE;--blue-mid:#BEDBFE;
+  --teal:#00DAC1;--teal-bg:#E6FEFB;--teal-dark:#008475;
+  --purple:#BC17A2;--purple-bg:#F8E5F5;
+  --shadow-sm:0 1px 2px rgba(0,0,0,.05);
+  --shadow-md:0 4px 6px rgba(0,0,0,.07);
+  --shadow-lg:0 10px 24px rgba(0,0,0,.10);
+  --shadow-glow:0 8px 32px rgba(24,82,254,.18);
+  --ease:cubic-bezier(.4,0,.2,1);
+  --ease-out:cubic-bezier(0,0,.2,1);
+  --ease-spring:cubic-bezier(.34,1.56,.64,1);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui,sans-serif;color:var(--text);background:var(--bg);font-size:14px;-webkit-font-smoothing:antialiased;overflow:hidden}
+.shell{display:flex;height:100vh;width:100vw;overflow:hidden}
+::selection{background:rgba(24,82,254,.18)}
+
+/* ═══ NAV RAIL ═══ */
+.nav-rail{width:60px;min-width:60px;height:100vh;background:#fff;border-right:1px solid #E8ECF0;display:flex;flex-direction:column;align-items:center;padding:14px 0 12px;gap:1px;flex-shrink:0;z-index:20}
+.nav-item{width:40px;height:40px;display:flex;align-items:center;justify-content:center;border-radius:10px;cursor:pointer;transition:all .15s;position:relative}
+.nav-item:hover{background:#F1F4F8}
+.nav-item.active{background:#EEF2FF}
+.nav-item svg{width:20px;height:20px;fill:none;stroke:#2C2C3E;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;transition:stroke .15s}
+.nav-item.active svg{stroke:var(--brand)}
+.nav-item:hover svg{stroke:#0E1A33}
+.nav-badge-dot{position:absolute;top:5px;right:5px;width:7px;height:7px;background:var(--danger);border-radius:50%;border:1.5px solid #fff}
+.nav-spacer{flex:1}
+.nav-divider{width:28px;height:1px;background:#E8ECF0;margin:6px 0}
+.nav-avatar{width:34px;height:34px;border-radius:50%;background:var(--blue-light);color:var(--brand);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;cursor:pointer;margin-top:2px;border:2px solid var(--blue-mid)}
+
+/* ═══ MAIN ═══ */
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0;padding-top:14px;position:relative}
+.main::before{content:'';position:absolute;top:-180px;right:-120px;width:520px;height:520px;border-radius:50%;background:radial-gradient(circle,rgba(24,82,254,.07) 0%,rgba(24,82,254,0) 65%);pointer-events:none;z-index:0}
+.main::after{content:'';position:absolute;top:40px;left:10%;width:380px;height:380px;border-radius:50%;background:radial-gradient(circle,rgba(0,218,193,.05) 0%,rgba(0,218,193,0) 65%);pointer-events:none;z-index:0}
+
+/* ═══ TOPBAR ═══ */
+.topbar{min-height:38px;background:transparent;display:flex;align-items:center;padding:8px 28px 4px;gap:8px;flex-shrink:0;position:relative;z-index:5}
+.topbar-title{font-size:16px;font-weight:700;color:var(--nav);letter-spacing:-.01em;white-space:nowrap;display:flex;align-items:center;gap:8px;min-width:0;overflow:hidden;text-overflow:ellipsis}
+.date-chip{font-size:12px;font-weight:600;color:var(--text-3);flex-shrink:0;display:inline-flex;align-items:center;gap:5px}
+.welcome-name{background:linear-gradient(90deg,var(--nav) 0%,var(--brand) 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.topbar-spacer{flex:1}
+.topbar-right{display:flex;align-items:center;gap:16px}
+.last-updated{font-size:11.5px;font-weight:600;color:var(--text-3);white-space:nowrap;flex-shrink:0;align-self:flex-end}
+@media(max-width:1100px){.last-updated{display:none}}
+.topbar-search{display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border);border-radius:4px;padding:0 12px;height:36px;font-size:13px;color:var(--text-2);cursor:text;width:230px;transition:box-shadow .25s var(--ease),border-color .25s var(--ease)}
+.topbar-search:hover{border-color:#C7D5EE}
+.topbar-search:focus-within{border-color:var(--brand);box-shadow:0 0 0 3px rgba(24,82,254,.12)}
+.topbar-search input{border:none;outline:none;background:transparent;font-family:inherit;font-size:13px;color:var(--text);width:100%}
+.topbar-search svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:1.75;stroke-linecap:round;flex-shrink:0}
+.btn-primary{height:36px;padding:0 16px;background:linear-gradient(135deg,var(--brand) 0%,#0B3FE0 100%);color:#fff;border:none;border-radius:4px;cursor:pointer;font-family:inherit;font-size:13px;font-weight:600;display:inline-flex;align-items:center;gap:6px;position:relative;overflow:hidden;transition:transform .2s var(--ease),box-shadow .25s var(--ease);box-shadow:none}
+.btn-primary::after{content:'';position:absolute;top:0;left:-80%;width:50%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.35),transparent);transform:skewX(-20deg);transition:left .5s var(--ease)}
+.btn-primary:hover{box-shadow:none}
+.btn-primary:hover::after{left:130%}
+.btn-primary:active{transform:translateY(0) scale(.97)}
+.btn-primary svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2.5;stroke-linecap:round}
+.mycalls-wrap{display:flex;align-items:center;gap:6px;cursor:pointer;user-select:none}
+.mycalls-wrap:hover .mycalls-label{color:var(--text)}
+.mycalls-label{font-size:11px;font-weight:600;color:var(--text-2);transition:color .2s}
+.toggle-switch{width:30px;height:16px;background:var(--border);border-radius:999px;position:relative;transition:background .25s var(--ease);flex-shrink:0}
+.toggle-switch .knob{position:absolute;top:2px;left:2px;width:12px;height:12px;border-radius:50%;background:#fff;transition:left .25s var(--ease-spring);box-shadow:0 1px 2px rgba(0,0,0,.25)}
+.mycalls-wrap.on .toggle-switch{background:var(--brand)}
+.mycalls-wrap.on .knob{left:16px}
+.mycalls-wrap.on .mycalls-label{color:var(--brand);font-weight:700}
+
+/* ═══ CRUMBBAR ═══ */
+.crumbbar{display:flex;align-items:center;padding:8px 28px;gap:8px;flex-shrink:0;position:relative;z-index:5;font-size:13px;font-weight:600}
+.crumb-root{color:var(--text-3);cursor:pointer;transition:color .15s}
+.crumb-root:hover{color:var(--brand)}
+.crumb-sep{color:var(--text-3)}
+.crumb-current{color:var(--text)}
+
+/* ═══ CONTENT ═══ */
+.content{flex:1;overflow-y:auto;padding:0 28px 32px;display:flex;flex-direction:column;gap:18px;min-height:0;position:relative;z-index:1;scroll-behavior:smooth}
+.content::-webkit-scrollbar{width:5px}
+.content::-webkit-scrollbar-thumb{background:#C3CFDE;border-radius:99px}
+.content::-webkit-scrollbar-thumb:hover{background:#9FB0C6}
+.view{display:none;flex-direction:column;gap:12px}
+.view.active{display:flex;animation:panel-in .4s var(--ease-out)}
+@keyframes panel-in{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+
+.reveal{opacity:0;transform:translateY(16px);transition:opacity .5s var(--ease-out),transform .5s var(--ease-out)}
+.reveal.in{opacity:1;transform:translateY(0)}
+.section-lbl{font-size:10.5px;font-weight:700;color:var(--text-2);text-transform:uppercase;letter-spacing:.1em;padding:2px 0;display:flex;align-items:center;gap:10px}
+.section-lbl::after{content:'';flex:1;height:1px;background:var(--border)}
+.info-icon{display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;border-radius:50%;background:var(--blue-light);color:var(--brand);font-size:9px;font-weight:700;cursor:pointer;position:relative;flex-shrink:0;line-height:1;transition:transform .2s var(--ease)}
+.info-icon:hover{transform:scale(1.15)}
+.info-icon::before{content:attr(data-tip);position:absolute;bottom:calc(100% + 9px);left:50%;transform:translateX(-50%) translateY(4px);background:var(--nav);color:#fff;font-size:11px;font-weight:500;padding:8px 12px;border-radius:9px;white-space:normal;width:230px;text-align:center;pointer-events:none;opacity:0;transition:opacity .2s var(--ease),transform .25s var(--ease);z-index:200;line-height:1.55;box-shadow:0 8px 24px rgba(0,30,76,.3)}
+.info-icon::after{content:'';position:absolute;bottom:calc(100% + 4px);left:50%;transform:translateX(-50%);border:5px solid transparent;border-top-color:var(--nav);pointer-events:none;opacity:0;transition:opacity .2s;z-index:200}
+.info-icon:hover::before{opacity:1;transform:translateX(-50%) translateY(0)}
+.info-icon:hover::after{opacity:1}
+
+/* ═══ CARD ═══ */
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px;box-shadow:var(--shadow-sm);display:flex;flex-direction:column;transition:box-shadow .3s var(--ease);min-width:0}
+.card:hover{box-shadow:var(--shadow-md)}
+.tile-hdr{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px}
+.tile-title{font-size:16px;font-weight:700;color:var(--text);display:flex;align-items:center;gap:6px}
+.tile-link{font-size:12px;font-weight:700;color:var(--brand);cursor:pointer;display:flex;align-items:center;gap:3px;padding:4px 6px;border-radius:6px;transition:background .2s}
+.tile-link:hover{background:#EEF4FF}
+.tile-link svg{width:11px;height:11px;stroke:currentColor;fill:none;stroke-width:2.5;stroke-linecap:round}
+
+/* ═══ SITUATION REPORT ═══ */
+.dash-welcome{font-size:28px;font-weight:600;color:var(--nav);letter-spacing:-.01em;white-space:nowrap}
+.situation-hdr{display:flex;align-items:flex-end;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.role-select-outer{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.role-label{font-size:12px;font-weight:600;color:var(--text-2)}
+.role-select-wrap{position:relative;flex-shrink:0}
+.role-select-btn{display:flex;align-items:center;gap:6px;background:none;border:none;padding:0;cursor:pointer;font-family:inherit;transition:opacity .2s var(--ease)}
+.role-select-btn:hover{opacity:.7}
+.role-select-val{font-size:13px;font-weight:700;color:var(--nav)}
+.role-select-btn svg{width:12px;height:12px;stroke:var(--text-2);fill:none;stroke-width:2.2;stroke-linecap:round;transition:transform .2s var(--ease);flex-shrink:0}
+.role-select-wrap.open .role-select-btn svg{transform:rotate(180deg)}
+.role-pop{position:absolute;top:calc(100% + 8px);right:0;background:var(--card);border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow-lg);padding:6px;width:160px;z-index:100;display:none;animation:pop-in .18s var(--ease-out)}
+.role-pop.open{display:block}
+@keyframes pop-in{from{opacity:0;transform:translateY(-6px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
+.role-opt{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 12px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:600;color:var(--text-2);transition:all .15s var(--ease)}
+.role-opt:hover{background:#EAF1FE;color:var(--brand)}
+.role-opt.active{background:var(--bg);color:var(--brand)}
+.role-check{width:14px;height:14px;stroke:var(--brand);fill:none;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0;display:none}
+.role-opt.active .role-check{display:block}
+.situation-sub{font-size:16px;font-weight:600;color:var(--text-2);margin-top:2px}
+.situation-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}.situation-grid .sit-card{height:220px;box-sizing:border-box}
+.sit-card.sit-milestone{background:linear-gradient(150deg,#FFFBEF 0%,#FDF1CF 55%,#FCE8B5 100%);border:1px solid #F0D890;overflow:hidden;position:relative;cursor:default}
+.sit-card.sit-milestone::after{content:'';position:absolute;top:-36px;right:-36px;width:130px;height:130px;border-radius:50%;background:radial-gradient(circle,rgba(217,119,6,.20) 0%,transparent 70%);pointer-events:none}
+.sit-card.sit-milestone::before{content:'✦';position:absolute;top:16px;right:22px;font-size:13px;color:#D9A521;opacity:.8}
+.milestone-icon{width:52px;height:52px;border-radius:6px;background:linear-gradient(135deg,#F6B93B 0%,#D97706 50%,#F6B93B 100%);background-size:220% 220%;background-position:0% 50%;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 16px rgba(217,119,6,.35);flex-shrink:0;position:relative;z-index:1;animation:trophyShine 5s linear infinite}
+.milestone-icon svg{width:30px;height:30px;stroke:#fff;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;transform-origin:70% 90%;animation:trophyWave 5s ease-in-out infinite}
+@keyframes trophyWave{
+  0%,26%,100%{transform:rotate(0deg) translateY(0)}
+  4%{transform:rotate(-16deg) translateY(-2px)}
+  8%{transform:rotate(14deg) translateY(-3px)}
+  12%{transform:rotate(-13deg) translateY(-2px)}
+  16%{transform:rotate(11deg) translateY(-2px)}
+  20%{transform:rotate(-6deg) translateY(-1px)}
+  23%{transform:rotate(3deg) translateY(0)}
+}
+@keyframes trophyShine{
+  0%,28%{background-position:0% 50%}
+  72%{background-position:100% 50%}
+  100%{background-position:0% 50%}
+}
+.sit-badge.sit-gold{color:#B45309}
+.milestone-headline{font-size:19px;font-weight:800;color:#78350F;line-height:1.15;margin-top:8px;position:relative;z-index:1}
+.milestone-sub{font-size:16px;color:#92400E;line-height:1.5;position:relative;z-index:1}
+.milestone-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:auto;padding-top:10px;position:relative;z-index:1}
+.milestone-chip{font-size:12px;font-weight:700;padding:4px 10px;border-radius:999px;background:rgba(217,119,6,.14);color:#92400E;white-space:nowrap}
+.sit-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px;display:flex;flex-direction:column;gap:8px;position:relative;overflow:hidden;box-shadow:var(--shadow-sm);transition:box-shadow .3s var(--ease),transform .3s var(--ease);cursor:pointer}
+.sit-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-md)}
+.sit-card.sit-urgent{background:linear-gradient(135deg,#EF4444 0%,#C0261C 100%);border-color:transparent;color:#fff;box-shadow:none}
+.sit-card.sit-urgent::after{content:'';position:absolute;top:-50px;right:-50px;width:170px;height:170px;border-radius:50%;background:rgba(255,255,255,.08);pointer-events:none}
+.sit-badge{display:inline-flex;align-items:center;gap:6px;font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;position:relative;z-index:1}
+.sit-badge .sit-dot{width:6px;height:6px;border-radius:50%;background:currentColor;flex-shrink:0}
+.sit-card.sit-urgent .sit-badge{color:rgba(255,255,255,.85)}
+.sit-badge.sit-warn{color:var(--orange)}
+.sit-badge.sit-info{color:var(--teal-dark)}
+.sit-val{font-size:38px;font-weight:800;line-height:1;letter-spacing:-.02em;font-variant-numeric:tabular-nums;position:relative;z-index:1}
+.sit-lbl{font-size:16px;font-weight:700;position:relative;z-index:1}
+.sit-sub{font-size:14px;line-height:1.5;position:relative;z-index:1}
+.sit-card.sit-urgent .sit-sub{color:rgba(255,255,255,.75)}
+.sit-card:not(.sit-urgent) .sit-sub{color:var(--text-2)}
+.sit-actions{display:flex;gap:8px;margin-top:auto;padding-top:4px;position:relative;z-index:1}
+.sit-btn{height:34px;padding:0 16px;border-radius:4px;font-size:12px;font-weight:700;font-family:inherit;cursor:pointer;border:none;display:inline-flex;align-items:center;gap:5px;transition:all .18s var(--ease);white-space:nowrap}
+.sit-btn:active{transform:scale(.95)}
+.sit-btn svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2.3;stroke-linecap:round}
+.sit-btn-onred{background:#fff;color:var(--danger);border:1px solid rgba(255,255,255,.6)}
+.sit-btn-onred:hover{background:#FEE2E2}
+.sit-btn-ghostred{background:rgba(255,255,255,.14);color:#fff;border:1px solid rgba(255,255,255,.35)}
+.sit-btn-ghostred:hover{background:rgba(255,255,255,.24)}
+.sit-btn-orange{background:var(--orange);color:#fff}
+.sit-btn-orange:hover{background:#E56A0F;box-shadow:0 3px 10px rgba(251,125,36,.3)}
+.sit-btn-teal{background:var(--teal-dark);color:#fff}
+.sit-btn-teal:hover{background:#00695A;box-shadow:0 3px 10px rgba(0,132,117,.25)}
+.sit-btn-outline{background:var(--blue-light);color:var(--brand);border:1px solid var(--brand)}
+.sit-btn-outline:hover{background:var(--blue-mid);border-color:var(--brand)}
+
+.situation-stats-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px}
+
+/* ═══ OPERATIONAL HEALTH — stat tiles ═══ */
+.health-tiles{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.health-tile{background:var(--bg);border:none;border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:8px;cursor:pointer;transition:background .2s var(--ease),transform .2s var(--ease)}
+.health-tile:hover{background:#EEF1F6;transform:translateY(-1px)}
+.health-tile-top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+.health-tile-lbl{font-size:11px;font-weight:600;color:var(--text-2)}
+.health-tile-icon{width:40px;height:40px;border-radius:11px;display:flex;align-items:center;justify-content:center;flex-shrink:0;order:2;position:relative;overflow:hidden}
+.health-tile-icon svg{width:19px;height:19px;stroke:currentColor;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;transition:opacity .2s var(--ease),transform .2s var(--ease)}
+.health-tile-icon .health-tile-arrow{position:absolute;top:50%;left:50%;opacity:0;transform:translate(-50%,-50%) translateX(-4px)}
+.health-tile-icon .health-tile-default{position:relative}
+.health-tile:hover .health-tile-default{opacity:0;transform:translateX(4px)}
+.health-tile:hover .health-tile-arrow{opacity:1;transform:translate(-50%,-50%) translateX(0)}
+.health-tile-val{font-size:22px;font-weight:800;color:var(--text);line-height:1;font-variant-numeric:tabular-nums}
+.health-tile-bottom{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:auto}
+.health-tile-bar{height:6px;width:52%;background:#fff;border-radius:99px;overflow:hidden;flex-shrink:0}
+.health-tile-bar-fill{height:100%;border-radius:99px;width:0;transition:width 1s var(--ease-out) .2s}
+.reveal.in .health-tile-bar-fill{width:var(--w)}
+.health-tile-trend{font-size:10px;font-weight:700;white-space:nowrap;text-align:right}
+.health-tile-trend.pos{color:#147638}
+.health-tile-trend.neg{color:var(--danger)}
+
+/* ═══ YOUR MONTH SO FAR — cash exposure donut ═══ */
+.cash-hdr{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:14px}
+.cash-label{font-size:10.5px;font-weight:700;color:var(--text-2);letter-spacing:.06em;text-transform:uppercase}
+.cash-title{font-size:17px;font-weight:800;color:var(--nav);margin-top:2px}
+.cash-trend-chip{font-size:11.5px;font-weight:700;color:#844D0F;background:var(--amber-mid);padding:5px 12px;border-radius:999px;white-space:nowrap;flex-shrink:0}
+.cash-body{display:flex;flex-direction:column;gap:12px}
+.cash-kpi{display:flex;align-items:baseline;gap:8px;margin-bottom:2px}
+.cash-kpi-val{font-size:24px;font-weight:800;color:var(--nav);letter-spacing:-.02em}
+.cash-kpi-sub{font-size:11px;color:var(--text-2);font-weight:500}
+.cash-bar-wrap{width:100%;opacity:0;transform:scaleX(.92);transform-origin:left;transition:opacity .6s var(--ease-out),transform .6s var(--ease-spring)}
+.reveal.in .cash-bar-wrap{opacity:1;transform:scaleX(1)}
+.cash-bar{display:flex;width:100%;height:18px;border-radius:999px;overflow:hidden;background:#fff;gap:2px}
+.cash-seg{cursor:pointer;flex-shrink:0;transition:opacity .18s var(--ease),filter .18s var(--ease)}
+.cash-seg.dim{opacity:.22}
+.cash-seg.hl{filter:brightness(1.1)}
+.cash-legend{width:100%;min-width:0;display:flex;flex-direction:column;gap:2px}
+.cash-legend-row{display:flex;align-items:center;gap:8px;padding:6px 6px;border-radius:9px;cursor:pointer;transition:background .18s var(--ease),transform .18s var(--ease)}
+.cash-legend-row:hover,.cash-legend-row.hl{background:var(--bg)}
+.cash-legend-row.dim{opacity:.45}
+.cash-legend-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.cash-legend-lbl{font-size:13px;color:var(--text-2);flex:1;min-width:0}
+.cash-legend-amt{font-size:12px;font-weight:700;color:var(--nav);font-variant-numeric:tabular-nums}
+.cash-legend-pct{font-size:12.5px;font-weight:600;color:var(--text-3);width:38px;text-align:right;flex-shrink:0}
+.cash-alert{margin-top:16px;background:#F0F2F5;color:var(--danger);font-size:12.5px;font-weight:700;padding:12px 14px;border-radius:10px;line-height:1.5}
+
+/* ═══ KPI BENTO ═══ */
+.kpi-bento{display:grid;grid-template-columns:1.5fr 1fr 1fr;grid-auto-rows:1fr;gap:14px}
+.kpi-card{--accent:var(--warning);background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px 18px;cursor:pointer;position:relative;overflow:hidden;transition:transform .3s var(--ease),box-shadow .3s var(--ease),border-color .3s var(--ease);display:flex;flex-direction:column}
+.kpi-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--accent)}
+.kpi-card::after{content:'';position:absolute;top:-40px;right:-40px;width:120px;height:120px;border-radius:50%;background:radial-gradient(circle,color-mix(in srgb,var(--accent) 12%,transparent) 0%,transparent 70%);transition:transform .4s var(--ease);pointer-events:none}
+.kpi-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-lg);border-color:color-mix(in srgb,var(--accent) 40%,var(--border))}
+.kpi-card:hover::after{transform:scale(1.5)}
+.kpi-card:active{transform:translateY(-1px) scale(.99)}
+.kpi-card.pending{--accent:var(--orange)}
+.kpi-card.overdue{--accent:var(--danger)}
+.kpi-card.clar{--accent:var(--purple)}
+.kpi-card.appt{--accent:var(--teal-dark)}
+.kpi-card.created{--accent:var(--brand)}
+.kpi-card.approved{--accent:var(--success)}
+.kpi-card.rejected{--accent:var(--slate)}
+.kpi-hero{grid-column:1;grid-row:1/span 3}
+.kpi-top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+.kpi-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:color-mix(in srgb,var(--accent) 12%,#fff);color:var(--accent);flex-shrink:0;transition:transform .35s var(--ease-spring)}
+.kpi-card:hover .kpi-icon{transform:scale(1.1) rotate(-6deg)}
+.kpi-icon svg{width:17px;height:17px;stroke:currentColor;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.kpi-hero .kpi-icon{width:44px;height:44px}
+.kpi-hero .kpi-icon svg{width:21px;height:21px}
+.kpi-trend{font-size:10.5px;font-weight:700;padding:3px 8px;border-radius:999px;display:inline-flex;align-items:center;gap:3px;white-space:nowrap}
+.kpi-trend.up-bad{background:var(--red-bg);color:var(--danger)}
+.kpi-trend.up-good{background:var(--green-bg);color:#147638}
+.kpi-trend.down-good{background:var(--green-bg);color:#147638}
+.kpi-trend.flat{background:var(--slate-bg);color:var(--slate)}
+.kpi-val{font-size:32px;font-weight:800;line-height:1;letter-spacing:-.02em;color:var(--text);font-variant-numeric:tabular-nums;margin-top:12px}
+.kpi-hero .kpi-val{font-size:46px;margin-top:16px}
+.kpi-lbl{font-size:13.5px;font-weight:700;color:var(--text);margin-top:6px}
+.kpi-sub{font-size:11.5px;color:var(--text-2);margin-top:2px}
+.kpi-breakdown{display:flex;gap:6px;flex-wrap:wrap;margin-top:14px}
+.kpi-chip{font-size:10.5px;font-weight:700;padding:3px 9px;border-radius:999px;background:var(--bg);color:var(--text-2);border:1px solid var(--border)}
+.kpi-cta{margin-top:auto;padding-top:14px;font-size:12px;font-weight:700;color:var(--brand);display:flex;align-items:center;gap:4px}
+.kpi-cta svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2.5;stroke-linecap:round;transition:transform .2s var(--ease)}
+.kpi-card:hover .kpi-cta svg{transform:translateX(3px)}
+.kpi-spark{margin-top:10px;width:100%;height:26px;overflow:visible}
+.kpi-spark path.line{fill:none;stroke:var(--accent);stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:300;stroke-dashoffset:300;animation:spark-draw 1.2s var(--ease-out) .2s forwards}
+.kpi-spark path.fill{fill:color-mix(in srgb,var(--accent) 10%,transparent);opacity:0;animation:spark-fill .7s var(--ease-out) .8s forwards}
+@keyframes spark-draw{to{stroke-dashoffset:0}}
+@keyframes spark-fill{to{opacity:1}}
+@media(max-width:1050px){.kpi-bento{grid-template-columns:1fr 1fr}.kpi-hero{grid-column:1/span 2;grid-row:auto}.situation-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:640px){.situation-grid{grid-template-columns:1fr}}
+
+/* ═══ INSIGHT BENTO ═══ */
+.insight-bento{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.insight-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px 18px;display:flex;flex-direction:column;gap:6px;transition:box-shadow .3s var(--ease),transform .3s var(--ease)}
+.insight-card:hover{box-shadow:var(--shadow-md);transform:translateY(-2px)}
+.insight-lbl{font-size:11.5px;font-weight:700;color:var(--text-2);display:flex;align-items:center;gap:5px}
+.insight-val{font-size:26px;font-weight:800;letter-spacing:-.02em;line-height:1;font-variant-numeric:tabular-nums}
+.insight-wide{grid-column:span 2}
+.insight-dark{background:linear-gradient(135deg,var(--nav) 0%,#0A2E6E 100%);color:#fff;border-color:transparent;position:relative;overflow:hidden}
+.insight-dark::before{content:'';position:absolute;top:-50px;right:-50px;width:160px;height:160px;border-radius:50%;background:radial-gradient(circle,rgba(0,218,193,.18) 0%,transparent 70%)}
+.insight-dark .insight-lbl{color:rgba(255,255,255,.6)}
+.rank-row{display:flex;align-items:center;gap:8px;font-size:12px}
+.rank-name{width:112px;flex-shrink:0;color:var(--text-2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rank-track{flex:1;height:7px;background:var(--bg);border-radius:999px;overflow:hidden;border:1px solid var(--border)}
+.rank-fill{height:100%;border-radius:999px;width:0;transition:width 1s var(--ease-out) .2s;background:linear-gradient(90deg,var(--brand),var(--brand-2))}
+.reveal.in .rank-fill{width:var(--w)}
+.rank-val{font-size:11.5px;font-weight:700;width:38px;text-align:right;flex-shrink:0}
+.bench-bar-row{display:flex;align-items:center;gap:8px;margin-top:6px}
+.bench-bar{flex:1;height:9px;background:var(--bg);border:1px solid var(--border);border-radius:999px;overflow:hidden}
+.bench-fill{height:100%;border-radius:999px;width:0;transition:width 1s var(--ease-out) .2s}
+.reveal.in .bench-fill{width:var(--w)}
+.ring-wrap{position:relative;width:74px;height:74px;flex-shrink:0}
+.ring-wrap svg{width:74px;height:74px;transform:rotate(-90deg)}
+.ring-fg{stroke-dasharray:210;stroke-dashoffset:210;transition:stroke-dashoffset 1.2s var(--ease-out) .2s}
+.reveal.in .ring-fg{stroke-dashoffset:var(--off)}
+.ring-txt{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800}
+
+/* ═══ CHART CARD (analytics) ═══ */
+.chart-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:18px;box-shadow:var(--shadow-sm)}
+.chart-card-hdr{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:6px}
+.period-tabs{display:flex;gap:2px;background:var(--bg);border:1px solid var(--border);border-radius:9px;padding:3px}
+.period-tab{padding:5px 12px;border-radius:6px;font-size:11.5px;font-weight:700;color:var(--text-2);cursor:pointer;transition:all .18s var(--ease)}
+.period-tab.active{background:var(--card);color:var(--brand);box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.chart-legend2{display:flex;gap:14px}
+.leg2{display:flex;align-items:center;gap:5px;font-size:11.5px;color:var(--text-2);font-weight:600}
+.leg2 i{width:9px;height:9px;border-radius:3px;display:inline-block}
+.chart-foot-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px;padding-top:14px;border-top:1px solid var(--border)}
+.cfoot-item{display:flex;flex-direction:column;gap:2px}
+.cfoot-val{font-size:18px;font-weight:800;font-variant-numeric:tabular-nums}
+.cfoot-lbl{font-size:10.5px;color:var(--text-2);font-weight:600}
+.trend-line2{fill:none;stroke:var(--brand);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1000;stroke-dashoffset:1000}
+.trend-line3{fill:none;stroke:var(--teal-dark);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1000;stroke-dashoffset:1000}
+.trend-fill2{opacity:0;transition:opacity .8s var(--ease) .8s}
+
+/* ═══ TOP AGENTS BY TURNAROUND ═══ */
+.agent-rank-row{display:flex;align-items:center;gap:9px;padding:8px 0;border-bottom:1px solid #EDF1F7}
+.agent-rank-row:last-child{border-bottom:none}
+.agent-avatar{width:28px;height:28px;border-radius:50%;background:var(--blue-light);color:var(--brand);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0}
+.agent-rank-main{flex:1;min-width:0}
+.agent-rank-name{font-size:12px;font-weight:700;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.agent-rank-track{height:5px;background:var(--bg);border-radius:999px;overflow:hidden;border:1px solid var(--border);margin-top:4px}
+.agent-rank-fill{height:100%;border-radius:999px;background:var(--brand);width:0;transition:width 1s var(--ease-out) .2s}
+.reveal.in .agent-rank-fill{width:var(--w)}
+.agent-rank-val{font-size:11.5px;font-weight:700;color:var(--text-2);flex-shrink:0}
+
+/* ═══ ACTIVITY TIMELINE ═══ */
+.timeline{position:relative;padding-left:22px}
+.timeline::before{content:'';position:absolute;left:5px;top:6px;bottom:6px;width:1.5px;background:var(--border)}
+.tl-item{position:relative;padding-bottom:16px}
+.tl-item:last-child{padding-bottom:0}
+.tl-dot{position:absolute;left:-22px;top:2px;width:11px;height:11px;border-radius:50%;border:2px solid var(--card);box-shadow:0 0 0 1.5px var(--border)}
+.tl-dot.ok{background:var(--success)}
+.tl-dot.no{background:var(--slate)}
+.tl-dot.new{background:var(--brand)}
+.tl-dot.warn{background:var(--orange)}
+.tl-title{font-size:12.5px;font-weight:700;color:var(--text)}
+.tl-sub{font-size:11px;color:var(--text-2);margin-top:1px}
+.tl-time{font-size:10px;color:var(--text-3);margin-top:2px}
+
+/* ═══ BUTTONS (mini action) ═══ */
+.btn-mini{height:30px;padding:0 14px;border-radius:4px;font-size:11.5px;font-weight:700;font-family:inherit;cursor:pointer;border:none;transition:all .18s var(--ease);white-space:nowrap}
+.btn-mini:active{transform:scale(.94)}
+.btn-approve{background:var(--brand);color:#fff}
+.btn-approve:hover{background:#0B3FE0;box-shadow:0 3px 10px rgba(24,82,254,.3)}
+.btn-escalate{background:var(--danger);color:#fff}
+.btn-escalate:hover{background:#DC2626;box-shadow:0 3px 10px rgba(239,68,68,.3)}
+.btn-resolve{background:var(--warning);color:#fff}
+.btn-resolve:hover{background:#CA9304;box-shadow:0 3px 10px rgba(234,179,5,.3)}
+.btn-appoint{background:var(--teal-dark);color:#fff}
+.btn-appoint:hover{background:#00695A}
+.btn-ghost{background:var(--blue-light);color:var(--brand);border:1px solid var(--brand)}
+.btn-ghost:hover{background:var(--blue-mid);border-color:var(--brand)}
+.btn-reject{background:#FEE2E2;color:#C0261C;border:1px solid #FECACA}
+.btn-reject:hover{background:#FECACA;color:#991B1B}
+
+/* ═══ da-tier / da-pill (type/status badges, reused) ═══ */
+.da-tier{font-size:10px;font-weight:700;padding:2px 8px;border-radius:5px;letter-spacing:.02em;white-space:nowrap}
+.da-tier.pda{background:#EEF6FF;color:#1D40AF}
+.da-tier.fda{background:var(--green-mid);color:#0E4F26}
+.da-tier.apda{background:var(--purple-bg);color:var(--purple)}
+.da-tier.sda{background:var(--amber-mid);color:#713E11}
+.da-tier.vi{background:var(--teal-bg);color:var(--teal-dark)}
+.da-tier.dda{background:#DBEAFE;color:#1D40AF;border:1px solid #93C5FD}
+.da-pill{font-size:10.5px;font-weight:700;padding:3px 9px;border-radius:999px;display:inline-flex;align-items:center;gap:4px;white-space:nowrap}
+.da-pill::before{content:'';width:5px;height:5px;border-radius:50%;background:currentColor;opacity:.7}
+.da-pill.urgent{background:var(--red-mid);color:var(--danger)}
+.da-pill.warn{background:var(--amber-mid);color:#844D0F}
+.da-pill.ok{background:var(--green-mid);color:#147638}
+.da-pill.info{background:var(--blue-light);color:var(--brand)}
+.da-pill.slate{background:var(--slate-bg);color:var(--slate)}
+
+/* ═══ DETAIL PAGE ═══ */
+.page-hdr{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.page-title-row{display:flex;align-items:center;gap:10px}
+.page-title{font-size:22px;font-weight:800;color:var(--nav);letter-spacing:-.01em}
+.page-count{font-size:13px;font-weight:700;color:var(--brand);background:var(--blue-light);padding:3px 10px;border-radius:999px}
+.page-desc{font-size:13px;color:var(--text-2);margin-top:4px;max-width:520px}
+.page-stats{display:flex;gap:10px;flex-wrap:wrap}
+.pstat{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:7px 14px;display:flex;flex-direction:column;gap:2px;min-width:110px}
+.pstat-val{font-size:18px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.pstat-lbl{font-size:10.5px;color:var(--text-2);font-weight:600}
+.filter-tabs{display:flex;gap:0;padding:0;flex-wrap:nowrap;border-bottom:1.5px solid var(--border)}
+.filter-tab{padding:13px 14px;border-radius:0;background:none;border:none;border-bottom:2px solid transparent;margin-bottom:-1.5px;font-size:13px;font-weight:600;color:var(--text-2);cursor:pointer;transition:color .18s var(--ease),border-color .18s var(--ease);white-space:nowrap}
+.filter-tab:hover{color:var(--text);background:none;border-bottom-color:var(--border)}
+.filter-tab.active{color:var(--brand);border-bottom-color:var(--brand);background:none;box-shadow:none}
+@keyframes row-in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.back-btn{display:none}
+.list-more{text-align:center;padding:12px;font-size:12px;font-weight:700;color:var(--text-2);background:var(--bg);border-radius:12px;border:1px dashed var(--border)}
+
+/* ═══ DATA TABLE ═══ */
+.table-card{background:var(--card);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow-sm);display:flex;flex-direction:column;overflow:clip}
+.table-card .filter-tabs{background:var(--card);border-bottom:1.5px solid var(--border);padding:0 8px;flex-shrink:0;position:sticky;top:0;z-index:10}
+.table-card .filter-tab{border-bottom-width:2px}
+.dtable-scroll{overflow-x:auto}
+.dtable{width:100%;border-collapse:collapse;font-size:13px}
+.dtable thead th{padding:10px 16px;text-align:left;font-size:12px;font-weight:600;color:#64748B;white-space:nowrap;background:#F8FAFC;border-bottom:2px solid var(--border)}
+.dtable thead th.num{text-align:right}
+.dtable thead th.mid{text-align:center}
+.dtable tbody tr{border-bottom:1px solid #F1F5F9;transition:background .12s var(--ease)}
+.dtable tbody tr:last-child{border-bottom:none}
+.dtable tbody tr:hover{background:#F5F8FF}
+.dtable tbody tr.row-in{animation:row-in .4s var(--ease-out) both}
+.dtable td{padding:11px 16px;color:var(--text-2);vertical-align:middle;font-size:13px}
+.dtable td.pc-id{font-weight:700;color:var(--text)}
+.dtable td.num{text-align:right;font-variant-numeric:tabular-nums;color:var(--text)}
+.dtable td.mid{text-align:center}
+.dtable td.actions{display:flex;gap:6px;justify-content:flex-start}
+@media(max-width:900px){.insight-bento{grid-template-columns:1fr}.insight-wide{grid-column:span 1}}
+.area-line{stroke:var(--brand)}
+
+/* ═══ TOAST ═══ */
+.toast{background:var(--nav);color:#fff;font-size:12.5px;font-weight:600;padding:11px 16px;border-radius:10px;box-shadow:var(--shadow-lg);display:flex;align-items:center;gap:8px;animation:toast-in .3s var(--ease-out)}
+.toast svg{width:14px;height:14px;stroke:var(--teal);fill:none;stroke-width:2.5;stroke-linecap:round;flex-shrink:0}
+@keyframes toast-in{from{opacity:0;transform:translateY(10px) scale(.95)}to{opacity:1;transform:translateY(0) scale(1)}}
+.toast.out{animation:toast-out .25s var(--ease) forwards}
+@keyframes toast-out{to{opacity:0;transform:translateY(6px) scale(.96)}}
+
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+  .reveal{opacity:1;transform:none}
+}
+/* ── Dashboard tabs (Disbursements / Financial) ── */
+.dash-tabs{display:flex;align-items:center;gap:2px;background:var(--card);border:1px solid var(--border);border-radius:4px;padding:3px}
+.dash-tab{padding:6px 18px;font-size:13px;font-weight:700;color:var(--text-2);cursor:pointer;border-radius:4px;transition:all .18s var(--ease);white-space:nowrap}
+.dash-tab.active{background:#374151;color:#fff;box-shadow:0 2px 8px rgba(55,65,81,.25)}
+.dash-tab:hover:not(.active){color:var(--text);background:var(--bg)}
+/* ── Financial panel components ── */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:stretch}
+.fin-hero{background:linear-gradient(135deg,var(--nav) 0%,#1C4ED8 100%);border-radius:12px;padding:18px 22px;color:#fff;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.fin-hero-lbl{font-size:12px;color:rgba(255,255,255,.6);margin-bottom:5px}
+.fin-hero-val{font-size:30px;font-weight:700;color:#fff}
+.fin-hero-sub{font-size:11px;color:rgba(255,255,255,.4);margin-top:3px}
+.fin-hero-right{display:flex;gap:14px;flex-wrap:wrap}
+.fin-hi{display:flex;flex-direction:column;align-items:flex-end;gap:2px}
+.fin-hi-lbl{font-size:12px;font-weight:600;color:rgba(255,255,255,.75)}
+.fin-hi-val{font-size:18px;font-weight:800;color:#fff;letter-spacing:-.01em}
+.fin-sec{font-size:10px;font-weight:700;color:var(--text-2);text-transform:uppercase;letter-spacing:.08em;padding:3px 0;border-bottom:1px solid var(--border);margin-bottom:0;margin-top:6px}
+.fin-kpi-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px 18px;box-shadow:0 1px 2px rgba(0,0,0,.05);display:flex;flex-direction:column;gap:10px}
+.fin-kpi-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:4px}
+.fin-kpi-val{font-size:24px;font-weight:800;line-height:1;letter-spacing:-.01em}
+.fin-kpi-lbl{font-size:13px;font-weight:600;color:var(--text-2)}
+.fin-kpi-sub{font-size:12px;font-weight:600}
+.sbar-wrap{display:flex;flex-direction:column;gap:8px}
+.sbar-row{display:flex;align-items:center;gap:8px}
+.sbar-lbl{font-size:12px;color:var(--text-2);width:130px;flex-shrink:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sbar-track{flex:1;height:7px;background:var(--bg);border-radius:999px;overflow:hidden;border:1px solid var(--border)}
+.sbar-fill{height:100%;border-radius:999px}
+.sbar-val{font-size:12px;font-weight:600;color:var(--text);width:54px;text-align:right;flex-shrink:0}
+.cur-toggle{display:flex;gap:2px;background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:2px}
+.cur-btn{padding:3px 8px;border-radius:4px;font-size:10px;font-weight:600;cursor:pointer;color:var(--text-2);transition:all .12s}
+.cur-btn.on{background:var(--card);color:var(--brand);box-shadow:0 1px 2px rgba(0,0,0,.06)}
+.atile{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px;display:flex;flex-direction:column;gap:6px;cursor:pointer;position:relative}
+.atile:hover{box-shadow:var(--shadow-md)}
+.atile::after{content:'↗';position:absolute;top:11px;right:11px;font-size:11px;color:var(--text-3)}
+.atile-icon{width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center}
+.atile-icon svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:1.75;stroke-linecap:round}
+.atile-name{font-size:12px;font-weight:600;color:var(--text)}
+.atile-desc{font-size:11px;color:var(--text-2);line-height:1.4}
+@media(max-width:900px){.g2{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="shell">
+<nav class="nav-rail">
+  <div class="nav-item" title="Menu">
+    <svg viewBox="0 0 24 24" fill="none" stroke="#1a1a2e" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+    </svg>
+  </div>
+  <div class="nav-item active" title="Overview">
+    <svg viewBox="0 0 24 24" fill="none">
+      <path d="M6.25 5H8.75C9.4404 5 10 5.5596 10 6.25V8.75C10 9.4404 9.4404 10 8.75 10H6.25C5.5596 10 5 9.4404 5 8.75V6.25C5 5.5596 5.5596 5 6.25 5Z" fill="#1852FE" stroke="#1852FE"/>
+      <path d="M15.25 5H17.75C18.4404 5 19 5.5596 19 6.25V8.75C19 9.4404 18.4404 10 17.75 10H15.25C14.5596 10 14 9.4404 14 8.75V6.25C14 5.5596 14.5596 5 15.25 5Z" fill="#1852FE" stroke="#1852FE"/>
+      <path d="M6.25 14H8.75C9.4404 14 10 14.5596 10 15.25V17.75C10 18.4404 9.4404 19 8.75 19H6.25C5.5596 19 5 18.4404 5 17.75V15.25C5 14.5596 5.5596 14 6.25 14Z" fill="#1852FE" stroke="#1852FE"/>
+      <path d="M15.25 14H17.75C18.4404 14 19 14.5596 19 15.25V17.75C19 18.4404 18.4404 19 17.75 19H15.25C14.5596 19 14 18.4404 14 17.75V15.25C14 14.5596 14.5596 14 15.25 14Z" fill="#1852FE" stroke="#1852FE"/>
+    </svg>
+  </div>
+  <div class="nav-item" title="Home">
+    <svg viewBox="0 0 24 24" fill="none">
+      <path d="M19.25 13.531L18.25 12C18.25 15.452 15.452 18.25 12 18.25C8.548 18.25 5.75 15.452 5.75 12L4.75 13.531" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M12 8.25V19.25" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M12 8.25C12.9665 8.25 13.75 7.4665 13.75 6.5C13.75 5.5335 12.9665 4.75 12 4.75C11.0335 4.75 10.25 5.5335 10.25 6.5C10.25 7.4665 11.0335 8.25 12 8.25Z" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M10.25 11.25H13.75" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </div>
+  <div class="nav-item" title="Invoices">
+    <svg viewBox="0 0 24 24" fill="none">
+      <g clip-path="url(#clip-invoices)">
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M13 20V14C13 13.8296 13.0142 13.6626 13.0415 13.5H8.75C8.336 13.5 8 13.164 8 12.75C8 12.336 8.336 12 8.75 12H13.75C13.7546 12 13.7592 12 13.7638 12.0001C14.3131 11.3863 15.1114 11 16 11H19V9.664C19 9.197 18.818 8.757 18.487 8.427L14.573 4.513C14.242 4.182 13.803 4 13.336 4H7.75C6.233 4 5 5.233 5 6.75V17.25C5 18.767 6.233 20 7.75 20H13ZM13.5065 5.5765C13.5055 5.57675 13.5045 5.577 13.5 5.579H13.501V8.5C13.501 9.05 13.951 9.5 14.501 9.5H17.433C17.434 9.498 17.435 9.495 17.435 9.495L13.513 5.574C13.5085 5.576 13.5075 5.57625 13.5065 5.5765ZM10.75 9H8.75C8.336 9 8 9.336 8 9.75C8 10.164 8.336 10.5 8.75 10.5H10.75C11.164 10.5 11.5 10.164 11.5 9.75C11.5 9.336 11.164 9 10.75 9Z" fill="black"/>
+        <path d="M19.125 12.5H15.875C15.1165 12.5 14.5 13.1165 14.5 13.875V19.125C14.5 19.8835 15.1165 20.5 15.875 20.5H19.125C19.8835 20.5 20.5 19.8835 20.5 19.125V13.875C20.5 13.1165 19.8835 12.5 19.125 12.5ZM16.125 19.25C15.918 19.25 15.75 19.082 15.75 18.875C15.75 18.668 15.918 18.5 16.125 18.5C16.332 18.5 16.5 18.668 16.5 18.875C16.5 19.082 16.332 19.25 16.125 19.25ZM16.125 17.875C15.918 17.875 15.75 17.707 15.75 17.5C15.75 17.293 15.918 17.125 16.125 17.125C16.332 17.125 16.5 17.293 16.5 17.5C16.5 17.707 16.332 17.875 16.125 17.875ZM16.125 16.5C15.918 16.5 15.75 16.332 15.75 16.125C15.75 15.918 15.918 15.75 16.125 15.75C16.332 15.75 16.5 15.918 16.5 16.125C16.5 16.332 16.332 16.5 16.125 16.5ZM17.5 19.25C17.293 19.25 17.125 19.082 17.125 18.875C17.125 18.668 17.293 18.5 17.5 18.5C17.707 18.5 17.875 18.668 17.875 18.875C17.875 19.082 17.707 19.25 17.5 19.25ZM17.5 17.875C17.293 17.875 17.125 17.707 17.125 17.5C17.125 17.293 17.293 17.125 17.5 17.125C17.707 17.125 17.875 17.293 17.875 17.5C17.875 17.707 17.707 17.875 17.5 17.875ZM17.5 16.5C17.293 16.5 17.125 16.332 17.125 16.125C17.125 15.918 17.293 15.75 17.5 15.75C17.707 15.75 17.875 15.918 17.875 16.125C17.875 16.332 17.707 16.5 17.5 16.5ZM19.25 18.875C19.25 19.082 19.082 19.25 18.875 19.25C18.668 19.25 18.5 19.082 18.5 18.875V17.5C18.5 17.293 18.668 17.125 18.875 17.125C19.082 17.125 19.25 17.293 19.25 17.5V18.875ZM18.875 16.5C18.668 16.5 18.5 16.332 18.5 16.125C18.5 15.918 18.668 15.75 18.875 15.75C19.082 15.75 19.25 15.918 19.25 16.125C19.25 16.332 19.082 16.5 18.875 16.5ZM19.25 14.625C19.25 14.832 19.082 15 18.875 15H16.125C15.918 15 15.75 14.832 15.75 14.625V14.125C15.75 13.918 15.918 13.75 16.125 13.75H18.875C19.082 13.75 19.25 13.918 19.25 14.125V14.625Z" fill="black"/>
+      </g>
+      <defs><clipPath id="clip-invoices"><rect width="18" height="18" fill="white" transform="translate(3 3)"/></clipPath></defs>
+    </svg>
+  </div>
+  <div class="nav-item" title="Watchlist">
+    <svg viewBox="0 0 24 24" fill="none">
+      <path d="M12 14.5C13.3807 14.5 14.5 13.3807 14.5 12C14.5 10.6193 13.3807 9.5 12 9.5C10.6193 9.5 9.5 10.6193 9.5 12C9.5 13.3807 10.6193 14.5 12 14.5Z" fill="black"/>
+      <path d="M17.25 6H6.75C5.233 6 4 7.233 4 8.75V15.25C4 16.767 5.233 18 6.75 18H17.25C18.767 18 20 16.767 20 15.25V8.75C20 7.233 18.767 6 17.25 6ZM15.642 16.5H8.358C7.994 15.101 6.899 14.006 5.5 13.642V10.358C6.899 9.994 7.994 8.899 8.358 7.5H15.642C16.006 8.899 17.101 9.994 18.5 10.358V13.642C17.101 14.006 16.006 15.101 15.642 16.5Z" fill="black"/>
+    </svg>
+  </div>
+  <div class="nav-item" title="Files">
+    <svg viewBox="0 0 24 24" fill="none">
+      <path d="M18.75 11.5C18.336 11.5 18 11.164 18 10.75V7.75C18 7.061 17.439 6.5 16.75 6.5H8.966C8.552 6.5 8.216 6.164 8.216 5.75C8.216 5.336 8.552 5 8.966 5H16.75C18.266 5 19.5 6.233 19.5 7.75V10.75C19.5 11.164 19.164 11.5 18.75 11.5Z" fill="#212121"/>
+      <path d="M16.75 8H12.512L11.211 6.162C10.696 5.434 9.857 5 8.966 5H7.25C5.733 5 4.5 6.233 4.5 7.75V15.75C4.5 17.267 5.733 18.5 7.25 18.5H16.75C18.267 18.5 19.5 17.267 19.5 15.75V10.75C19.5 9.233 18.267 8 16.75 8Z" fill="#212121"/>
+    </svg>
+  </div>
+  <div class="nav-item" title="Reports">
+    <svg viewBox="0 0 24 24" fill="none">
+      <path d="M18.487 8.427L14.572 4.512C14.2442 4.1841 13.7996 4 13.336 4H7.75C6.2312 4 5 5.2312 5 6.75V17.25C5 18.7688 6.2312 20 7.75 20H16.25C17.7688 20 19 18.7688 19 17.25V9.6655C19 9.2009 18.8155 8.7553 18.487 8.427ZM10 16.25C10 16.6641 9.6641 17 9.25 17C8.8359 17 8.5 16.6641 8.5 16.25V13.5C8.5 13.0859 8.8359 12.75 9.25 12.75C9.6641 12.75 10 13.0859 10 13.5V16.25ZM12.75 16.25C12.75 16.6641 12.4141 17 12 17C11.5859 17 11.25 16.6641 11.25 16.25V11C11.25 10.5859 11.5859 10.25 12 10.25C12.4141 10.25 12.75 10.5859 12.75 11V16.25ZM15.5 16.25C15.5 16.6641 15.1641 17 14.75 17C14.3359 17 14 16.6641 14 16.25V14.75C14 14.3359 14.3359 14 14.75 14C15.1641 14 15.5 14.3359 15.5 14.75V16.25ZM17.433 9.5H14.501C13.951 9.5 13.501 9.05 13.501 8.5V5.5791H13.5C13.509 5.5749 13.504 5.5781 13.513 5.574L17.435 9.4951C17.435 9.4951 17.434 9.498 17.433 9.5Z" fill="#212121"/>
+    </svg>
+  </div>
+  <div class="nav-item" title="Approvals">
+    <svg viewBox="0 0 24 24" fill="none">
+      <path d="M15.75 5H15.475C15.352 4.154 14.63 3.5 13.75 3.5H10.25C9.371 3.5 8.648 4.154 8.525 5H8.25C6.733 5 5.5 6.233 5.5 7.75V17.25C5.5 18.767 6.733 20 8.25 20H15.75C17.267 20 18.5 18.767 18.5 17.25V7.75C18.5 6.233 17.267 5 15.75 5ZM10 5.25C10 5.112 10.112 5 10.25 5H13.75C13.888 5 14 5.112 14 5.25V6.25C14 6.388 13.888 6.5 13.75 6.5H10.25C10.112 6.5 10 6.388 10 6.25V5.25ZM15.35 10.7L11.6 15.7C11.464 15.881 11.254 15.991 11.028 15.999C11.019 15.999 11.009 15.999 11 15.999C10.784 15.999 10.578 15.906 10.436 15.743L8.686 13.743C8.413 13.431 8.445 12.958 8.757 12.685C9.069 12.412 9.542 12.443 9.815 12.756L10.956 14.059L14.151 9.799C14.4 9.468 14.87 9.402 15.201 9.649C15.532 9.898 15.599 10.368 15.351 10.699L15.35 10.7Z" fill="#212121"/>
+    </svg>
+  </div>
+  <div class="nav-item" title="Vessels">
+    <svg viewBox="0 0 24 24" fill="none">
+      <path d="M0.822876 19.5005C2.23998 19.5076 3.58527 18.8805 4.48955 17.7891C6.18684 19.8141 8.22499 20.4473 10.25 18.75C10.4644 18.57 11.07 17.9654 11.25 17.75C12.1543 18.8404 12.75 19.25 13.75 19.5" stroke="#212121" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M2.64589 16.8255C3.04074 16.6682 3.3968 16.415 3.6713 16.0573C4.0741 15.5327 4.67681 15.2138 5.32627 15.1815H5.33224C6.06126 15.1815 6.68387 15.4971 7.10954 16.0455C7.57898 16.652 8.26922 17 9.00421 17C9.58206 17 10.143 16.7791 10.5846 16.3784C10.695 16.2782 10.7984 16.1661 10.8909 16.0455C11.3176 15.495 11.9422 15.1793 12.6056 15.1793C13.2769 15.1804 13.9035 15.5003 14.3282 16.0563C14.5957 16.4053 14.9667 16.6617 15.3715 16.8222L15.9314 14.6708C16.1811 13.7249 15.7305 12.7456 14.8821 12.3922L9.26678 10.0533C9.09472 9.98222 8.90376 9.98222 8.7317 10.0533L3.11633 12.3922C2.26895 12.7456 1.81841 13.7249 2.06904 14.674L2.64689 16.8244L2.64589 16.8255Z" fill="#212121"/>
+      <path d="M2.54728 16L2.04294 14.4038C1.88485 13.9023 2.17543 13.3746 2.71427 13.1873L9.00005 11L15.2858 13.1873C15.8236 13.3746 16.1152 13.9023 15.9571 14.4038L15.4528 16" stroke="#212121" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M3.862 13.956V8.88064C3.862 8.32229 4.31515 7.86914 4.8735 7.86914H12.4597C13.0181 7.86914 13.4712 8.32229 13.4712 8.88064V13.956" stroke="#212121" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M10 5H7V7H10V5Z" fill="#212121" stroke="#212121" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M13 19.25C15.5 20.25 16.772 18.9277 17.2071 18C18.0238 19.7213 19.4756 19.9474 20.45 18.5047C20.5532 18.3517 20.6491 18.1831 20.7357 18C21.1708 18.9269 21.8181 19.4608 22.5 19.4548" stroke="#212121" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M16.5 11.5L20.9899 13.1873C21.374 13.3746 21.5823 13.9023 21.4694 14.4038L21.1092 16" stroke="#212121" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M16.5 7.5H18.5H19.8684C20.5 7.5 20.5 8 20.5 8.59366V12.5" stroke="#212121" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M18.5 6.5H17.5V7H18.5V6.5Z" fill="#212121" stroke="#212121" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </div>
+  <div class="nav-item" title="Analytics">
+    <svg viewBox="0 0 24 24" fill="none">
+      <path d="M12.75 4.03799V10.326L17.436 6.14699C16.18 4.97899 14.553 4.20599 12.75 4.03799Z" fill="#212121"/>
+      <path d="M12.992 12.12L17.125 18.135C18.88 16.666 20 14.462 20 12C20 10.228 19.414 8.59399 18.434 7.26599L12.992 12.12Z" fill="#212121"/>
+      <path d="M11.358 12.389C11.292 12.277 11.25 12.139 11.25 12V4.03799C7.19 4.41799 4 7.84199 4 12C4 16.411 7.589 20 12 20C13.411 20 14.737 19.629 15.889 18.985L11.382 12.425C11.369 12.405 11.358 12.389 11.358 12.389Z" fill="#212121"/>
+    </svg>
+  </div>
+  <div class="nav-item" title="Agents">
+    <svg viewBox="0 0 24 24" fill="none">
+      <path d="M15 4.75C14.5 4.75 14.035 4.885 13.62 5.102C14.167 5.847 14.5 6.757 14.5 7.75C14.5 8.743 14.167 9.653 13.62 10.398C14.035 10.615 14.5 10.75 15 10.75C16.654 10.75 18 9.404 18 7.75C18 6.096 16.654 4.75 15 4.75Z" fill="#212121"/>
+      <path d="M10 10.75C11.6569 10.75 13 9.40685 13 7.75C13 6.09315 11.6569 4.75 10 4.75C8.34315 4.75 7 6.09315 7 7.75C7 9.40685 8.34315 10.75 10 10.75Z" fill="#212121"/>
+      <path d="M11.75 16.75C11.75 15.892 12.227 15.121 12.994 14.737L14.323 14.072L14.516 13.686C13.357 12.466 11.743 11.749 10 11.749C7.631 11.749 5.495 13.064 4.425 15.181C4.143 15.738 4.118 16.394 4.356 16.982C4.602 17.589 5.097 18.061 5.714 18.275C7.098 18.755 8.54 18.999 10 18.999C10.966 18.999 11.923 18.882 12.861 18.671C12.178 18.266 11.75 17.552 11.75 16.749V16.75Z" fill="#212121"/>
+      <path d="M20.335 16.079L18.559 15.191L17.671 13.415C17.417 12.907 16.583 12.907 16.329 13.415L15.441 15.191L13.665 16.079C13.411 16.206 13.25 16.466 13.25 16.75C13.25 17.034 13.411 17.294 13.665 17.421L15.441 18.309L16.329 20.085C16.456 20.339 16.716 20.5 17 20.5C17.284 20.5 17.544 20.339 17.671 20.085L18.559 18.309L20.335 17.421C20.589 17.294 20.75 17.034 20.75 16.75C20.75 16.466 20.589 16.206 20.335 16.079Z" fill="#212121"/>
+    </svg>
+  </div>
+  <div class="nav-item" title="Inbox">
+    <svg viewBox="0 0 24 24" fill="none">
+      <path d="M6.8055 16.2901V10.9141C6.8055 10.3618 7.25321 9.91409 7.8055 9.91409H16.1942C16.7465 9.91409 17.1942 10.3618 17.1942 10.9141V16.2901C17.1942 16.8424 16.7465 17.2901 16.1942 17.2901H7.8055C7.25321 17.2901 6.8055 16.8424 6.8055 16.2901Z" fill="black" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M17.2723 6.71194H6.72762C6.17533 6.71194 5.72762 7.15966 5.72762 7.71194V8.91429C5.72762 9.46657 6.17533 9.91429 6.72761 9.91429H17.2723C17.8245 9.91429 18.2723 9.46657 18.2723 8.91429V7.71194C18.2723 7.15966 17.8245 6.71194 17.2723 6.71194Z" fill="black" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M10.3702 12.6924H13.4782" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </div>
+  <div class="nav-item" title="Compliance">
+    <svg viewBox="0 0 24 24" fill="none">
+      <path d="M12 13C13.5188 13 14.75 11.7688 14.75 10.25C14.75 8.73122 13.5188 7.5 12 7.5C10.4812 7.5 9.25 8.73122 9.25 10.25C9.25 11.7688 10.4812 13 12 13Z" fill="#212121"/>
+      <path d="M12.308 19.153C13.048 18.914 14.97 18.217 16.43 17.07C15.732 15.228 13.988 14 12 14C10.034 14 8.30999 15.201 7.57899 17.076C9.03799 18.219 10.954 18.914 11.693 19.153C11.896 19.219 12.106 19.219 12.309 19.153H12.308Z" fill="#212121"/>
+      <path d="M12 19.952C11.819 19.952 11.638 19.924 11.463 19.867C9.945 19.376 5 17.502 5 13.997V7.47798C5 6.71398 5.489 6.04398 6.217 5.81098L11.467 4.13098C11.815 4.01998 12.184 4.01998 12.533 4.13098L17.783 5.81098C18.511 6.04298 19 6.71298 19 7.47798V13.998C19 17.503 14.055 19.376 12.539 19.867C12.362 19.924 12.181 19.952 12 19.952ZM12 5.54698C11.975 5.54698 11.949 5.55098 11.924 5.55898L6.674 7.23898C6.57 7.27198 6.5 7.36798 6.5 7.47698V13.997C6.5 16.554 11.018 18.146 11.924 18.439C11.975 18.456 12.024 18.456 12.078 18.439C12.982 18.146 17.5 16.554 17.5 13.997V7.47798C17.5 7.36898 17.431 7.27298 17.326 7.23998L12.076 5.55998C12.051 5.55198 12.025 5.54798 12 5.54798V5.54698Z" fill="#212121"/>
+    </svg>
+  </div>
+  <div class="nav-item" title="Dashboard">
+    <svg viewBox="0 0 24 24" fill="none">
+      <path d="M16.316 18.052C15.2147 17.6853 14.108 17.4627 13 17.3773V15C13 14.448 12.552 14 12 14C11.448 14 11 14.448 11 15V17.3773C9.89199 17.4627 8.78533 17.6853 7.684 18.052C7.16 18.2267 6.87733 18.7933 7.05066 19.3173C7.22666 19.84 7.78533 20.1253 8.31599 19.9493C10.7587 19.136 13.24 19.136 15.6827 19.9493C15.788 19.984 15.8947 20.0013 15.9987 20.0013C16.4173 20.0013 16.8067 19.736 16.948 19.3173C17.1227 18.7933 16.8387 18.2267 16.3147 18.052H16.316Z" fill="#212121"/>
+      <path d="M16.3333 4H7.66667C5.64162 4 4 5.64162 4 7.66667V12.3333C4 14.3584 5.64162 16 7.66667 16H16.3333C18.3584 16 20 14.3584 20 12.3333V7.66667C20 5.64162 18.3584 4 16.3333 4Z" fill="#212121"/>
+    </svg>
+  </div>
+  <div class="nav-spacer"></div>
+  <div class="nav-divider"></div>
+  <div class="nav-item" title="Docs">
+    <svg viewBox="0 674.5 56 40" style="width:28px;height:20px">
+      <path d="M28 701.25C28 700.145 28.895 699.25 30 699.25H34.25C34.802 699.25 35.25 698.802 35.25 698.25V688.75C35.25 688.198 34.802 687.75 34.25 687.75H30C28.895 687.75 28 688.645 28 689.75" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M28 701.25V689.75C28 688.645 27.105 687.75 26 687.75H21.75C21.198 687.75 20.75 688.198 20.75 688.75V698.25C20.75 698.802 21.198 699.25 21.75 699.25H26C27.105 699.25 28 700.145 28 701.25Z" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </div>
+  <div class="nav-item" title="Notifications" style="position:relative">
+    <svg viewBox="0 712.5 56 40" style="width:28px;height:20px">
+      <path d="M34.75 736.25C33.645 736.25 32.75 735.355 32.75 734.25V729.5C32.75 726.877 30.623 724.75 28 724.75C25.377 724.75 23.25 726.877 23.25 729.5V734.25C23.25 735.355 22.355 736.25 21.25 736.25H34.75Z" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M29.588 738.185C29.493 738.068 29.351 738 29.2 738H26.801C26.65 738 26.508 738.068 26.413 738.185C26.318 738.302 26.281 738.456 26.312 738.603C26.485 739.425 27.18 740 28.001 740C28.822 740 29.517 739.425 29.69 738.603C29.721 738.456 29.683 738.302 29.588 738.185Z" fill="black"/>
+    </svg>
+    <div class="nav-badge-dot"></div>
+  </div>
+  <div class="nav-avatar" title="Account">A</div>
+</nav>
+
+<div class="main">
+  <div class="topbar">
+    <div class="topbar-title">
+      <span class="date-chip" id="live-date"></span>
+    </div>
+    <div class="topbar-spacer"></div>
+    <div class="dash-tabs" id="dash-tabs-bar" style="position:absolute;left:50%;transform:translateX(-50%)">
+      <div class="dash-tab active" onclick="switchDashTab('disbursements',this)">Disbursements</div>
+      <div class="dash-tab" onclick="switchDashTab('financial',this)">Financial</div>
+    </div>
+    <div class="topbar-spacer"></div>
+    <div class="topbar-right">
+      <div class="mycalls-wrap" id="myCallsWrap" onclick="toggleMyCalls()">
+        <span class="mycalls-label">My Calls</span>
+        <div class="toggle-switch"><div class="knob"></div></div>
+      </div>
+      <label class="topbar-search">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" placeholder="Search">
+      </label>
+      <button class="btn-primary">
+        <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        New Port Call
+      </button>
+    </div>
+  </div>
+
+  <div class="crumbbar" id="crumbbar" style="display:none">
+    <span class="crumb-root" id="crumb-root" onclick="showView('view-dashboard')" style="display:none">Dashboard</span>
+    <span class="crumb-sep" id="crumb-sep" style="display:none">›</span>
+    <span class="crumb-current" id="crumb-current"></span>
+  </div>
+
+  <div class="content" id="content">
+    <!-- VIEW: OVERVIEW -->
+    <div class="view active" id="view-dashboard">
+
+
+      <!-- DISBURSEMENTS PANEL -->
+      <div id="dash-panel-disbursements" style="display:flex;flex-direction:column;gap:18px">
+
+      <!-- SITUATION REPORT -->
+      <div class="situation-hdr">
+        <div>
+          <div class="dash-welcome">Welcome, <span class="welcome-name">Sahithi Alluru</span>!</div>
+          <div class="situation-sub">3 things need your attention before you do anything else.</div>
+        </div>
+        <span class="last-updated">Last Updated: 21 Jul 2026, 06:27 GMT</span>
+      </div>
+      <div class="situation-grid">
+        <div class="sit-card sit-urgent" onclick="goDetail('view-pending','Pending Approval',event)">
+          <span class="sit-badge"><span class="sit-dot"></span>Act Now — Approvals</span>
+          <div class="sit-val" data-count="15">0</div>
+          <div class="sit-lbl">DAs are waiting for your sign-off.</div>
+          <div class="sit-sub">Oldest waiting 6 days · USD 172K total value</div>
+          <div class="sit-actions" style="align-items:center">
+            <button class="sit-btn sit-btn-onred" onclick="event.stopPropagation();goDetail('view-pending','Pending Approval',event)"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Review &amp; Approve</button>
+            <div style="display:flex;flex-direction:column;gap:2px;padding-left:6px">
+              <span style="font-size:10.5px;font-weight:700;color:rgba(255,255,255,.75)">6 PDA / APDA / DDA</span>
+              <span style="font-size:10.5px;font-weight:700;color:rgba(255,255,255,.75)">4 FDA / SDA / VI</span>
+            </div>
+          </div>
+        </div>
+        <div class="sit-card" onclick="goDetail('view-appt','Pending Appointment',event)">
+          <span class="sit-badge sit-info"><span class="sit-dot"></span>Pending Appointments</span>
+          <div class="sit-val" data-count="8">0</div>
+          <div class="sit-lbl">Vessels arriving without an agent appointed.</div>
+          <div class="sit-sub">2 due today · furthest ETA in 16 days</div>
+          <div class="sit-actions">
+            <button class="sit-btn sit-btn-teal" onclick="event.stopPropagation();goDetail('view-appt','Pending Appointment',event)"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Assign agents</button>
+            <button class="sit-btn sit-btn-outline" onclick="event.stopPropagation();goDetail('view-appt','Pending Appointment',event)">View schedule</button>
+          </div>
+        </div>
+        <div class="sit-card" onclick="goDetail('view-overdue','Overdue DAs',event)">
+          <span class="sit-badge sit-warn"><span class="sit-dot"></span>Overdue</span>
+          <div class="sit-val" data-count="5">0</div>
+          <div class="sit-lbl">FDAs not received from agents past their deadline.</div>
+          <div class="sit-sub">USD 151K outstanding · oldest is 12 days overdue</div>
+          <div class="sit-actions">
+            <button class="sit-btn sit-btn-orange" onclick="fireToast('Escalated all 5 overdue DAs',event)"><svg viewBox="0 0 24 24"><path d="M7 17l9.2-9.2M17 17V7H7"/></svg>Escalate all 5</button>
+            <button class="sit-btn sit-btn-outline" onclick="event.stopPropagation();goDetail('view-overdue','Overdue DAs',event)">Review <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
+          </div>
+        </div>
+        <div class="sit-card sit-milestone">
+          <span class="sit-badge sit-gold"><span class="sit-dot"></span>Milestone — June 2026</span>
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:5px;margin-top:10px">
+            <div class="milestone-icon">
+              <svg viewBox="0 0 24 24"><path d="M8 21h8"/><path d="M12 17v4"/><path d="M7 4h10v5a5 5 0 0 1-10 0V4z"/><path d="M17 5h2a2 2 0 0 1 2 2c0 2-2 4-4 4"/><path d="M7 5H5a2 2 0 0 0-2 2c0 2 2 4 4 4"/></svg>
+            </div>
+            <div class="milestone-headline">Your best month yet!</div>
+          </div>
+          <div style="margin-top:auto;display:flex;gap:36px">
+            <div style="display:flex;flex-direction:column">
+              <span style="font-size:18px;font-weight:800;color:#78350F;line-height:1.1">27 DAs</span>
+              <span style="font-size:12px;font-weight:600;color:#92400E">approved</span>
+            </div>
+            <div style="display:flex;flex-direction:column">
+              <span style="font-size:18px;font-weight:800;color:#78350F;line-height:1.1">1.8d</span>
+              <span style="font-size:12px;font-weight:600;color:#92400E">avg</span>
+            </div>
+            <div style="display:flex;flex-direction:column">
+              <span style="font-size:18px;font-weight:800;color:#78350F;line-height:1.1">18%</span>
+              <span style="font-size:12px;font-weight:600;color:#92400E">faster</span>
+            </div>
+          </div>
+          <div class="milestone-chips">
+            <span class="milestone-chip">▲ 8 vs last month</span>
+            <span class="milestone-chip">🔥 12-day streak</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="situation-stats-row">
+        <div class="card reveal">
+          <div class="tile-hdr"><div class="tile-title">Operational Health <span style="font-size:11px;font-weight:400;color:var(--text-2)">· June 2026</span></div></div>
+          <div class="health-tiles">
+            <div class="health-tile" onclick="goDetail('view-clar','Under Clarification',event)">
+              <div class="health-tile-top">
+                <span class="health-tile-lbl">Under Clarification</span>
+                <div class="health-tile-icon" style="background:#F0F2F5;color:#9BAABF">
+                  <svg class="health-tile-default" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                  <svg class="health-tile-arrow" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                </div>
+              </div>
+              <div class="health-tile-val">15</div>
+              <div class="health-tile-bottom">
+                <div class="health-tile-bar"><div class="health-tile-bar-fill" style="--w:60%;background:#1852FE"></div></div>
+                <span class="health-tile-trend neg">▲ 2 since yesterday</span>
+              </div>
+            </div>
+            <div class="health-tile" onclick="goDetail('view-approved','Approved DAs',event)">
+              <div class="health-tile-top">
+                <span class="health-tile-lbl">Approvals (this month)</span>
+                <div class="health-tile-icon" style="background:#F0F2F5;color:#9BAABF">
+                  <svg class="health-tile-default" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                  <svg class="health-tile-arrow" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                </div>
+              </div>
+              <div class="health-tile-val">27</div>
+              <div class="health-tile-bottom">
+                <div class="health-tile-bar"><div class="health-tile-bar-fill" style="--w:78%;background:#4274FF"></div></div>
+                <span class="health-tile-trend pos">▲ 8 vs last month</span>
+              </div>
+            </div>
+            <div class="health-tile" onclick="goDetail('view-pending','Pending Approval',event)">
+              <div class="health-tile-top">
+                <span class="health-tile-lbl">Avg. approval time</span>
+                <div class="health-tile-icon" style="background:#F0F2F5;color:#9BAABF">
+                  <svg class="health-tile-default" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                  <svg class="health-tile-arrow" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                </div>
+              </div>
+              <div class="health-tile-val">1.8<span style="font-size:12px;font-weight:600;color:var(--text-2)">d</span></div>
+              <div class="health-tile-bottom">
+                <div class="health-tile-bar"><div class="health-tile-bar-fill" style="--w:70%;background:#0A3BC4"></div></div>
+                <span class="health-tile-trend pos">▼ 0.4d faster</span>
+              </div>
+            </div>
+            <div class="health-tile" onclick="goDetail('view-created','Port Calls Created',event)">
+              <div class="health-tile-top">
+                <span class="health-tile-lbl">Port-call volume</span>
+                <div class="health-tile-icon" style="background:#F0F2F5;color:#9BAABF">
+                  <svg class="health-tile-default" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+                  <svg class="health-tile-arrow" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                </div>
+              </div>
+              <div class="health-tile-val">9</div>
+              <div class="health-tile-bottom">
+                <div class="health-tile-bar"><div class="health-tile-bar-fill" style="--w:85%;background:#6B9BFF"></div></div>
+                <span class="health-tile-trend pos">▲ 22% vs last month</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card reveal">
+          <div class="cash-hdr">
+            <div>
+              <div class="cash-title" style="font-size:16px">Cash Outstanding exposure</div>
+            </div>
+            <span class="cash-trend-chip">▲ 6% vs last month</span>
+          </div>
+          <div class="cash-body">
+            <div class="cash-kpi">
+              <div class="cash-kpi-val">USD 78,371</div>
+              <div class="cash-kpi-sub">14 open balances</div>
+            </div>
+            <div class="cash-bar-wrap">
+              <div class="cash-bar">
+                <div class="cash-seg" data-slice="0" style="flex:30;background:#8FB6F0" onmouseenter="cashHover(0)" onmouseleave="cashHover(-1)"></div>
+                <div class="cash-seg" data-slice="1" style="flex:20;background:#E3A73E" onmouseenter="cashHover(1)" onmouseleave="cashHover(-1)"></div>
+                <div class="cash-seg" data-slice="2" style="flex:50;background:#DC5B54" onmouseenter="cashHover(2)" onmouseleave="cashHover(-1)"></div>
+              </div>
+            </div>
+            <div class="cash-legend">
+              <div class="cash-legend-row" data-slice="0" onmouseenter="cashHover(0)" onmouseleave="cashHover(-1)">
+                <span class="cash-legend-dot" style="background:#8FB6F0"></span>
+                <span class="cash-legend-lbl">0–5 days</span>
+                <span class="cash-legend-amt">USD 23,511</span>
+                <span class="cash-legend-pct">30%</span>
+              </div>
+              <div class="cash-legend-row" data-slice="1" onmouseenter="cashHover(1)" onmouseleave="cashHover(-1)">
+                <span class="cash-legend-dot" style="background:#E3A73E"></span>
+                <span class="cash-legend-lbl">6–10 days</span>
+                <span class="cash-legend-amt">USD 15,660</span>
+                <span class="cash-legend-pct">20%</span>
+              </div>
+              <div class="cash-legend-row" data-slice="2" onmouseenter="cashHover(2)" onmouseleave="cashHover(-1)">
+                <span class="cash-legend-dot" style="background:#DC5B54"></span>
+                <span class="cash-legend-lbl">&gt;10 days</span>
+                <span class="cash-legend-amt">USD 39,200</span>
+                <span class="cash-legend-pct">50%</span>
+              </div>
+            </div>
+          </div>
+          <div class="cash-alert">USD 39,200 (50%) aging beyond 10 days — prioritize collection</div>
+        </div>
+
+        <div class="card reveal">
+          <div class="tile-hdr" style="margin-bottom:14px">
+            <div class="tile-title">Fastest Settling Vendors</div>
+            <span style="font-size:11px;font-weight:400;color:var(--text-2)">avg. days to settle</span>
+          </div>
+          <div class="agent-rank-row">
+            <div class="agent-avatar">KS</div>
+            <div class="agent-rank-main">
+              <div class="agent-rank-name">Keppel Smit</div>
+              <div class="agent-rank-track"><div class="agent-rank-fill" style="--w:90%"></div></div>
+            </div>
+            <div class="agent-rank-val" style="color:var(--success);font-weight:700">1.4d</div>
+          </div>
+          <div class="agent-rank-row">
+            <div class="agent-avatar" style="background:var(--teal-bg);color:var(--teal-dark)">TV</div>
+            <div class="agent-rank-main">
+              <div class="agent-rank-name">Test Vendor 22</div>
+              <div class="agent-rank-track"><div class="agent-rank-fill" style="--w:74%;background:var(--teal-dark)"></div></div>
+            </div>
+            <div class="agent-rank-val" style="color:var(--teal-dark);font-weight:700">1.9d</div>
+          </div>
+          <div class="agent-rank-row">
+            <div class="agent-avatar" style="background:#EEF1F6;color:var(--text-2)">AB</div>
+            <div class="agent-rank-main">
+              <div class="agent-rank-name">ABC Test Shipping</div>
+              <div class="agent-rank-track"><div class="agent-rank-fill" style="--w:55%;background:#7B8FA6"></div></div>
+            </div>
+            <div class="agent-rank-val" style="font-weight:700">2.6d</div>
+          </div>
+          <div class="agent-rank-row">
+            <div class="agent-avatar" style="background:var(--amber-mid);color:#844D0F">SA</div>
+            <div class="agent-rank-main">
+              <div class="agent-rank-name">Straits Agency</div>
+              <div class="agent-rank-track"><div class="agent-rank-fill" style="--w:38%;background:var(--warning)"></div></div>
+            </div>
+            <div class="agent-rank-val" style="color:var(--warning);font-weight:700">3.1d</div>
+          </div>
+          <div class="agent-rank-row">
+            <div class="agent-avatar" style="background:#FDECEA;color:var(--danger)">BT</div>
+            <div class="agent-rank-main">
+              <div class="agent-rank-name">Boskalis Terminal</div>
+              <div class="agent-rank-track"><div class="agent-rank-fill" style="--w:22%;background:var(--danger)"></div></div>
+            </div>
+            <div class="agent-rank-val" style="color:var(--danger);font-weight:700">4.2d</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TRENDS & ACTIVITY -->
+      <div class="section-lbl">Trends &amp; Activity</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px;align-items:start">
+        <div class="chart-card reveal" style="grid-column:span 2">
+          <div class="chart-card-hdr">
+            <div>
+              <div class="tile-title">Disbursement &amp; Approval Trend</div>
+              <div style="font-size:11.5px;color:var(--text-2);margin-top:2px">Weekly totals across all vessels and ports</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px">
+              <div class="chart-legend2"><span class="leg2"><i style="background:var(--brand)"></i>Submitted</span><span class="leg2"><i style="background:var(--teal-dark)"></i>Approved</span></div>
+              <div class="period-tabs">
+                <div class="period-tab active" onclick="switchChartPeriod('week',this)">Week</div>
+                <div class="period-tab" onclick="switchChartPeriod('month',this)">Month</div>
+                <div class="period-tab" onclick="switchChartPeriod('quarter',this)">Quarter</div>
+              </div>
+            </div>
+          </div>
+          <div id="chart-subtitle" style="font-size:11.5px;color:var(--text-2);margin-top:2px;margin-bottom:4px">Weekly totals across all vessels and ports</div>
+          <svg viewBox="0 0 640 190" style="width:100%;height:auto;margin-top:6px" id="main-chart">
+            <defs><linearGradient id="grad-main" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#1852FE" stop-opacity=".16"/><stop offset="100%" stop-color="#1852FE" stop-opacity="0"/>
+            </linearGradient></defs>
+            <g stroke="#EDF1F7" stroke-width="1">
+              <line x1="40" y1="20" x2="620" y2="20"/><line x1="40" y1="55" x2="620" y2="55"/>
+              <line x1="40" y1="90" x2="620" y2="90"/><line x1="40" y1="125" x2="620" y2="125"/><line x1="40" y1="160" x2="620" y2="160"/>
+            </g>
+            <g font-size="10" fill="#94A3B8" font-family="Gilroy,sans-serif">
+              <text x="32" y="164" text-anchor="end">0</text><text x="32" y="129" text-anchor="end">10</text>
+              <text x="32" y="94" text-anchor="end">20</text><text x="32" y="59" text-anchor="end">30</text><text x="32" y="24" text-anchor="end">40</text>
+            </g>
+            <g id="chart-xlabels" font-size="10" fill="#94A3B8" font-family="Gilroy,sans-serif">
+              <text x="62"  y="182">W1</text><text x="142" y="182">W2</text><text x="222" y="182">W3</text><text x="302" y="182">W4</text>
+              <text x="382" y="182">W5</text><text x="462" y="182">W6</text><text x="542" y="182">W7</text><text x="618" y="182">W8</text>
+            </g>
+            <path id="chart-area"  class="trend-fill2" fill="url(#grad-main)" d="M62,104 L142,90 L222,97 L302,69 L382,79 L462,55 L542,62 L618,41 L618,160 L62,160 Z"/>
+            <path id="chart-line1" class="trend-line2" d="M62,104 L142,90 L222,97 L302,69 L382,79 L462,55 L542,62 L618,41"/>
+            <path id="chart-line2" class="trend-line3" d="M62,125 L142,111 L222,118 L302,97 L382,104 L462,83 L542,90 L618,69"/>
+          </svg>
+          <div class="chart-foot-stats">
+            <div class="cfoot-item"><span class="cfoot-val" id="stat-disbursed">USD 341K</span><span class="cfoot-lbl">Total Disbursed</span></div>
+            <div class="cfoot-item"><span class="cfoot-val" id="stat-approved" style="color:#147638">27</span><span class="cfoot-lbl" id="stat-approved-lbl">Approved this month</span></div>
+            <div class="cfoot-item"><span class="cfoot-val" id="stat-rejected" style="color:var(--slate)">3</span><span class="cfoot-lbl" id="stat-rejected-lbl">Rejected this month</span></div>
+          </div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <div class="card reveal">
+            <div class="tile-hdr"><div class="tile-title">Top Agents by Turnaround</div></div>
+            <div class="agent-rank-row"><div class="agent-avatar">KS</div><div class="agent-rank-main"><div class="agent-rank-name">Keppel Smit</div><div class="agent-rank-track"><div class="agent-rank-fill" style="--w:88%"></div></div></div><div class="agent-rank-val">1.4d</div></div>
+            <div class="agent-rank-row"><div class="agent-avatar" style="background:var(--teal-bg);color:var(--teal-dark)">TV</div><div class="agent-rank-main"><div class="agent-rank-name">Test Vendor 22</div><div class="agent-rank-track"><div class="agent-rank-fill" style="--w:70%;background:var(--teal-dark)"></div></div></div><div class="agent-rank-val">1.9d</div></div>
+            <div class="agent-rank-row"><div class="agent-avatar" style="background:var(--amber-mid);color:#844D0F">AB</div><div class="agent-rank-main"><div class="agent-rank-name">ABC Test Shipping</div><div class="agent-rank-track"><div class="agent-rank-fill" style="--w:52%;background:var(--warning)"></div></div></div><div class="agent-rank-val">2.6d</div></div>
+          </div>
+          <div class="card reveal">
+            <div class="tile-hdr"><div class="tile-title">Activity Timeline</div></div>
+            <div class="timeline">
+              <div class="tl-item"><span class="tl-dot ok"></span><div class="tl-title">TST2600108 approved</div><div class="tl-sub">USD 9,120 · by Sahithi Alluru</div><div class="tl-time">2 hours ago</div></div>
+              <div class="tl-item"><span class="tl-dot new"></span><div class="tl-title">TST2600144 port call created</div><div class="tl-sub">Omicron West · Singapore</div><div class="tl-time">4 hours ago</div></div>
+              <div class="tl-item"><span class="tl-dot ok"></span><div class="tl-title">TST2600104 approved</div><div class="tl-sub">USD 14,780 · by Sahithi Alluru</div><div class="tl-time">5 hours ago</div></div>
+              <div class="tl-item"><span class="tl-dot warn"></span><div class="tl-title">TST2600091 flagged overdue</div><div class="tl-sub">Pacific Wind · 6 days past deadline</div><div class="tl-time">1 day ago</div></div>
+              <div class="tl-item"><span class="tl-dot no"></span><div class="tl-title">TST2600099 rejected</div><div class="tl-sub">USD 4,050 · amount mismatch</div><div class="tl-time">1 day ago</div></div>
+              <div class="tl-item"><span class="tl-dot ok"></span><div class="tl-title">TST2600096 approved</div><div class="tl-sub">USD 21,300 · by Sahithi Alluru</div><div class="tl-time">1 day ago</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      </div><!-- /dash-panel-disbursements -->
+
+      <!-- FINANCIAL PANEL -->
+      <div id="dash-panel-financial" style="display:none;flex-direction:column;gap:18px">
+
+        <!-- Financial header — mirrors Disbursements situation-hdr -->
+        <div class="situation-hdr" style="margin-bottom:18px">
+          <div>
+            <div class="dash-welcome">Cash Position <span class="welcome-name">— June 2026</span></div>
+            <div class="situation-sub">USD 48,650 pending approval &amp; USD 277,748 projected shortfall need action before month-end.</div>
+          </div>
+        </div>
+
+        <!-- Cash Position — sit-card style matching Disbursements priority cards -->
+        <div class="situation-grid">
+
+          <!-- Available Balance — main card (navy/brand, like sit-urgent) -->
+          <div class="sit-card" style="gap:7px;background:linear-gradient(135deg,var(--nav) 0%,#1C4ED8 100%);border-color:transparent;color:#fff;box-shadow:0 10px 26px rgba(24,82,254,.28);cursor:default">
+            <span class="sit-badge" style="color:rgba(255,255,255,.8)"><span class="sit-dot"></span>Available Balance</span>
+            <div class="sit-val" style="color:#fff">USD 32,005.36</div>
+            <div class="sit-lbl" style="color:rgba(255,255,255,.9)">Cash across all agents &amp; vendors.</div>
+            <div class="sit-sub" style="color:rgba(255,255,255,.65)">As of June 29, 2026</div>
+            <div class="sit-actions">
+              <button class="sit-btn" style="background:#fff;color:var(--nav)" onclick="fireToast('Opening balance breakdown',event)">View breakdown</button>
+              <button class="sit-btn sit-btn-ghostred" style="border-color:rgba(255,255,255,.35);color:#fff;background:rgba(255,255,255,.12)">Add funds</button>
+            </div>
+          </div>
+
+          <!-- Under Approval — amber/warn -->
+          <div class="sit-card" style="gap:7px">
+            <span class="sit-badge sit-warn"><span class="sit-dot"></span>Under Approval</span>
+            <div class="sit-val">USD 48,650</div>
+            <div class="sit-lbl">DAs awaiting financial sign-off.</div>
+            <div class="sit-sub">15 items · oldest 6 days · USD 172K</div>
+            <div class="sit-actions">
+              <button class="sit-btn sit-btn-orange" onclick="fireToast('Opening approval queue',event)"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Review &amp; approve</button>
+              <button class="sit-btn sit-btn-outline" onclick="fireToast('Snoozed for 4 hours',event)">Snooze</button>
+            </div>
+          </div>
+
+          <!-- In Process — teal/info -->
+          <div class="sit-card" style="gap:7px">
+            <span class="sit-badge sit-info"><span class="sit-dot"></span>In Process</span>
+            <div class="sit-val">USD 237,409</div>
+            <div class="sit-lbl">Active disbursements in progress.</div>
+            <div class="sit-sub">34 port calls · 8 ports · largest USD 42K</div>
+            <div class="sit-actions">
+              <button class="sit-btn sit-btn-teal" onclick="fireToast('Opening port calls',event)"><svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>View all</button>
+              <button class="sit-btn sit-btn-outline" onclick="fireToast('Downloading report',event)">Export</button>
+            </div>
+          </div>
+
+          <!-- Projected Balance — red/urgent alert -->
+          <div class="sit-card sit-urgent" style="gap:7px">
+            <span class="sit-badge"><span class="sit-dot"></span>Projected Balance — Alert</span>
+            <div class="sit-val">–USD 277,748</div>
+            <div class="sit-lbl">Goes negative after all commitments.</div>
+            <div class="sit-sub" style="color:rgba(255,255,255,.75)">USD 309K shortfall · act before month-end</div>
+            <div class="sit-actions">
+              <button class="sit-btn sit-btn-onred" onclick="fireToast('Opening cash forecast',event)"><svg viewBox="0 0 24 24"><path d="M7 17l9.2-9.2M17 17V7H7"/></svg>Review forecast</button>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Savings Performance KPIs — Operational Health style -->
+        <div class="card">
+          <div class="tile-hdr"><div class="tile-title">Savings Performance <span style="font-size:11px;font-weight:400;color:var(--text-2)">· YTD</span></div></div>
+          <div style="display:flex;gap:0">
+            <div class="health-tiles" style="flex:1">
+              <div class="health-tile">
+                <div class="health-tile-top">
+                  <span class="health-tile-lbl">YTD Savings</span>
+                  <div class="health-tile-icon" style="background:var(--green-bg);color:#147638">
+                    <svg class="health-tile-default" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    <svg class="health-tile-arrow" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                  </div>
+                </div>
+                <div class="health-tile-val" style="color:var(--success)">$150K</div>
+                <div class="health-tile-bottom">
+                  <div class="health-tile-bar"><div class="health-tile-bar-fill reveal" style="--w:75%;background:var(--success)"></div></div>
+                  <span class="health-tile-trend pos">▲ 18% vs last year</span>
+                </div>
+              </div>
+              <div class="health-tile">
+                <div class="health-tile-top">
+                  <span class="health-tile-lbl">Cashflow Savings</span>
+                  <div class="health-tile-icon" style="background:var(--blue-light);color:var(--brand)">
+                    <svg class="health-tile-default" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                    <svg class="health-tile-arrow" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                  </div>
+                </div>
+                <div class="health-tile-val" style="color:var(--brand)">$75K</div>
+                <div class="health-tile-bottom">
+                  <div class="health-tile-bar"><div class="health-tile-bar-fill reveal" style="--w:50%;background:var(--brand)"></div></div>
+                  <span class="health-tile-trend pos">★ Record savings</span>
+                </div>
+              </div>
+              <div class="health-tile">
+                <div class="health-tile-top">
+                  <span class="health-tile-lbl">DA Savings</span>
+                  <div class="health-tile-icon" style="background:var(--purple-bg);color:var(--purple)">
+                    <svg class="health-tile-default" viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+                    <svg class="health-tile-arrow" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                  </div>
+                </div>
+                <div class="health-tile-val" style="color:var(--purple)">$25K</div>
+                <div class="health-tile-bottom">
+                  <div class="health-tile-bar"><div class="health-tile-bar-fill reveal" style="--w:25%;background:var(--purple)"></div></div>
+                  <span class="health-tile-trend pos">★ Record savings</span>
+                </div>
+              </div>
+              <div class="health-tile">
+                <div class="health-tile-top">
+                  <span class="health-tile-lbl">Contractual Savings</span>
+                  <div class="health-tile-icon" style="background:var(--teal-bg);color:var(--teal-dark)">
+                    <svg class="health-tile-default" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                    <svg class="health-tile-arrow" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                  </div>
+                </div>
+                <div class="health-tile-val" style="color:var(--teal-dark)">$50K</div>
+                <div class="health-tile-bottom">
+                  <div class="health-tile-bar"><div class="health-tile-bar-fill reveal" style="--w:33%;background:var(--teal-dark)"></div></div>
+                  <span class="health-tile-trend pos">★ Record · Direct contract</span>
+                </div>
+              </div>
+            </div>
+            <!-- Savings by Type — right panel -->
+            <div style="flex:0 0 220px;border-left:1px solid var(--border);padding-left:18px;margin-left:8px;display:flex;flex-direction:column;gap:10px">
+              <div style="font-size:13px;font-weight:700;color:var(--text)">Savings by Type <span style="font-size:11px;font-weight:400;color:var(--text-2)">· MTD</span></div>
+              <div class="sbar-wrap">
+                <div class="sbar-row"><div class="sbar-lbl">Contractual Discount</div><div class="sbar-track"><div class="sbar-fill" style="width:85%;background:var(--blue-mid)"></div></div><div class="sbar-val">$55.9K</div></div>
+                <div class="sbar-row"><div class="sbar-lbl">Hidden Cost</div><div class="sbar-track"><div class="sbar-fill" style="width:40%;background:var(--nav)"></div></div><div class="sbar-val">$5.3K</div></div>
+                <div class="sbar-row"><div class="sbar-lbl">Agent Error</div><div class="sbar-track"><div class="sbar-fill" style="width:30%;background:var(--nav)"></div></div><div class="sbar-val">$2.7K</div></div>
+                <div class="sbar-row"><div class="sbar-lbl">Escalated Cost</div><div class="sbar-track"><div class="sbar-fill" style="width:18%;background:var(--nav)"></div></div><div class="sbar-val">$1.3K</div></div>
+                <div class="sbar-row"><div class="sbar-lbl">Negotiation</div><div class="sbar-track"><div class="sbar-fill" style="width:8%;background:var(--nav)"></div></div><div class="sbar-val">$0.4K</div></div>
+              </div>
+              <div style="margin-top:auto;padding-top:10px;border-top:1px solid var(--border);display:flex;justify-content:space-between"><span style="font-size:11px;color:var(--text-2)">Saving per Port Call</span><span style="font-size:13px;font-weight:700;color:var(--success)">$556</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Savings Breakdown -->
+        <div class="section-lbl">Savings Breakdown</div>
+        <div style="display:grid;grid-template-columns:1fr;gap:18px">
+          <div class="card">
+            <div class="tile-hdr"><div class="tile-title">By Agent / Vendor</div></div>
+            <div class="sbar-wrap">
+              <div class="sbar-row"><div class="sbar-lbl">ABC Test Shipping</div><div class="sbar-track"><div class="sbar-fill" style="width:100%;background:var(--brand)"></div></div><div class="sbar-val">$307K</div></div>
+              <div class="sbar-row"><div class="sbar-lbl">Keppel Smit</div><div class="sbar-track"><div class="sbar-fill" style="width:12%;background:var(--nav)"></div></div><div class="sbar-val">$37K</div></div>
+              <div class="sbar-row"><div class="sbar-lbl">Test Vendor 22</div><div class="sbar-track"><div class="sbar-fill" style="width:8%;background:var(--nav)"></div></div><div class="sbar-val">$24K</div></div>
+              <div class="sbar-row"><div class="sbar-lbl">Test Vendor -A</div><div class="sbar-track"><div class="sbar-fill" style="width:4%;background:var(--nav)"></div></div><div class="sbar-val">$12K</div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Contractual & Currency -->
+        <div class="section-lbl">Contractual &amp; Currency</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px">
+          <div class="card">
+            <div class="tile-hdr"><div class="tile-title">Contractual Discount <span style="font-size:11px;font-weight:400;color:var(--text-2)">· Total: $1,434,340</span></div></div>
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+              <div style="position:relative;width:64px;height:64px;flex-shrink:0">
+                <svg viewBox="0 0 36 36" style="width:64px;height:64px;transform:rotate(-90deg)">
+                  <circle cx="18" cy="18" r="15.9" fill="none" stroke="#E2E8F0" stroke-width="3.5"/>
+                  <circle cx="18" cy="18" r="15.9" fill="none" stroke="#1852FE" stroke-width="3.5" stroke-dasharray="62.1 37.9" stroke-linecap="round"/>
+                  <circle cx="18" cy="18" r="15.9" fill="none" stroke="#BEDBFE" stroke-width="3.5" stroke-dasharray="37.9 62.1" stroke-dashoffset="-62.1"/>
+                </svg>
+                <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--nav)">62%</div>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:6px;flex:1">
+                <div style="display:flex;justify-content:space-between;align-items:center"><div style="display:flex;align-items:center;gap:5px"><span style="width:8px;height:8px;border-radius:2px;background:var(--brand);display:inline-block"></span><span style="font-size:12px;color:var(--text-2)">GeoConnect Contract</span></div><span style="font-size:12px;font-weight:700">$890,450</span></div>
+                <div style="display:flex;justify-content:space-between;align-items:center"><div style="display:flex;align-items:center;gap:5px"><span style="width:8px;height:8px;border-radius:2px;background:var(--blue-mid);display:inline-block"></span><span style="font-size:12px;color:var(--text-2)">My Contracts</span></div><span style="font-size:12px;font-weight:700">$543,890</span></div>
+              </div>
+            </div>
+            <div style="font-size:10px;font-weight:700;color:var(--text-2);text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px">Vendor Invoices</div>
+            <table style="width:100%;border-collapse:collapse;font-size:11.5px">
+              <thead><tr style="border-bottom:1px solid var(--border)"><th style="text-align:left;padding:4px;font-size:10px;color:var(--text-2);font-weight:600">VI No.</th><th style="text-align:right;padding:4px;font-size:10px;color:var(--text-2);font-weight:600">DA Amt</th><th style="text-align:right;padding:4px;font-size:10px;color:var(--success);font-weight:600">Discount</th></tr></thead>
+              <tbody>
+                <tr style="border-bottom:1px solid var(--border)"><td style="padding:4px;font-weight:500">VI-2026-0041</td><td style="text-align:right;padding:4px">$124,500</td><td style="text-align:right;padding:4px;color:var(--success);font-weight:600">$12,450</td></tr>
+                <tr style="border-bottom:1px solid var(--border)"><td style="padding:4px;font-weight:500">VI-2026-0038</td><td style="text-align:right;padding:4px">$87,320</td><td style="text-align:right;padding:4px;color:var(--success);font-weight:600">$7,859</td></tr>
+                <tr style="border-bottom:1px solid var(--border)"><td style="padding:4px;font-weight:500">VI-2026-0035</td><td style="text-align:right;padding:4px">$212,450</td><td style="text-align:right;padding:4px;color:var(--success);font-weight:600">$19,121</td></tr>
+                <tr><td style="padding:4px;font-weight:500">VI-2026-0027</td><td style="text-align:right;padding:4px">$145,670</td><td style="text-align:right;padding:4px;color:var(--success);font-weight:600">$13,110</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="card">
+            <div class="tile-hdr">
+              <div class="tile-title">Cash Spent by Currency</div>
+              <div class="tile-actions">
+                <div class="cur-toggle"><div class="cur-btn on" id="cur-mtd" onclick="setCurrency('MTD')">MTD</div><div class="cur-btn" id="cur-ytd" onclick="setCurrency('YTD')">YTD</div></div>
+              </div>
+            </div>
+            <div id="cur-label" style="font-size:11px;color:var(--text-2);margin-bottom:8px">June 2026 disbursements · USD equivalent</div>
+            <div id="cur-mtd-data" class="sbar-wrap">
+              <div class="sbar-row"><div class="sbar-lbl" style="display:flex;align-items:center;gap:4px"><span style="width:7px;height:7px;border-radius:50%;background:#1852FE;display:inline-block"></span>USD</div><div class="sbar-track"><div class="sbar-fill" style="width:52%;background:#1852FE"></div></div><div style="display:flex;flex-direction:column;align-items:flex-end;width:72px;flex-shrink:0"><span class="sbar-val">$1.4M</span><span style="font-size:10px;color:var(--text-3)">52.1%</span></div></div>
+              <div class="sbar-row"><div class="sbar-lbl" style="display:flex;align-items:center;gap:4px"><span style="width:7px;height:7px;border-radius:50%;background:#3B81F6;display:inline-block"></span>EUR</div><div class="sbar-track"><div class="sbar-fill" style="width:18%;background:#3B81F6"></div></div><div style="display:flex;flex-direction:column;align-items:flex-end;width:72px;flex-shrink:0"><span class="sbar-val">$490K</span><span style="font-size:10px;color:var(--text-3)">18.1%</span></div></div>
+              <div class="sbar-row"><div class="sbar-lbl" style="display:flex;align-items:center;gap:4px"><span style="width:7px;height:7px;border-radius:50%;background:#00DAC1;display:inline-block"></span>SGD</div><div class="sbar-track"><div class="sbar-fill" style="width:12%;background:#00DAC1"></div></div><div style="display:flex;flex-direction:column;align-items:flex-end;width:72px;flex-shrink:0"><span class="sbar-val">$320K</span><span style="font-size:10px;color:var(--text-3)">11.8%</span></div></div>
+              <div class="sbar-row"><div class="sbar-lbl" style="display:flex;align-items:center;gap:4px"><span style="width:7px;height:7px;border-radius:50%;background:#BC17A2;display:inline-block"></span>AED</div><div class="sbar-track"><div class="sbar-fill" style="width:9%;background:#BC17A2"></div></div><div style="display:flex;flex-direction:column;align-items:flex-end;width:72px;flex-shrink:0"><span class="sbar-val">$240K</span><span style="font-size:10px;color:var(--text-3)">8.9%</span></div></div>
+              <div class="sbar-row"><div class="sbar-lbl" style="display:flex;align-items:center;gap:4px"><span style="width:7px;height:7px;border-radius:50%;background:#FB7D24;display:inline-block"></span>GBP</div><div class="sbar-track"><div class="sbar-fill" style="width:6%;background:#FB7D24"></div></div><div style="display:flex;flex-direction:column;align-items:flex-end;width:72px;flex-shrink:0"><span class="sbar-val">$178K</span><span style="font-size:10px;color:var(--text-3)">6.6%</span></div></div>
+            </div>
+            <div id="cur-ytd-data" class="sbar-wrap" style="display:none">
+              <div class="sbar-row"><div class="sbar-lbl" style="display:flex;align-items:center;gap:4px"><span style="width:7px;height:7px;border-radius:50%;background:#1852FE;display:inline-block"></span>USD</div><div class="sbar-track"><div class="sbar-fill" style="width:55%;background:#1852FE"></div></div><div style="display:flex;flex-direction:column;align-items:flex-end;width:72px;flex-shrink:0"><span class="sbar-val">$18.2M</span><span style="font-size:10px;color:var(--text-3)">55.3%</span></div></div>
+              <div class="sbar-row"><div class="sbar-lbl" style="display:flex;align-items:center;gap:4px"><span style="width:7px;height:7px;border-radius:50%;background:#3B81F6;display:inline-block"></span>EUR</div><div class="sbar-track"><div class="sbar-fill" style="width:17%;background:#3B81F6"></div></div><div style="display:flex;flex-direction:column;align-items:flex-end;width:72px;flex-shrink:0"><span class="sbar-val">$5.7M</span><span style="font-size:10px;color:var(--text-3)">17.2%</span></div></div>
+              <div class="sbar-row"><div class="sbar-lbl" style="display:flex;align-items:center;gap:4px"><span style="width:7px;height:7px;border-radius:50%;background:#00DAC1;display:inline-block"></span>SGD</div><div class="sbar-track"><div class="sbar-fill" style="width:10%;background:#00DAC1"></div></div><div style="display:flex;flex-direction:column;align-items:flex-end;width:72px;flex-shrink:0"><span class="sbar-val">$3.5M</span><span style="font-size:10px;color:var(--text-3)">10.5%</span></div></div>
+              <div class="sbar-row"><div class="sbar-lbl" style="display:flex;align-items:center;gap:4px"><span style="width:7px;height:7px;border-radius:50%;background:#BC17A2;display:inline-block"></span>AED</div><div class="sbar-track"><div class="sbar-fill" style="width:9%;background:#BC17A2"></div></div><div style="display:flex;flex-direction:column;align-items:flex-end;width:72px;flex-shrink:0"><span class="sbar-val">$2.9M</span><span style="font-size:10px;color:var(--text-3)">8.8%</span></div></div>
+              <div class="sbar-row"><div class="sbar-lbl" style="display:flex;align-items:center;gap:4px"><span style="width:7px;height:7px;border-radius:50%;background:#FB7D24;display:inline-block"></span>GBP</div><div class="sbar-track"><div class="sbar-fill" style="width:6%;background:#FB7D24"></div></div><div style="display:flex;flex-direction:column;align-items:flex-end;width:72px;flex-shrink:0"><span class="sbar-val">$2.0M</span><span style="font-size:10px;color:var(--text-3)">6.0%</span></div></div>
+            </div>
+            <div style="margin-top:10px;padding-top:8px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center">
+              <span style="font-size:11px;color:var(--text-2)" id="cur-total-lbl">Total MTD disbursements</span>
+              <span style="font-size:14px;font-weight:700;color:var(--text)" id="cur-total-val">$2,693,000</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Balance Recoveries -->
+        <div class="section-lbl">Balance Recoveries</div>
+        <div class="card">
+          <div class="tile-hdr"><div class="tile-title">Recovery Summary <span style="font-size:11px;font-weight:400;color:var(--text-2)">· YTD</span></div></div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">
+            <div style="background:var(--green-bg);border:1px solid var(--green-mid);border-radius:10px;padding:12px;text-align:center"><div style="font-size:18px;font-weight:700;color:#147638">$292,560</div><div style="font-size:10px;color:#147638;margin-top:2px">Total Recovered</div></div>
+            <div style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:12px;text-align:center"><div style="font-size:18px;font-weight:700">$48,320</div><div style="font-size:10px;color:var(--text-2);margin-top:2px">Pending Recovery</div></div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;padding:5px 4px;border-bottom:1px solid var(--border);font-size:10px;font-weight:600;color:var(--text-2);text-transform:uppercase;letter-spacing:.04em"><span>Port Call</span><span>Agent</span><span style="text-align:right">Amount</span><span style="text-align:right">Status</span></div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;padding:8px 4px;border-bottom:1px solid var(--border);font-size:12px;align-items:center"><span style="font-weight:600">TST2600045</span><span style="color:var(--text-2)">ABC Shipping</span><span style="text-align:right;font-weight:600">$84,320</span><span style="text-align:right"><span style="background:var(--green-mid);color:#147638;font-size:10px;font-weight:700;padding:2px 7px;border-radius:999px">Received</span></span></div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;padding:8px 4px;border-bottom:1px solid var(--border);font-size:12px;align-items:center"><span style="font-weight:600">TST2600038</span><span style="color:var(--text-2)">Keppel Smit</span><span style="text-align:right;font-weight:600">$52,450</span><span style="text-align:right"><span style="background:var(--green-mid);color:#147638;font-size:10px;font-weight:700;padding:2px 7px;border-radius:999px">Received</span></span></div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;padding:8px 4px;font-size:12px;align-items:center"><span style="font-weight:600">TST2600051</span><span style="color:var(--text-2)">Test Vendor-A</span><span style="text-align:right;font-weight:600">$48,320</span><span style="text-align:right"><span style="background:var(--amber-mid);color:#844D0F;font-size:10px;font-weight:700;padding:2px 7px;border-radius:999px">Pending</span></span></div>
+        </div>
+
+        <!-- Analytics Modules -->
+        <div class="section-lbl">Analytics Modules</div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:18px">
+          <div class="atile"><div class="atile-icon" style="background:var(--blue-light)"><svg viewBox="0 0 24 24" style="stroke:var(--brand)"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div><div class="atile-name">PDA Timeline</div><div class="atile-desc">Submissions vs approvals by month</div></div>
+          <div class="atile"><div class="atile-icon" style="background:var(--green-bg)"><svg viewBox="0 0 24 24" style="stroke:#147638"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div><div class="atile-name">FDA Timeline</div><div class="atile-desc">Final DA status &amp; approval rates</div></div>
+          <div class="atile"><div class="atile-icon" style="background:var(--amber-bg)"><svg viewBox="0 0 24 24" style="stroke:#844D0F"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div><div class="atile-name">Cash Proj. Calendar</div><div class="atile-desc">Monthly payment schedule view</div></div>
+          <div class="atile"><div class="atile-icon" style="background:var(--red-bg)"><svg viewBox="0 0 24 24" style="stroke:var(--danger)"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><div class="atile-name">Overdue FDA Report</div><div class="atile-desc">Outstanding final DAs past sailed</div></div>
+          <div class="atile"><div class="atile-icon" style="background:var(--teal-bg)"><svg viewBox="0 0 24 24" style="stroke:var(--teal-dark)"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></div><div class="atile-name">SDA Timeline</div><div class="atile-desc">Supplementary DA trends</div></div>
+          <div class="atile"><div class="atile-icon" style="background:var(--purple-bg)"><svg viewBox="0 0 24 24" style="stroke:var(--purple)"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div><div class="atile-name">Cost Savings</div><div class="atile-desc">Savings by type, port &amp; agent</div></div>
+          <div class="atile"><div class="atile-icon" style="background:var(--blue-light)"><svg viewBox="0 0 24 24" style="stroke:var(--brand)"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div><div class="atile-name">Cash Projection</div><div class="atile-desc">Full projection planner &amp; calendar</div></div>
+          <div class="atile"><div class="atile-icon" style="background:var(--green-bg)"><svg viewBox="0 0 24 24" style="stroke:#147638"><polyline points="20 6 9 17 4 12"/></svg></div><div class="atile-name">VI Timeline</div><div class="atile-desc">Vendor invoice status &amp; recovery</div></div>
+        </div>
+
+      </div><!-- /dash-panel-financial -->
+
+    </div>
+    <!-- VIEW: DETAIL PAGES -->
+    <div class="view" id="view-pending">
+      <div class="page-hdr">
+        <div>
+          <div class="page-title-row"><h1 class="page-title">Pending Approval</h1><span class="page-count">15</span></div>
+        </div>
+        <div class="page-stats">
+          <div class="pstat"><span class="pstat-val">USD 172K</span><span class="pstat-lbl">Total Pending</span></div>
+          <div class="pstat"><span class="pstat-val">6d</span><span class="pstat-lbl">Oldest Item</span></div>
+          <div class="pstat"><span class="pstat-val">1.8d</span><span class="pstat-lbl">Avg Approval Time</span></div>
+        </div>
+      </div>
+      <div class="table-card" id="pending-list">
+        <div id="pending-tabs" class="filter-tabs">
+          <div class="filter-tab active" onclick="filterRows('pending',event.target,'all')">All (15)</div>
+          <div class="filter-tab" onclick="filterRows('pending',event.target,'PDA')">PDA (3)</div>
+          <div class="filter-tab" onclick="filterRows('pending',event.target,'FDA')">FDA (4)</div>
+          <div class="filter-tab" onclick="filterRows('pending',event.target,'SDA')">SDA (2)</div>
+          <div class="filter-tab" onclick="filterRows('pending',event.target,'DDA')">DDA (2)</div>
+          <div class="filter-tab" onclick="filterRows('pending',event.target,'VI')">VI (2)</div>
+          <div class="filter-tab" onclick="filterRows('pending',event.target,'APDA')">APDA (2)</div>
+        </div>
+        <div class="dtable-scroll"><table class="dtable">
+          <thead>
+            <tr><th>Port Call</th><th>Type</th><th>Vessel</th><th>Port</th><th>Agent</th><th class="num">Amount</th><th class="mid">Days</th><th style="text-align:left">Actions</th></tr>
+          </thead>
+          <tbody>
+            <tr data-type="FDA"><td class="pc-id">TST2600082</td><td><span class="da-tier fda">FDA</span></td><td>Omicron West</td><td>Singapore</td><td>ABC Test Shipping</td><td class="num">USD 25,624</td><td class="mid"><span class="da-pill info">6 days</span></td><td class="actions"><button class="btn-mini btn-approve" onclick="fireToast('Approved TST2600082',event)">Approve</button><button class="btn-mini btn-reject" onclick="fireToast('Rejected',event)">Reject</button></td></tr>
+            <tr data-type="FDA"><td class="pc-id">TST2600113</td><td><span class="da-tier fda">FDA</span></td><td>Test Vessel 1</td><td>Singapore</td><td>ABC Test Shipping</td><td class="num">USD 18,450</td><td class="mid"><span class="da-pill info">3 days</span></td><td class="actions"><button class="btn-mini btn-approve" onclick="fireToast('Approved TST2600113',event)">Approve</button><button class="btn-mini btn-reject" onclick="fireToast('Rejected',event)">Reject</button></td></tr>
+            <tr data-type="APDA"><td class="pc-id">TST2600067</td><td><span class="da-tier apda">APDA</span></td><td>Test Vessel 1</td><td>Test Port</td><td>ABC Test Shipping</td><td class="num">USD 6,318</td><td class="mid"><span class="da-pill info">3 days</span></td><td class="actions"><button class="btn-mini btn-approve" onclick="fireToast('Approved TST2600067',event)">Approve</button><button class="btn-mini btn-reject" onclick="fireToast('Rejected',event)">Reject</button></td></tr>
+            <tr data-type="SDA"><td class="pc-id">TST2600114</td><td><span class="da-tier sda">SDA</span></td><td>Test Vessel 1</td><td>Test Port</td><td>Keppel Smit</td><td class="num">USD 637</td><td class="mid"><span class="da-pill ok">Today</span></td><td class="actions"><button class="btn-mini btn-approve" onclick="fireToast('Approved TST2600114',event)">Approve</button><button class="btn-mini btn-reject" onclick="fireToast('Rejected',event)">Reject</button></td></tr>
+            <tr data-type="PDA"><td class="pc-id">TST2600117</td><td><span class="da-tier pda">PDA</span></td><td>Test Vessel 1</td><td>Test Port</td><td>Test Vendor 22</td><td class="num">USD 4,200</td><td class="mid"><span class="da-pill info">1 day</span></td><td class="actions"><button class="btn-mini btn-approve" onclick="fireToast('Approved TST2600117',event)">Approve</button><button class="btn-mini btn-reject" onclick="fireToast('Rejected',event)">Reject</button></td></tr>
+            <tr data-type="DDA"><td class="pc-id">TST2600119</td><td><span class="da-tier dda">DDA</span></td><td>Nordic Star</td><td>Rotterdam</td><td>Boskalis Terminal</td><td class="num">USD 11,750</td><td class="mid"><span class="da-pill info">4 days</span></td><td class="actions"><button class="btn-mini btn-approve" onclick="fireToast('Approved TST2600119',event)">Approve</button><button class="btn-mini btn-reject" onclick="fireToast('Rejected',event)">Reject</button></td></tr>
+            <tr data-type="VI"><td class="pc-id">TST2600121</td><td><span class="da-tier vi">VI</span></td><td>Pacific Wind</td><td>Singapore</td><td>Test Vendor-A</td><td class="num">USD 9,880</td><td class="mid"><span class="da-pill warn">5 days</span></td><td class="actions"><button class="btn-mini btn-approve" onclick="fireToast('Approved TST2600121',event)">Approve</button><button class="btn-mini btn-reject" onclick="fireToast('Rejected',event)">Reject</button></td></tr>
+            <tr data-type="APDA"><td class="pc-id">TST2600122</td><td><span class="da-tier apda">APDA</span></td><td>Atlantic Hope</td><td>Hamburg</td><td>Eurogate Agency</td><td class="num">USD 3,415</td><td class="mid"><span class="da-pill warn">6 days</span></td><td class="actions"><button class="btn-mini btn-approve" onclick="fireToast('Approved TST2600122',event)">Approve</button><button class="btn-mini btn-reject" onclick="fireToast('Rejected',event)">Reject</button></td></tr>
+            <tr data-type="PDA"><td class="pc-id">TST2600125</td><td><span class="da-tier pda">PDA</span></td><td>Crimson Jade</td><td>Port Klang</td><td>Straits Agency</td><td class="num">USD 7,820</td><td class="mid"><span class="da-pill info">2 days</span></td><td class="actions"><button class="btn-mini btn-approve" onclick="fireToast('Approved TST2600125',event)">Approve</button><button class="btn-mini btn-reject" onclick="fireToast('Rejected',event)">Reject</button></td></tr>
+            <tr data-type="FDA"><td class="pc-id">TST2600127</td><td><span class="da-tier fda">FDA</span></td><td>Eastern Horizon</td><td>Busan</td><td>Hanjin Agency</td><td class="num">USD 14,950</td><td class="mid"><span class="da-pill info">5 days</span></td><td class="actions"><button class="btn-mini btn-approve" onclick="fireToast('Approved TST2600127',event)">Approve</button><button class="btn-mini btn-reject" onclick="fireToast('Rejected',event)">Reject</button></td></tr>
+            <tr data-type="SDA"><td class="pc-id">TST2600128</td><td><span class="da-tier sda">SDA</span></td><td>Nordic Star</td><td>Antwerp</td><td>Boskalis Terminal</td><td class="num">USD 5,430</td><td class="mid"><span class="da-pill info">2 days</span></td><td class="actions"><button class="btn-mini btn-approve" onclick="fireToast('Approved TST2600128',event)">Approve</button><button class="btn-mini btn-reject" onclick="fireToast('Rejected',event)">Reject</button></td></tr>
+            <tr data-type="DDA"><td class="pc-id">TST2600130</td><td><span class="da-tier dda">DDA</span></td><td>MSC Voyager</td><td>Rotterdam</td><td>Maersk Agency</td><td class="num">USD 19,200</td><td class="mid"><span class="da-pill warn">7 days</span></td><td class="actions"><button class="btn-mini btn-approve" onclick="fireToast('Approved TST2600130',event)">Approve</button><button class="btn-mini btn-reject" onclick="fireToast('Rejected',event)">Reject</button></td></tr>
+            <tr data-type="VI"><td class="pc-id">TST2600132</td><td><span class="da-tier vi">VI</span></td><td>Pacific Wind</td><td>Hamburg</td><td>Test Vendor-A</td><td class="num">USD 12,640</td><td class="mid"><span class="da-pill info">3 days</span></td><td class="actions"><button class="btn-mini btn-approve" onclick="fireToast('Approved TST2600132',event)">Approve</button><button class="btn-mini btn-reject" onclick="fireToast('Rejected',event)">Reject</button></td></tr>
+            <tr data-type="FDA"><td class="pc-id">TST2600134</td><td><span class="da-tier fda">FDA</span></td><td>Crimson Jade</td><td>Singapore</td><td>Keppel Smit</td><td class="num">USD 21,300</td><td class="mid"><span class="da-pill warn">4 days</span></td><td class="actions"><button class="btn-mini btn-approve" onclick="fireToast('Approved TST2600134',event)">Approve</button><button class="btn-mini btn-reject" onclick="fireToast('Rejected',event)">Reject</button></td></tr>
+            <tr data-type="PDA"><td class="pc-id">TST2600136</td><td><span class="da-tier pda">PDA</span></td><td>Atlantic Hope</td><td>Port Klang</td><td>Straits Agency</td><td class="num">USD 8,900</td><td class="mid"><span class="da-pill info">1 day</span></td><td class="actions"><button class="btn-mini btn-approve" onclick="fireToast('Approved TST2600136',event)">Approve</button><button class="btn-mini btn-reject" onclick="fireToast('Rejected',event)">Reject</button></td></tr>
+          </tbody>
+        </table></div>
+      </div>
+    </div>
+
+    <div class="view" id="view-overdue">
+      <div class="page-hdr">
+        <div>
+          <div class="page-title-row"><h1 class="page-title">Overdue DAs</h1><span class="page-count" style="color:var(--danger);background:var(--red-bg)">5</span></div>
+          <p class="page-desc">FDA not received from agent beyond the agreed number of days after the vessel sailed.</p>
+        </div>
+        <div class="page-stats">
+          <div class="pstat"><span class="pstat-val" style="color:var(--danger)">USD 151K</span><span class="pstat-lbl">Total Overdue</span></div>
+          <div class="pstat"><span class="pstat-val" style="color:var(--danger)">12d</span><span class="pstat-lbl">Most Overdue</span></div>
+        </div>
+      </div>
+      <div class="table-card">
+        <table class="dtable" id="overdue-table">
+          <thead>
+            <tr>
+              <th>Port Call</th>
+              <th>Type</th>
+              <th>Vessel</th>
+              <th>Port</th>
+              <th>Sailed</th>
+              <th class="num">FDA Amount</th>
+              <th class="num">PDA Total</th>
+              <th class="mid">Overdue</th>
+              <th class="mid">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td class="pc-id">TST2600082</td><td><span class="da-tier fda">FDA</span></td><td>Omicron West</td><td>Singapore</td><td>12 Jun 2026</td><td class="num">USD 38,720</td><td class="num">USD 42,310</td><td class="mid"><span class="da-pill urgent">12d overdue</span></td><td class="actions"><button class="btn-mini btn-escalate" onclick="fireToast('Escalated TST2600082',event)">Escalate</button><button class="btn-mini btn-ghost" onclick="fireToast('Chase sent',event)">Chase</button></td></tr>
+            <tr><td class="pc-id">TST2600089</td><td><span class="da-tier fda">FDA</span></td><td>Nordic Star</td><td>Rotterdam</td><td>18 Jun 2026</td><td class="num">USD 22,100</td><td class="num">USD 24,500</td><td class="mid"><span class="da-pill urgent">8d overdue</span></td><td class="actions"><button class="btn-mini btn-escalate" onclick="fireToast('Escalated TST2600089',event)">Escalate</button><button class="btn-mini btn-ghost" onclick="fireToast('Chase sent',event)">Chase</button></td></tr>
+            <tr><td class="pc-id">TST2600091</td><td><span class="da-tier pda">PDA</span></td><td>Pacific Wind</td><td>Hamburg</td><td>20 Jun 2026</td><td class="num">USD 31,500</td><td class="num">USD 33,200</td><td class="mid"><span class="da-pill warn">6d overdue</span></td><td class="actions"><button class="btn-mini btn-escalate" onclick="fireToast('Escalated TST2600091',event)">Escalate</button><button class="btn-mini btn-ghost" onclick="fireToast('Chase sent',event)">Chase</button></td></tr>
+            <tr><td class="pc-id">TST2600114</td><td><span class="da-tier sda">SDA</span></td><td>Test Vessel 1</td><td>Test Port</td><td>24 Jun 2026</td><td class="num">USD 8,640</td><td class="num">USD 9,200</td><td class="mid"><span class="da-pill warn">5d overdue</span></td><td class="actions"><button class="btn-mini btn-escalate" onclick="fireToast('Escalated TST2600114',event)">Escalate</button><button class="btn-mini btn-ghost" onclick="fireToast('Chase sent',event)">Chase</button></td></tr>
+            <tr><td class="pc-id">TST2600023</td><td><span class="da-tier vi">VI</span></td><td>Test Vessel 3</td><td>Singapore</td><td>27 Jun 2026</td><td class="num">USD 50,420</td><td class="num">USD 52,100</td><td class="mid"><span class="da-pill warn">2d overdue</span></td><td class="actions"><button class="btn-mini btn-escalate" onclick="fireToast('Escalated TST2600023',event)">Escalate</button><button class="btn-mini btn-ghost" onclick="fireToast('Chase sent',event)">Chase</button></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="view" id="view-clar">
+      <div class="page-hdr">
+        <div>
+          <div class="page-title-row"><h1 class="page-title">Under Clarification</h1><span class="page-count" style="color:var(--purple);background:var(--purple-bg)">15</span></div>
+          <p class="page-desc">Clarifications raised with agent or operator. DA/VI are in Query status pending response.</p>
+        </div>
+        <div class="page-stats">
+          <div class="pstat"><span class="pstat-val">USD 218K</span><span class="pstat-lbl">Total Value</span></div>
+          <div class="pstat"><span class="pstat-val">8d</span><span class="pstat-lbl">Oldest Query</span></div>
+        </div>
+      </div>
+      <div class="table-card" id="clar-list">
+        <div id="clar-tabs" class="filter-tabs">
+          <div class="filter-tab active" onclick="filterRows('clar',event.target,'all')">All (15)</div>
+          <div class="filter-tab" onclick="filterRows('clar',event.target,'PDA')">PDA (4)</div>
+          <div class="filter-tab" onclick="filterRows('clar',event.target,'FDA')">FDA (4)</div>
+          <div class="filter-tab" onclick="filterRows('clar',event.target,'SDA')">SDA (2)</div>
+          <div class="filter-tab" onclick="filterRows('clar',event.target,'DDA')">DDA (2)</div>
+          <div class="filter-tab" onclick="filterRows('clar',event.target,'VI')">VI (2)</div>
+          <div class="filter-tab" onclick="filterRows('clar',event.target,'APDA')">APDA (1)</div>
+        </div>
+        <div class="dtable-scroll"><table class="dtable">
+          <thead>
+            <tr><th>Port Call</th><th>Type</th><th>Vessel</th><th>Port</th><th>Agent</th><th class="num">Amount</th><th class="mid">Days</th><th class="mid">Actions</th></tr>
+          </thead>
+          <tbody>
+            <tr data-type="PDA"><td class="pc-id">TST2600111</td><td><span class="da-tier pda">PDA</span></td><td>Omicron West</td><td>Singapore</td><td>ABC Test Shipping</td><td class="num">USD 15,400</td><td class="mid"><span class="da-pill urgent">8 days</span></td><td class="actions"><button class="btn-mini btn-resolve" onclick="fireToast('Resolved TST2600111',event)">Resolve</button><button class="btn-mini btn-ghost" onclick="fireToast('Reply sent',event)">Reply</button></td></tr>
+            <tr data-type="FDA"><td class="pc-id">TST2600112</td><td><span class="da-tier fda">FDA</span></td><td>Nordic Star</td><td>Singapore</td><td>Keppel Smit</td><td class="num">USD 22,180</td><td class="mid"><span class="da-pill warn">6 days</span></td><td class="actions"><button class="btn-mini btn-resolve" onclick="fireToast('Resolved TST2600112',event)">Resolve</button><button class="btn-mini btn-ghost" onclick="fireToast('Reply sent',event)">Reply</button></td></tr>
+            <tr data-type="FDA"><td class="pc-id">TST2600113</td><td><span class="da-tier fda">FDA</span></td><td>Test Vessel 1</td><td>Singapore</td><td>ABC Test Shipping</td><td class="num">USD 18,450</td><td class="mid"><span class="da-pill warn">3 days</span></td><td class="actions"><button class="btn-mini btn-resolve" onclick="fireToast('Resolved TST2600113',event)">Resolve</button><button class="btn-mini btn-ghost" onclick="fireToast('Reply sent',event)">Reply</button></td></tr>
+            <tr data-type="PDA"><td class="pc-id">TST2600117</td><td><span class="da-tier pda">PDA</span></td><td>Pacific Wind</td><td>Test Port</td><td>Test Vendor 22</td><td class="num">USD 4,200</td><td class="mid"><span class="da-pill info">1 day</span></td><td class="actions"><button class="btn-mini btn-resolve" onclick="fireToast('Resolved TST2600117',event)">Resolve</button><button class="btn-mini btn-ghost" onclick="fireToast('Reply sent',event)">Reply</button></td></tr>
+            <tr data-type="SDA"><td class="pc-id">TST2600118</td><td><span class="da-tier sda">SDA</span></td><td>Atlantic Hope</td><td>Rotterdam</td><td>Boskalis Terminal</td><td class="num">USD 9,750</td><td class="mid"><span class="da-pill warn">4 days</span></td><td class="actions"><button class="btn-mini btn-resolve" onclick="fireToast('Resolved TST2600118',event)">Resolve</button><button class="btn-mini btn-ghost" onclick="fireToast('Reply sent',event)">Reply</button></td></tr>
+            <tr data-type="VI"><td class="pc-id">TST2600120</td><td><span class="da-tier vi">VI</span></td><td>Crimson Jade</td><td>Hamburg</td><td>Eurogate Agency</td><td class="num">USD 5,200</td><td class="mid"><span class="da-pill info">2 days</span></td><td class="actions"><button class="btn-mini btn-resolve" onclick="fireToast('Resolved TST2600120',event)">Resolve</button><button class="btn-mini btn-ghost" onclick="fireToast('Reply sent',event)">Reply</button></td></tr>
+            <tr data-type="DDA"><td class="pc-id">TST2600124</td><td><span class="da-tier dda">DDA</span></td><td>Eastern Horizon</td><td>Busan</td><td>Hanjin Agency</td><td class="num">USD 28,340</td><td class="mid"><span class="da-pill urgent">7 days</span></td><td class="actions"><button class="btn-mini btn-resolve" onclick="fireToast('Resolved TST2600124',event)">Resolve</button><button class="btn-mini btn-ghost" onclick="fireToast('Reply sent',event)">Reply</button></td></tr>
+            <tr data-type="PDA"><td class="pc-id">TST2600129</td><td><span class="da-tier pda">PDA</span></td><td>MSC Voyager</td><td>Antwerp</td><td>Maersk Agency</td><td class="num">USD 11,900</td><td class="mid"><span class="da-pill warn">5 days</span></td><td class="actions"><button class="btn-mini btn-resolve" onclick="fireToast('Resolved TST2600129',event)">Resolve</button><button class="btn-mini btn-ghost" onclick="fireToast('Reply sent',event)">Reply</button></td></tr>
+            <tr data-type="FDA"><td class="pc-id">TST2600131</td><td><span class="da-tier fda">FDA</span></td><td>Nordic Star</td><td>Rotterdam</td><td>Boskalis Terminal</td><td class="num">USD 17,600</td><td class="mid"><span class="da-pill info">3 days</span></td><td class="actions"><button class="btn-mini btn-resolve" onclick="fireToast('Resolved TST2600131',event)">Resolve</button><button class="btn-mini btn-ghost" onclick="fireToast('Reply sent',event)">Reply</button></td></tr>
+            <tr data-type="SDA"><td class="pc-id">TST2600133</td><td><span class="da-tier sda">SDA</span></td><td>Pacific Wind</td><td>Singapore</td><td>Test Vendor-A</td><td class="num">USD 6,850</td><td class="mid"><span class="da-pill info">2 days</span></td><td class="actions"><button class="btn-mini btn-resolve" onclick="fireToast('Resolved TST2600133',event)">Resolve</button><button class="btn-mini btn-ghost" onclick="fireToast('Reply sent',event)">Reply</button></td></tr>
+            <tr data-type="APDA"><td class="pc-id">TST2600135</td><td><span class="da-tier apda">APDA</span></td><td>Crimson Jade</td><td>Port Klang</td><td>Straits Agency</td><td class="num">USD 4,320</td><td class="mid"><span class="da-pill info">1 day</span></td><td class="actions"><button class="btn-mini btn-resolve" onclick="fireToast('Resolved TST2600135',event)">Resolve</button><button class="btn-mini btn-ghost" onclick="fireToast('Reply sent',event)">Reply</button></td></tr>
+            <tr data-type="DDA"><td class="pc-id">TST2600137</td><td><span class="da-tier dda">DDA</span></td><td>Atlantic Hope</td><td>Hamburg</td><td>Eurogate Agency</td><td class="num">USD 23,750</td><td class="mid"><span class="da-pill warn">6 days</span></td><td class="actions"><button class="btn-mini btn-resolve" onclick="fireToast('Resolved TST2600137',event)">Resolve</button><button class="btn-mini btn-ghost" onclick="fireToast('Reply sent',event)">Reply</button></td></tr>
+            <tr data-type="VI"><td class="pc-id">TST2600139</td><td><span class="da-tier vi">VI</span></td><td>Eastern Horizon</td><td>Busan</td><td>Hanjin Agency</td><td class="num">USD 9,480</td><td class="mid"><span class="da-pill info">4 days</span></td><td class="actions"><button class="btn-mini btn-resolve" onclick="fireToast('Resolved TST2600139',event)">Resolve</button><button class="btn-mini btn-ghost" onclick="fireToast('Reply sent',event)">Reply</button></td></tr>
+            <tr data-type="PDA"><td class="pc-id">TST2600141</td><td><span class="da-tier pda">PDA</span></td><td>Test Vessel 3</td><td>Singapore</td><td>ABC Test Shipping</td><td class="num">USD 13,200</td><td class="mid"><span class="da-pill info">2 days</span></td><td class="actions"><button class="btn-mini btn-resolve" onclick="fireToast('Resolved TST2600141',event)">Resolve</button><button class="btn-mini btn-ghost" onclick="fireToast('Reply sent',event)">Reply</button></td></tr>
+            <tr data-type="FDA"><td class="pc-id">TST2600143</td><td><span class="da-tier fda">FDA</span></td><td>Omicron West</td><td>Rotterdam</td><td>Boskalis Terminal</td><td class="num">USD 31,500</td><td class="mid"><span class="da-pill urgent">9 days</span></td><td class="actions"><button class="btn-mini btn-resolve" onclick="fireToast('Resolved TST2600143',event)">Resolve</button><button class="btn-mini btn-ghost" onclick="fireToast('Reply sent',event)">Reply</button></td></tr>
+          </tbody>
+        </table></div>
+      </div>
+    </div>
+    <div class="view" id="view-appt">
+      <div class="page-hdr">
+        <div>
+          <div class="page-title-row"><h1 class="page-title">Pending Appointment</h1><span class="page-count" style="color:var(--teal-dark);background:var(--teal-bg)">8</span></div>
+          <p class="page-desc">Port calls where no agent has been appointed yet. Sorted by ETA (earliest first).</p>
+        </div>
+        <div class="page-stats">
+          <div class="pstat"><span class="pstat-val">2</span><span class="pstat-lbl">Due Today</span></div>
+          <div class="pstat"><span class="pstat-val">16d</span><span class="pstat-lbl">Furthest ETA</span></div>
+        </div>
+      </div>
+      <div class="table-card" id="appt-list">
+        <table class="dtable">
+          <thead>
+            <tr><th>Vessel</th><th>Port</th><th>Voyage</th><th class="mid">Seq</th><th class="mid">ETA</th><th class="mid">Actions</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="pc-id">Omicron West</td><td>Singapore</td><td>V026-04</td><td class="mid">001</td><td class="mid"><span class="da-pill ok">02 Jul · Today</span></td><td class="actions"><button class="btn-mini btn-appoint" onclick="fireToast('Agent appointment started for Omicron West',event)">Appoint Agent</button></td></tr>
+            <tr><td class="pc-id">Nordic Star</td><td>Rotterdam</td><td>NS-2026-07</td><td class="mid">003</td><td class="mid"><span class="da-pill info">04 Jul · in 2d</span></td><td class="actions"><button class="btn-mini btn-appoint" onclick="fireToast('Agent appointment started for Nordic Star',event)">Appoint Agent</button></td></tr>
+            <tr><td class="pc-id">Pacific Wind</td><td>Hamburg</td><td>PW-114</td><td class="mid">002</td><td class="mid"><span class="da-pill info">06 Jul · in 4d</span></td><td class="actions"><button class="btn-mini btn-appoint" onclick="fireToast('Agent appointment started for Pacific Wind',event)">Appoint Agent</button></td></tr>
+            <tr><td class="pc-id">Atlantic Hope</td><td>Test Port</td><td>AH-038</td><td class="mid">001</td><td class="mid"><span class="da-pill info">08 Jul · in 6d</span></td><td class="actions"><button class="btn-mini btn-appoint" onclick="fireToast('Agent appointment started for Atlantic Hope',event)">Appoint Agent</button></td></tr>
+            <tr><td class="pc-id">Test Vessel 3</td><td>Singapore</td><td>TV3-22</td><td class="mid">004</td><td class="mid"><span class="da-pill slate">10 Jul · in 8d</span></td><td class="actions"><button class="btn-mini btn-appoint" onclick="fireToast('Agent appointment started for Test Vessel 3',event)">Appoint Agent</button></td></tr>
+            <tr><td class="pc-id">Crimson Jade</td><td>Antwerp</td><td>CJ-2026-05</td><td class="mid">001</td><td class="mid"><span class="da-pill slate">12 Jul · in 10d</span></td><td class="actions"><button class="btn-mini btn-appoint" onclick="fireToast('Agent appointment started for Crimson Jade',event)">Appoint Agent</button></td></tr>
+            <tr><td class="pc-id">Eastern Horizon</td><td>Busan</td><td>EH-089</td><td class="mid">002</td><td class="mid"><span class="da-pill slate">14 Jul · in 12d</span></td><td class="actions"><button class="btn-mini btn-appoint" onclick="fireToast('Agent appointment started for Eastern Horizon',event)">Appoint Agent</button></td></tr>
+            <tr><td class="pc-id">MSC Voyager</td><td>Port Klang</td><td>MSCV-41</td><td class="mid">003</td><td class="mid"><span class="da-pill slate">16 Jul · in 14d</span></td><td class="actions"><button class="btn-mini btn-appoint" onclick="fireToast('Agent appointment started for MSC Voyager',event)">Appoint Agent</button></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="view" id="view-created">
+      <div class="page-hdr">
+        <div>
+          <div class="page-title-row"><h1 class="page-title">Port Calls Created</h1><span class="page-count" style="color:var(--brand);background:var(--blue-light)">9</span></div>
+          <p class="page-desc">Port calls you have created this month, from initial nomination through to documentation.</p>
+        </div>
+        <div class="page-stats">
+          <div class="pstat"><span class="pstat-val" style="color:var(--success)">▲ 22%</span><span class="pstat-lbl">vs Last Month</span></div>
+        </div>
+      </div>
+      <div class="table-card" id="created-list">
+        <table class="dtable">
+          <thead>
+            <tr><th>Port Call</th><th>Vessel</th><th>Port</th><th>Created</th><th class="mid">Status</th><th class="mid">Actions</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="pc-id">TST2600144</td><td>Omicron West</td><td>Singapore</td><td>28 Jun 2026</td><td class="mid"><span class="da-pill info">Documentation</span></td><td class="actions"><button class="btn-mini btn-ghost" onclick="fireToast('Opening TST2600144',event)">View</button></td></tr>
+            <tr><td class="pc-id">TST2600142</td><td>Nordic Star</td><td>Rotterdam</td><td>26 Jun 2026</td><td class="mid"><span class="da-pill ok">In Transit</span></td><td class="actions"><button class="btn-mini btn-ghost" onclick="fireToast('Opening TST2600142',event)">View</button></td></tr>
+            <tr><td class="pc-id">TST2600140</td><td>Pacific Wind</td><td>Hamburg</td><td>24 Jun 2026</td><td class="mid"><span class="da-pill ok">In Transit</span></td><td class="actions"><button class="btn-mini btn-ghost" onclick="fireToast('Opening TST2600140',event)">View</button></td></tr>
+            <tr><td class="pc-id">TST2600138</td><td>Atlantic Hope</td><td>Test Port</td><td>22 Jun 2026</td><td class="mid"><span class="da-pill slate">Created</span></td><td class="actions"><button class="btn-mini btn-ghost" onclick="fireToast('Opening TST2600138',event)">View</button></td></tr>
+            <tr><td class="pc-id">TST2600126</td><td>Test Vessel 3</td><td>Singapore</td><td>18 Jun 2026</td><td class="mid"><span class="da-pill ok">In Transit</span></td><td class="actions"><button class="btn-mini btn-ghost" onclick="fireToast('Opening TST2600126',event)">View</button></td></tr>
+            <tr><td class="pc-id">TST2600123</td><td>Crimson Jade</td><td>Antwerp</td><td>15 Jun 2026</td><td class="mid"><span class="da-pill ok">In Transit</span></td><td class="actions"><button class="btn-mini btn-ghost" onclick="fireToast('Opening TST2600123',event)">View</button></td></tr>
+            <tr><td class="pc-id">TST2600116</td><td>Eastern Horizon</td><td>Busan</td><td>11 Jun 2026</td><td class="mid"><span class="da-pill ok">In Transit</span></td><td class="actions"><button class="btn-mini btn-ghost" onclick="fireToast('Opening TST2600116',event)">View</button></td></tr>
+            <tr><td class="pc-id">TST2600110</td><td>MSC Voyager</td><td>Port Klang</td><td>07 Jun 2026</td><td class="mid"><span class="da-pill ok">In Transit</span></td><td class="actions"><button class="btn-mini btn-ghost" onclick="fireToast('Opening TST2600110',event)">View</button></td></tr>
+            <tr><td class="pc-id">TST2600102</td><td>Test Vessel 1</td><td>Test Port</td><td>03 Jun 2026</td><td class="mid"><span class="da-pill ok">In Transit</span></td><td class="actions"><button class="btn-mini btn-ghost" onclick="fireToast('Opening TST2600102',event)">View</button></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="view" id="view-approved">
+      <div class="page-hdr">
+        <div>
+          <div class="page-title-row"><h1 class="page-title">Approved DAs</h1><span class="page-count" style="color:#147638;background:var(--green-bg)">27</span></div>
+          <p class="page-desc">Disbursement accounts you have approved this month. Showing the 10 most recent.</p>
+        </div>
+        <div class="page-stats">
+          <div class="pstat"><span class="pstat-val">USD 341K</span><span class="pstat-lbl">Total Approved</span></div>
+          <div class="pstat"><span class="pstat-val">1.8d</span><span class="pstat-lbl">Avg Turnaround</span></div>
+        </div>
+      </div>
+      <div class="table-card" id="approved-list">
+        <table class="dtable">
+          <thead>
+            <tr><th>Port Call</th><th>Type</th><th>Vessel</th><th>Approved</th><th class="num">Amount</th><th class="mid">Status</th><th class="mid">Actions</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="pc-id">TST2600108</td><td><span class="da-tier fda">FDA</span></td><td>Test Vessel 2</td><td>2h ago</td><td class="num">USD 9,120</td><td class="mid"><span class="da-pill ok">Approved</span></td><td class="actions"><button class="btn-mini btn-ghost" onclick="fireToast('Opening TST2600108',event)">View</button></td></tr>
+            <tr><td class="pc-id">TST2600104</td><td><span class="da-tier pda">PDA</span></td><td>Nordic Star</td><td>5h ago</td><td class="num">USD 14,780</td><td class="mid"><span class="da-pill ok">Approved</span></td><td class="actions"><button class="btn-mini btn-ghost" onclick="fireToast('Opening TST2600104',event)">View</button></td></tr>
+            <tr><td class="pc-id">TST2600096</td><td><span class="da-tier fda">FDA</span></td><td>Crimson Jade</td><td>1d ago</td><td class="num">USD 21,300</td><td class="mid"><span class="da-pill ok">Approved</span></td><td class="actions"><button class="btn-mini btn-ghost" onclick="fireToast('Opening TST2600096',event)">View</button></td></tr>
+            <tr><td class="pc-id">TST2600093</td><td><span class="da-tier sda">SDA</span></td><td>Atlantic Hope</td><td>1d ago</td><td class="num">USD 4,860</td><td class="mid"><span class="da-pill ok">Approved</span></td><td class="actions"><button class="btn-mini btn-ghost" onclick="fireToast('Opening TST2600093',event)">View</button></td></tr>
+            <tr><td class="pc-id">TST2600088</td><td><span class="da-tier apda">APDA</span></td><td>Test Vessel 1</td><td>2d ago</td><td class="num">USD 6,110</td><td class="mid"><span class="da-pill ok">Approved</span></td><td class="actions"><button class="btn-mini btn-ghost" onclick="fireToast('Opening TST2600088',event)">View</button></td></tr>
+            <tr><td class="pc-id">TST2600084</td><td><span class="da-tier fda">FDA</span></td><td>Eastern Horizon</td><td>2d ago</td><td class="num">USD 17,240</td><td class="mid"><span class="da-pill ok">Approved</span></td><td class="actions"><button class="btn-mini btn-ghost" onclick="fireToast('Opening TST2600084',event)">View</button></td></tr>
+            <tr><td class="pc-id">TST2600079</td><td><span class="da-tier dda">DDA</span></td><td>MSC Voyager</td><td>3d ago</td><td class="num">USD 26,500</td><td class="mid"><span class="da-pill ok">Approved</span></td><td class="actions"><button class="btn-mini btn-ghost" onclick="fireToast('Opening TST2600079',event)">View</button></td></tr>
+            <tr><td class="pc-id">TST2600075</td><td><span class="da-tier vi">VI</span></td><td>Pacific Wind</td><td>4d ago</td><td class="num">USD 11,050</td><td class="mid"><span class="da-pill ok">Approved</span></td><td class="actions"><button class="btn-mini btn-ghost" onclick="fireToast('Opening TST2600075',event)">View</button></td></tr>
+            <tr><td class="pc-id">TST2600071</td><td><span class="da-tier pda">PDA</span></td><td>Omicron West</td><td>5d ago</td><td class="num">USD 19,870</td><td class="mid"><span class="da-pill ok">Approved</span></td><td class="actions"><button class="btn-mini btn-ghost" onclick="fireToast('Opening TST2600071',event)">View</button></td></tr>
+            <tr><td class="pc-id">TST2600065</td><td><span class="da-tier fda">FDA</span></td><td>Test Vessel 3</td><td>6d ago</td><td class="num">USD 13,940</td><td class="mid"><span class="da-pill ok">Approved</span></td><td class="actions"><button class="btn-mini btn-ghost" onclick="fireToast('Opening TST2600065',event)">View</button></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="list-more">+17 more approved this month</div>
+    </div>
+
+    <div class="view" id="view-rejected">
+      <div class="page-hdr">
+        <div>
+          <div class="page-title-row"><h1 class="page-title">Rejected DAs</h1><span class="page-count" style="color:var(--slate);background:var(--slate-bg)">3</span></div>
+          <p class="page-desc">Disbursement accounts rejected back to the agent this month, with reason for rejection.</p>
+        </div>
+        <div class="page-stats">
+          <div class="pstat"><span class="pstat-val">3.7%</span><span class="pstat-lbl">Rejection Rate</span></div>
+        </div>
+      </div>
+      <div class="table-card" id="rejected-list">
+        <table class="dtable">
+          <thead>
+            <tr><th>Port Call</th><th>Type</th><th>Vessel</th><th>Rejected</th><th>Reason</th><th class="num">Amount</th><th class="mid">Status</th><th class="mid">Actions</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="pc-id">TST2600099</td><td><span class="da-tier fda">FDA</span></td><td>Test Vessel 2</td><td>1d ago</td><td>Amount mismatch vs PDA estimate</td><td class="num">USD 4,050</td><td class="mid"><span class="da-pill slate">Rejected</span></td><td class="actions"><button class="btn-mini btn-ghost" onclick="fireToast('Opening TST2600099',event)">View</button></td></tr>
+            <tr><td class="pc-id">TST2600086</td><td><span class="da-tier pda">PDA</span></td><td>Boskalis Terminal Job</td><td>4d ago</td><td>Missing supporting invoice</td><td class="num">USD 7,610</td><td class="mid"><span class="da-pill slate">Rejected</span></td><td class="actions"><button class="btn-mini btn-ghost" onclick="fireToast('Opening TST2600086',event)">View</button></td></tr>
+            <tr><td class="pc-id">TST2600072</td><td><span class="da-tier sda">SDA</span></td><td>Keppel Smit Job</td><td>9d ago</td><td>Duplicate charge line item</td><td class="num">USD 2,180</td><td class="mid"><span class="da-pill slate">Rejected</span></td><td class="actions"><button class="btn-mini btn-ghost" onclick="fireToast('Opening TST2600072',event)">View</button></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<div id="toast-wrap" style="position:fixed;bottom:22px;right:22px;display:flex;flex-direction:column;gap:8px;z-index:999"></div>
+
+<script>
+// ── Toast ──
+function fireToast(msg, e){
+  if(e) e.stopPropagation();
+  const wrap = document.getElementById('toast-wrap');
+  const t = document.createElement('div');
+  t.className = 'toast';
+  t.innerHTML = '<svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>' + msg;
+  wrap.appendChild(t);
+  setTimeout(() => { t.classList.add('out'); setTimeout(() => t.remove(), 260); }, 2200);
+}
+
+// ── Count-up ──
+function countUp(el){
+  const target = parseInt(el.dataset.count, 10);
+  if(isNaN(target)) return;
+  const dur = 900, start = performance.now();
+  function tick(now){
+    const p = Math.min((now - start) / dur, 1);
+    const eased = 1 - Math.pow(1 - p, 3);
+    el.textContent = Math.round(eased * target);
+    if(p < 1) requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+}
+
+// ── Ripple ──
+function addRipple(el, e){
+  const rect = el.getBoundingClientRect();
+  const r = document.createElement('span');
+  r.style.position = 'absolute';
+  r.style.borderRadius = '50%';
+  r.style.background = 'rgba(24,82,254,.18)';
+  r.style.transform = 'scale(0)';
+  r.style.pointerEvents = 'none';
+  r.style.animation = 'ripple .55s cubic-bezier(0,0,.2,1)';
+  const size = Math.max(rect.width, rect.height);
+  r.style.width = r.style.height = size + 'px';
+  r.style.left = (e.clientX - rect.left - size / 2) + 'px';
+  r.style.top = (e.clientY - rect.top - size / 2) + 'px';
+  el.appendChild(r);
+  setTimeout(() => r.remove(), 600);
+}
+const rippleStyle = document.createElement('style');
+rippleStyle.textContent = '@keyframes ripple{to{transform:scale(3);opacity:0}}';
+document.head.appendChild(rippleStyle);
+
+// ── Staggered row entrance ──
+function staggerRows(listEl){
+  if(!listEl) return;
+  listEl.querySelectorAll('.drow, .dtable tbody tr').forEach((row, i) => {
+    if(row.style.display === 'none') return;
+    row.classList.remove('row-in');
+    void row.offsetWidth;
+    row.style.animationDelay = Math.min(i * 30, 300) + 'ms';
+    row.classList.add('row-in');
+  });
+}
+
+// ── View navigation ──
+function showView(id, title){
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  const target = document.getElementById(id);
+  if(target){ target.classList.add('active'); }
+  document.getElementById('content').scrollTo({top: 0, behavior: 'instant'});
+  const crumbbar = document.getElementById('crumbbar');
+  const crumbRoot = document.getElementById('crumb-root');
+  const sep = document.getElementById('crumb-sep');
+  const current = document.getElementById('crumb-current');
+  const dashTabsBar = document.getElementById('dash-tabs-bar');
+  if(id === 'view-dashboard'){
+    crumbbar.style.display = 'none';
+    crumbRoot.style.display = 'none';
+    sep.style.display = 'none';
+    current.textContent = '';
+    if(dashTabsBar) dashTabsBar.style.visibility = 'visible';
+  } else {
+    crumbbar.style.display = '';
+    crumbRoot.style.display = '';
+    sep.style.display = '';
+    current.textContent = title || '';
+    if(dashTabsBar) dashTabsBar.style.visibility = 'hidden';
+  }
+  if(target){
+    target.querySelectorAll('.drow-list, .table-card').forEach(staggerRows);
+    requestAnimationFrame(() => requestAnimationFrame(() => initReveals(target)));
+  }
+}
+
+function goDetail(id, title, e){
+  if(e && e.currentTarget) addRipple(e.currentTarget, e);
+  showView(id, title);
+}
+
+// ── Generic detail-page type filter ──
+function filterRows(prefix, clickedTab, type){
+  const tabsEl = document.getElementById(prefix + '-tabs');
+  if(tabsEl) tabsEl.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+  clickedTab.classList.add('active');
+  const listEl = document.getElementById(prefix + '-list');
+  if(!listEl) return;
+  listEl.querySelectorAll('.drow[data-type], tr[data-type]').forEach(row => {
+    row.style.display = (type === 'all' || row.dataset.type === type) ? '' : 'none';
+  });
+  staggerRows(listEl);
+}
+
+// ── My Calls toggle ──
+function toggleMyCalls(){
+  document.getElementById('myCallsWrap').classList.toggle('on');
+}
+
+// ── Cash exposure donut ↔ legend hover linking ──
+// ── Dashboard tab switcher ──
+function switchDashTab(panel, tabEl){
+  document.querySelectorAll('.dash-tab').forEach(t => t.classList.remove('active'));
+  tabEl.classList.add('active');
+  const dis = document.getElementById('dash-panel-disbursements');
+  const fin = document.getElementById('dash-panel-financial');
+  if(panel === 'disbursements'){
+    dis.style.display = 'flex'; fin.style.display = 'none';
+  } else {
+    dis.style.display = 'none'; fin.style.display = 'flex';
+    syncFinCardHeight();
+  }
+}
+function syncFinCardHeight(){
+  // Make financial sit-cards exactly as tall as disbursements sit-cards
+  const dis = document.getElementById('dash-panel-disbursements');
+  const fin = document.getElementById('dash-panel-financial');
+  dis.style.display = 'flex';
+  const refH = dis.querySelector('.situation-grid .sit-card').getBoundingClientRect().height;
+  dis.style.display = 'none';
+  fin.querySelectorAll('.situation-grid .sit-card').forEach(c => {
+    c.style.height = refH + 'px';
+    c.style.boxSizing = 'border-box';
+  });
+}
+
+// ── Currency toggle ──
+function setCurrency(mode){
+  const mtdD = document.getElementById('cur-mtd-data');
+  const ytdD = document.getElementById('cur-ytd-data');
+  const mtdB = document.getElementById('cur-mtd');
+  const ytdB = document.getElementById('cur-ytd');
+  const lbl  = document.getElementById('cur-label');
+  const tl   = document.getElementById('cur-total-lbl');
+  const tv   = document.getElementById('cur-total-val');
+  if(mode === 'MTD'){
+    mtdD.style.display=''; ytdD.style.display='none';
+    mtdB.classList.add('on'); ytdB.classList.remove('on');
+    lbl.textContent='June 2026 disbursements · USD equivalent';
+    tl.textContent='Total MTD disbursements'; tv.textContent='$2,693,000';
+  } else {
+    mtdD.style.display='none'; ytdD.style.display='';
+    ytdB.classList.add('on'); mtdB.classList.remove('on');
+    lbl.textContent='YTD 2026 disbursements · USD equivalent';
+    tl.textContent='Total YTD disbursements'; tv.textContent='$32,901,440';
+  }
+}
+
+function cashHover(idx){
+  const segs = document.querySelectorAll('.cash-seg');
+  const rows = document.querySelectorAll('.cash-legend-row');
+  if(idx === -1){
+    segs.forEach(s => s.classList.remove('hl','dim'));
+    rows.forEach(r => r.classList.remove('hl','dim'));
+    return;
+  }
+  segs.forEach(s => {
+    const match = Number(s.dataset.slice) === idx;
+    s.classList.toggle('hl', match);
+    s.classList.toggle('dim', !match);
+  });
+  rows.forEach(r => {
+    const match = Number(r.dataset.slice) === idx;
+    r.classList.toggle('hl', match);
+    r.classList.toggle('dim', !match);
+  });
+}
+
+// ── Chart period switcher ──
+(function(){
+  const CHART = {
+    week: {
+      labels: ['W1','W2','W3','W4','W5','W6','W7','W8'],
+      xs:     [62, 142, 222, 302, 382, 462, 542, 618],
+      sub1:   [104, 90, 97, 69, 79, 55, 62, 41],   // submitted (lower y = higher)
+      sub2:   [125, 111, 118, 97, 104, 83, 90, 69], // approved
+      disbursed: 'USD 341K', approved: '27', rejected: '3',
+      subText: 'Weekly totals across all vessels and ports',
+      approvedLbl: 'Approved this week', rejectedLbl: 'Rejected this week'
+    },
+    month: {
+      labels: ['Jan','Feb','Mar','Apr','May','Jun'],
+      xs:     [70, 182, 294, 406, 518, 618],
+      sub1:   [111, 90, 76, 83, 62, 48],
+      sub2:   [132, 111, 97, 104, 83, 69],
+      disbursed: 'USD 1.4M', approved: '112', rejected: '9',
+      subText: 'Monthly disbursement submissions vs approvals',
+      approvedLbl: 'Approved this year', rejectedLbl: 'Rejected this year'
+    },
+    quarter: {
+      labels: ['Q1','Q2','Q3','Q4'],
+      xs:     [120, 306, 492, 618],
+      sub1:   [97, 76, 62, 41],
+      sub2:   [118, 97, 83, 62],
+      disbursed: 'USD 4.1M', approved: '374', rejected: '28',
+      subText: 'Quarterly performance — submissions vs approvals',
+      approvedLbl: 'Approved (YTD)', rejectedLbl: 'Rejected (YTD)'
+    }
+  };
+
+  function polyline(xs, ys){
+    return xs.map((x,i) => (i===0?'M':'L')+x+','+ys[i]).join(' ');
+  }
+  function area(xs, ys){
+    return polyline(xs,ys)+' L'+xs[xs.length-1]+',160 L'+xs[0]+',160 Z';
+  }
+
+  window.switchChartPeriod = function(period, tabEl){
+    const d = CHART[period];
+    if(!d) return;
+
+    // update tabs
+    document.querySelectorAll('.period-tab').forEach(t => t.classList.remove('active'));
+    tabEl.classList.add('active');
+
+    // update x-axis labels
+    const ns = 'http://www.w3.org/2000/svg';
+    const grp = document.getElementById('chart-xlabels');
+    while(grp.firstChild) grp.removeChild(grp.firstChild);
+    d.labels.forEach((lbl,i) => {
+      const t = document.createElementNS(ns,'text');
+      t.setAttribute('x', d.xs[i]);
+      t.setAttribute('y', '182');
+      t.textContent = lbl;
+      grp.appendChild(t);
+    });
+
+    // update paths
+    document.getElementById('chart-line1').setAttribute('d', polyline(d.xs, d.sub1));
+    document.getElementById('chart-line2').setAttribute('d', polyline(d.xs, d.sub2));
+    document.getElementById('chart-area').setAttribute('d', area(d.xs, d.sub1));
+
+    // update footer stats
+    document.getElementById('stat-disbursed').textContent  = d.disbursed;
+    document.getElementById('stat-approved').textContent   = d.approved;
+    document.getElementById('stat-rejected').textContent   = d.rejected;
+    document.getElementById('stat-approved-lbl').textContent = d.approvedLbl;
+    document.getElementById('stat-rejected-lbl').textContent = d.rejectedLbl;
+
+    // update subtitle
+    document.getElementById('chart-subtitle').textContent = d.subText;
+
+    // re-animate line stroke
+    ['chart-line1','chart-line2'].forEach(id => {
+      const el = document.getElementById(id);
+      const len = el.getTotalLength ? el.getTotalLength() : 600;
+      el.style.strokeDasharray  = len;
+      el.style.strokeDashoffset = len;
+      el.style.transition = 'none';
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          el.style.transition = 'stroke-dashoffset .7s cubic-bezier(.4,0,.2,1)';
+          el.style.strokeDashoffset = '0';
+        });
+      });
+    });
+  };
+})();
+
+// ── Role selector ──
+function toggleRolePop(e){
+  e.stopPropagation();
+  document.getElementById('roleSelectWrap').classList.toggle('open');
+  document.getElementById('rolePop').classList.toggle('open');
+}
+function setRole(role, el){
+  document.getElementById('roleSelectVal').textContent = role;
+  document.querySelectorAll('.role-opt').forEach(o => o.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('roleSelectWrap').classList.remove('open');
+  document.getElementById('rolePop').classList.remove('open');
+  fireToast('Switched role to ' + role);
+}
+document.addEventListener('click', function(e){
+  const wrap = document.getElementById('roleSelectWrap');
+  const pop = document.getElementById('rolePop');
+  if(wrap && pop && pop.classList.contains('open') && !wrap.contains(e.target)){
+    wrap.classList.remove('open');
+    pop.classList.remove('open');
+  }
+});
+
+// ── Scroll reveal ──
+const revealObs = new IntersectionObserver(entries => {
+  entries.forEach(en => {
+    if(en.isIntersecting){
+      en.target.classList.add('in');
+      en.target.querySelectorAll('[data-count]').forEach(countUp);
+      const line = en.target.querySelector('.area-line');
+      if(line){ line.style.transition = 'stroke-dashoffset 1.4s cubic-bezier(0,0,.2,1) .1s'; line.style.strokeDashoffset = '0'; }
+      const fill = en.target.querySelector('.area-fill');
+      if(fill){ setTimeout(() => { fill.style.opacity = '1'; }, 700); }
+      en.target.querySelectorAll('.trend-line2, .trend-line3').forEach((tline, i) => {
+        tline.style.transition = 'stroke-dashoffset 1.4s cubic-bezier(0,0,.2,1) ' + (0.1 + i * 0.15) + 's';
+        tline.style.strokeDashoffset = '0';
+      });
+      en.target.querySelectorAll('.trend-fill2').forEach(tfill => {
+        setTimeout(() => { tfill.style.opacity = '1'; }, 700);
+      });
+      revealObs.unobserve(en.target);
+    }
+  });
+}, {threshold: .15});
+
+function initReveals(scope){
+  (scope || document).querySelectorAll('.reveal:not(.in)').forEach(el => revealObs.observe(el));
+}
+
+// ── Init ──
+document.addEventListener('DOMContentLoaded', function(){
+  document.querySelectorAll('.kpi-bento [data-count], .situation-grid [data-count]').forEach(countUp);
+  staggerRows(document.getElementById('view-dashboard'));
+  initReveals(document.getElementById('view-dashboard'));
+});
+
+(function(){
+  const el = document.getElementById('live-date');
+  const DAYS = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  function updateDate(){
+    const now = new Date();
+    const day = DAYS[now.getDay()];
+    const month = MONTHS[now.getMonth()];
+    const date = now.getDate();
+    const year = now.getFullYear();
+    const hh = String(now.getHours()).padStart(2,'0');
+    const mm = String(now.getMinutes()).padStart(2,'0');
+    const ss = String(now.getSeconds()).padStart(2,'0');
+    el.textContent = `${day}, ${month} ${date}, ${year} · ${hh}:${mm}:${ss} GMT`;
+  }
+  updateDate();
+  setInterval(updateDate, 1000);
+})();
+</script>
+</body>
+</html>
