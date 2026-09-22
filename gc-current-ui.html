@@ -205,9 +205,9 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
 .search-divider{width:1px;height:20px;background:var(--border);flex-shrink:0}
 .version-check{color:var(--brand);font-weight:700;font-size:12px}
 /* Version switcher color wheel */
-.version-wheel-btn{width:36px;height:36px;border-radius:4px;border:1px solid var(--border);background:var(--card);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:border-color .15s var(--ease),box-shadow .15s var(--ease);flex-shrink:0}
-.version-wheel-btn:hover{border-color:#C7D5EE;box-shadow:0 0 0 3px rgba(24,82,254,.08)}
-.version-wheel{width:18px;height:18px;border-radius:50%;display:block;background:conic-gradient(from 0deg,#EF4444,#F59E0B,#FACC15,#22C55E,#06B6D4,#1852FE,#8B5CF6,#EC4899,#EF4444);box-shadow:inset 0 0 0 1px rgba(0,0,0,.08)}
+.version-wheel-btn{width:36px;height:36px;border-radius:50%;border:none;background:transparent;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:transform .15s var(--ease);flex-shrink:0;padding:0}
+.version-wheel-btn:hover{transform:scale(1.08)}
+.version-wheel{width:20px;height:20px;border-radius:50%;display:block;background:conic-gradient(from 0deg,#EF4444,#F59E0B,#FACC15,#22C55E,#06B6D4,#1852FE,#8B5CF6,#EC4899,#EF4444);box-shadow:inset 0 0 0 1px rgba(0,0,0,.08)}
 /* Anomaly card */
 .anomaly-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px 20px;display:flex;flex-direction:column;gap:14px;box-shadow:var(--shadow-sm)}
 .anomaly-badge{display:inline-flex;align-items:center;gap:8px}
@@ -720,6 +720,10 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
           <div class="search-dd-item" onclick="selectSearchFilter('Open DAs',this)">Open DAs</div>
         </div>
       </div>
+      <button class="btn-primary">
+        <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        New Port Call
+      </button>
       <div class="version-switch" style="position:relative">
         <button class="version-wheel-btn" onclick="event.stopPropagation();toggleVersionMenu()" aria-label="Switch version" title="Switch version">
           <span class="version-wheel"></span>
@@ -730,10 +734,6 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
           <div class="search-dd-item" style="display:flex;align-items:center;justify-content:space-between;gap:10px" onclick="selectVersion('Version 3',this)"><span>Version 3</span></div>
         </div>
       </div>
-      <button class="btn-primary">
-        <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-        New Port Call
-      </button>
     </div>
   </div>
 
