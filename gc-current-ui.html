@@ -203,6 +203,11 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
 .search-dd-item:hover{background:var(--bg)}
 .search-dd-item.active{color:var(--brand);font-weight:700;background:var(--blue-light)}
 .search-divider{width:1px;height:20px;background:var(--border);flex-shrink:0}
+.version-check{color:var(--brand);font-weight:700;font-size:12px}
+/* Version switcher color wheel */
+.version-wheel-btn{width:36px;height:36px;border-radius:4px;border:1px solid var(--border);background:var(--card);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:border-color .15s var(--ease),box-shadow .15s var(--ease);flex-shrink:0}
+.version-wheel-btn:hover{border-color:#C7D5EE;box-shadow:0 0 0 3px rgba(24,82,254,.08)}
+.version-wheel{width:18px;height:18px;border-radius:50%;display:block;background:conic-gradient(from 0deg,#EF4444,#F59E0B,#FACC15,#22C55E,#06B6D4,#1852FE,#8B5CF6,#EC4899,#EF4444);box-shadow:inset 0 0 0 1px rgba(0,0,0,.08)}
 /* Anomaly card */
 .anomaly-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px 20px;display:flex;flex-direction:column;gap:14px;box-shadow:var(--shadow-sm)}
 .anomaly-badge{display:inline-flex;align-items:center;gap:8px}
@@ -713,6 +718,16 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
           <div class="search-dd-item" onclick="selectSearchFilter('Vessel',this)">Vessel</div>
           <div class="search-dd-item" onclick="selectSearchFilter('Port',this)">Port</div>
           <div class="search-dd-item" onclick="selectSearchFilter('Open DAs',this)">Open DAs</div>
+        </div>
+      </div>
+      <div class="version-switch" style="position:relative">
+        <button class="version-wheel-btn" onclick="event.stopPropagation();toggleVersionMenu()" aria-label="Switch version" title="Switch version">
+          <span class="version-wheel"></span>
+        </button>
+        <div id="versionMenu" style="display:none;position:absolute;top:calc(100% + 6px);right:0;background:var(--card);border:1px solid var(--border);border-radius:6px;box-shadow:0 8px 24px rgba(0,0,0,.12);z-index:200;min-width:150px;padding:4px 0">
+          <div class="search-dd-item" style="display:flex;align-items:center;justify-content:space-between;gap:10px" onclick="selectVersion('Version 1',this)"><span>Version 1</span></div>
+          <div class="search-dd-item active" style="display:flex;align-items:center;justify-content:space-between;gap:10px" onclick="selectVersion('Version 2',this)"><span>Version 2</span><span class="version-check">✓</span></div>
+          <div class="search-dd-item" style="display:flex;align-items:center;justify-content:space-between;gap:10px" onclick="selectVersion('Version 3',this)"><span>Version 3</span></div>
         </div>
       </div>
       <button class="btn-primary">
@@ -2067,6 +2082,30 @@ document.addEventListener('click', function(e){
   const trigger = document.getElementById('searchDropdownTrigger');
   const menu = document.getElementById('searchDropdownMenu');
   if(menu && !menu.contains(e.target) && trigger && !trigger.contains(e.target)){
+    menu.style.display = 'none';
+  }
+});
+
+function toggleVersionMenu(){
+  const menu = document.getElementById('versionMenu');
+  menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+}
+function selectVersion(label, el){
+  const menu = el.closest('#versionMenu');
+  menu.querySelectorAll('.search-dd-item').forEach(i => {
+    i.classList.remove('active');
+    const chk = i.querySelector('.version-check');
+    if(chk) chk.remove();
+  });
+  el.classList.add('active');
+  el.insertAdjacentHTML('beforeend', '<span class="version-check">✓</span>');
+  menu.style.display = 'none';
+  fireToast('Switched to ' + label, event);
+}
+document.addEventListener('click', function(e){
+  const menu = document.getElementById('versionMenu');
+  const btn = document.querySelector('.version-wheel-btn');
+  if(menu && menu.style.display === 'block' && !menu.contains(e.target) && btn && !btn.contains(e.target)){
     menu.style.display = 'none';
   }
 });
