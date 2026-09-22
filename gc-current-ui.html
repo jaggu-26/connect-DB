@@ -209,6 +209,25 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
 .query-badge{font-size:10px;font-weight:700;padding:2px 8px;border-radius:999px;white-space:nowrap;flex-shrink:0}
 .query-badge.op{background:var(--blue-light);color:var(--brand)}
 .query-badge.ag{background:var(--teal-bg);color:var(--teal-dark)}
+/* Operational Health inline tabs */
+.oh-tabs{display:flex;gap:2px;background:var(--bg);border-radius:6px;padding:2px}
+.oh-tab{padding:4px 12px;border-radius:4px;font-size:11.5px;font-weight:600;color:var(--text-2);border:none;background:transparent;cursor:pointer;transition:all .15s var(--ease);white-space:nowrap}
+.oh-tab.active{background:var(--card);color:var(--text);box-shadow:0 1px 3px rgba(0,0,0,.1)}
+/* Anomaly card */
+.anomaly-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px 20px;display:flex;flex-direction:column;gap:14px;box-shadow:var(--shadow-sm)}
+.anomaly-badge{display:inline-flex;align-items:center;gap:8px}
+.anomaly-pill{background:var(--amber-mid);color:#844D0F;font-size:10px;font-weight:800;letter-spacing:.06em;padding:3px 9px;border-radius:999px;text-transform:uppercase}
+.anomaly-label{font-size:12px;font-weight:500;color:var(--text-2)}
+.anomaly-title{font-size:15px;font-weight:700;color:var(--text);line-height:1.4}
+.anomaly-highlight{color:var(--warning)}
+.anomaly-vs{display:flex;align-items:center;gap:20px}
+.anomaly-num{display:flex;flex-direction:column;gap:2px}
+.anomaly-num-val{font-size:30px;font-weight:800;color:var(--text);letter-spacing:-.02em;line-height:1}
+.anomaly-num-lbl{font-size:11px;font-weight:500;color:var(--text-2)}
+.anomaly-vs-sep{font-size:11px;font-weight:700;color:var(--text-3);letter-spacing:.04em}
+.anomaly-sub{font-size:12px;color:var(--text-2)}
+.anomaly-link{font-size:13px;font-weight:700;color:var(--warning);cursor:pointer;text-decoration:none;border:none;background:none;padding:0}
+.anomaly-link:hover{text-decoration:underline}
 .query-main{flex:1;min-width:0}
 .query-desc{font-size:12.5px;font-weight:700;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .query-by{font-size:11px;color:var(--text-3);margin-top:1px}
@@ -779,10 +798,16 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
 
       <div class="situation-stats-row">
         <div class="card reveal">
-          <div class="tile-hdr"><div class="tile-title">Operational Health <span style="font-size:11px;font-weight:400;color:var(--text-2)">· June 2026</span></div></div>
+          <div class="tile-hdr">
+            <div class="tile-title">Operational Health <span style="font-size:11px;font-weight:400;color:var(--text-2)">· June 2026</span></div>
+            <div class="oh-tabs" id="ohTabs">
+              <button class="oh-tab active" onclick="switchOHTab('inprocess',this)">In Process</button>
+              <button class="oh-tab" onclick="switchOHTab('awaiting',this)">Awaiting Response</button>
+            </div>
+          </div>
           <div style="display:flex;flex-direction:column;gap:8px;flex:1">
             <!-- Query Row 1 -->
-            <div class="query-row">
+            <div class="query-row" data-ohstatus="inprocess">
               <span class="query-badge op">Operator Query</span>
               <div class="query-main">
                 <div class="query-desc">TST2600082 — Vessel Omicron West</div>
@@ -792,7 +817,7 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
               <button class="btn-mini" style="height:28px;padding:0 10px;font-size:11px;background:var(--brand);color:#fff" onclick="fireToast('Opening query TST2600082',event)">Respond →</button>
             </div>
             <!-- Query Row 2 -->
-            <div class="query-row">
+            <div class="query-row" data-ohstatus="awaiting">
               <span class="query-badge ag">Agent Query</span>
               <div class="query-main">
                 <div class="query-desc">TST2600091 — Pacific Wind · Hamburg</div>
@@ -802,7 +827,7 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
               <button class="btn-mini" style="height:28px;padding:0 10px;font-size:11px;background:var(--brand);color:#fff" onclick="fireToast('Opening query TST2600091',event)">Respond →</button>
             </div>
             <!-- Query Row 3 -->
-            <div class="query-row">
+            <div class="query-row" data-ohstatus="inprocess">
               <span class="query-badge op">Operator Query</span>
               <div class="query-main">
                 <div class="query-desc">TST2600114 — Nordic Star · Rotterdam</div>
@@ -813,7 +838,7 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
             </div>
             <!-- Footer -->
             <div style="margin-top:6px;padding-top:8px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between">
-              <span style="font-size:11.5px;color:var(--text-2)">3 queries in process at GeoConnect</span>
+              <span style="font-size:11.5px;color:var(--text-2)" id="ohFooterCount">3 queries in process at GeoConnect</span>
               <span style="font-size:12px;font-weight:700;color:var(--brand);cursor:pointer" onclick="goDetail('view-pending','Query Listing',event)">Oldest query: 6 days →</span>
             </div>
           </div>
@@ -845,6 +870,74 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
             <div class="agent-rank-row"><div class="agent-avatar" style="background:var(--amber-mid);color:#844D0F">SA</div><div class="agent-rank-main"><div class="agent-rank-name">Straits Agency</div><div class="agent-rank-track"><div class="agent-rank-fill" style="--w:36%;background:var(--warning)"></div></div></div><div class="agent-rank-val" style="color:var(--warning);font-weight:700">3.1d</div></div>
             <div class="agent-rank-row"><div class="agent-avatar" style="background:#FDECEA;color:var(--danger)">PC</div><div class="agent-rank-main"><div class="agent-rank-name">Pacific Carriers</div><div class="agent-rank-track"><div class="agent-rank-fill" style="--w:20%;background:var(--danger)"></div></div></div><div class="agent-rank-val" style="color:var(--danger);font-weight:700">3.8d</div></div>
           </div>
+        </div>
+      </div>
+
+      <!-- ANOMALY SECTION -->
+      <div class="section-lbl">Anomalies</div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-bottom:4px">
+        <!-- Anomaly Card 1 -->
+        <div class="anomaly-card reveal">
+          <div class="anomaly-badge">
+            <span class="anomaly-pill">Anomaly</span>
+            <span class="anomaly-label">Pre-appointment check</span>
+          </div>
+          <div class="anomaly-title">Pacific Wind PDA is <span class="anomaly-highlight">12% above</span> your Hamburg benchmark.</div>
+          <div class="anomaly-vs">
+            <div class="anomaly-num">
+              <div class="anomaly-num-val">5,900</div>
+              <div class="anomaly-num-lbl">this PDA</div>
+            </div>
+            <div class="anomaly-vs-sep">VS</div>
+            <div class="anomaly-num">
+              <div class="anomaly-num-val" style="color:var(--text-2)">5,270</div>
+              <div class="anomaly-num-lbl">Hamburg typical</div>
+            </div>
+          </div>
+          <div class="anomaly-sub">Towage line item driving the variance.</div>
+          <button class="anomaly-link" onclick="fireToast('Opening Pacific Wind PDA anomaly',event)">Review before appointment →</button>
+        </div>
+        <!-- Anomaly Card 2 -->
+        <div class="anomaly-card reveal">
+          <div class="anomaly-badge">
+            <span class="anomaly-pill">Anomaly</span>
+            <span class="anomaly-label">FDA settlement delay</span>
+          </div>
+          <div class="anomaly-title">Nordic Star FDA is <span class="anomaly-highlight">8 days overdue</span> past agreed SLA.</div>
+          <div class="anomaly-vs">
+            <div class="anomaly-num">
+              <div class="anomaly-num-val">8</div>
+              <div class="anomaly-num-lbl">days overdue</div>
+            </div>
+            <div class="anomaly-vs-sep">VS</div>
+            <div class="anomaly-num">
+              <div class="anomaly-num-val" style="color:var(--text-2)">3</div>
+              <div class="anomaly-num-lbl">days SLA target</div>
+            </div>
+          </div>
+          <div class="anomaly-sub">Agent: Straits Agency · Rotterdam port call.</div>
+          <button class="anomaly-link" onclick="fireToast('Opening Nordic Star anomaly',event)">Chase agent →</button>
+        </div>
+        <!-- Anomaly Card 3 -->
+        <div class="anomaly-card reveal">
+          <div class="anomaly-badge">
+            <span class="anomaly-pill">Anomaly</span>
+            <span class="anomaly-label">Cost spike detected</span>
+          </div>
+          <div class="anomaly-title">Singapore berth fees <span class="anomaly-highlight">23% higher</span> than prior 3 calls.</div>
+          <div class="anomaly-vs">
+            <div class="anomaly-num">
+              <div class="anomaly-num-val">4,120</div>
+              <div class="anomaly-num-lbl">this call</div>
+            </div>
+            <div class="anomaly-vs-sep">VS</div>
+            <div class="anomaly-num">
+              <div class="anomaly-num-val" style="color:var(--text-2)">3,350</div>
+              <div class="anomaly-num-lbl">avg prior 3</div>
+            </div>
+          </div>
+          <div class="anomaly-sub">Peak season surcharge not previously applied.</div>
+          <button class="anomaly-link" onclick="fireToast('Opening Singapore anomaly',event)">Review charges →</button>
         </div>
       </div>
 
@@ -2079,6 +2172,15 @@ function closeSidePanel(){
 }
 
 // ── Global Search ──
+function switchOHTab(status, btn){
+  btn.closest('#ohTabs').querySelectorAll('.oh-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  const rows = document.querySelectorAll('.query-row[data-ohstatus]');
+  rows.forEach(r => r.style.display = r.dataset.ohstatus === status ? '' : 'none');
+  const count = [...rows].filter(r => r.dataset.ohstatus === status).length;
+  const footer = document.getElementById('ohFooterCount');
+  if(footer) footer.textContent = count + (status === 'inprocess' ? ' queries in process at GeoConnect' : ' queries awaiting response');
+}
 function toggleSearchChip(el){
   el.closest('.search-chips').querySelectorAll('.search-filter-chip').forEach(c => c.classList.remove('active'));
   el.classList.add('active');
