@@ -199,6 +199,9 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
 .search-filter-chip{padding:4px 12px;border-radius:999px;font-size:11.5px;font-weight:600;color:var(--text-2);background:var(--bg);border:1px solid var(--border);cursor:pointer;transition:all .15s var(--ease);white-space:nowrap}
 .search-filter-chip:hover{background:#EEF4FF;color:var(--brand);border-color:var(--blue-mid)}
 .search-filter-chip.active{background:var(--blue-light);color:var(--brand);border-color:var(--brand)}
+.search-dd-item{padding:8px 14px;font-size:13px;font-weight:500;color:var(--text);cursor:pointer;transition:background .12s}
+.search-dd-item:hover{background:var(--bg)}
+.search-dd-item.active{color:var(--brand);font-weight:700;background:var(--blue-light)}
 .search-divider{width:1px;height:20px;background:var(--border);flex-shrink:0}
 /* ═══ QUERY ROWS (Operational Health) ═══ */
 .query-row{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:10px;background:var(--bg);transition:background .18s var(--ease)}
@@ -473,11 +476,10 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
   .trends-grid{grid-template-columns:1fr!important}
   .trends-grid .chart-card[style*="grid-column:span 2"]{grid-column:span 1!important}
   .quad-grid{grid-template-columns:repeat(2,1fr)!important}
-  .topbar-search{width:160px}
+  .topbar-search{width:220px}
 }
 @media(max-width:768px){
   .topbar{padding:4px 14px 2px}
-  .topbar-search{display:none}
   .mycalls-wrap{display:none}
   .content{padding:4px 14px 24px}
   .situation-grid{grid-template-columns:1fr 1fr!important}
@@ -685,10 +687,21 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
         <span class="mycalls-label">My Calls</span>
         <div class="toggle-switch"><div class="knob"></div></div>
       </div>
-      <label class="topbar-search">
+      <div class="topbar-search" style="width:320px;gap:6px;position:relative" onclick="this.querySelector('input').focus()">
         <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <input type="text" placeholder="Search">
-      </label>
+        <input type="text" placeholder="Search by vessel, port…" id="global-search-input" style="flex:1;border:none;outline:none;background:transparent;font-family:inherit;font-size:13px;color:var(--text)" oninput="globalSearchInput(this)">
+        <div style="width:1px;height:16px;background:var(--border);flex-shrink:0"></div>
+        <div class="topbar-search-dropdown" id="searchDropdownTrigger" onclick="event.stopPropagation();toggleSearchDropdown()" style="display:flex;align-items:center;gap:4px;cursor:pointer;white-space:nowrap;flex-shrink:0">
+          <span id="searchFilterLabel" style="font-size:12px;font-weight:600;color:var(--brand)">All Port Calls</span>
+          <svg viewBox="0 0 24 24" style="width:11px;height:11px;stroke:var(--brand);fill:none;stroke-width:2.5;stroke-linecap:round;flex-shrink:0"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div id="searchDropdownMenu" style="display:none;position:absolute;top:calc(100% + 6px);right:0;background:var(--card);border:1px solid var(--border);border-radius:6px;box-shadow:0 8px 24px rgba(0,0,0,.12);z-index:200;min-width:160px;padding:4px 0">
+          <div class="search-dd-item active" onclick="selectSearchFilter('All Port Calls',this)">All Port Calls</div>
+          <div class="search-dd-item" onclick="selectSearchFilter('Vessel',this)">Vessel</div>
+          <div class="search-dd-item" onclick="selectSearchFilter('Port',this)">Port</div>
+          <div class="search-dd-item" onclick="selectSearchFilter('Open DAs',this)">Open DAs</div>
+        </div>
+      </div>
       <button class="btn-primary">
         <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
         New Port Call
@@ -696,20 +709,6 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
     </div>
   </div>
 
-  <!-- GLOBAL SEARCH BAR -->
-  <div style="padding:0 28px 6px;flex-shrink:0" id="global-search-wrap">
-    <div class="global-search-bar" onclick="this.querySelector('input').focus()">
-      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-      <input class="global-search-input" type="text" placeholder="Search by vessel, port, or vessel + port…" id="global-search-input" oninput="globalSearchInput(this)">
-      <div class="search-divider"></div>
-      <div class="search-chips">
-        <span class="search-filter-chip active" onclick="toggleSearchChip(this)">All Port Calls</span>
-        <span class="search-filter-chip" onclick="toggleSearchChip(this)">Vessel</span>
-        <span class="search-filter-chip" onclick="toggleSearchChip(this)">Port</span>
-        <span class="search-filter-chip" onclick="toggleSearchChip(this)">Open DAs</span>
-      </div>
-    </div>
-  </div>
 
   <div class="crumbbar" id="crumbbar" style="display:none">
     <span class="crumb-root" id="crumb-root" onclick="showView('view-dashboard')" style="display:none">Dashboard</span>
@@ -2087,6 +2086,24 @@ function toggleSearchChip(el){
 function globalSearchInput(input){
   // placeholder for future search logic
 }
+function toggleSearchDropdown(){
+  const menu = document.getElementById('searchDropdownMenu');
+  const isOpen = menu.style.display === 'block';
+  menu.style.display = isOpen ? 'none' : 'block';
+}
+function selectSearchFilter(label, el){
+  document.getElementById('searchFilterLabel').textContent = label;
+  el.closest('#searchDropdownMenu').querySelectorAll('.search-dd-item').forEach(i => i.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('searchDropdownMenu').style.display = 'none';
+}
+document.addEventListener('click', function(e){
+  const trigger = document.getElementById('searchDropdownTrigger');
+  const menu = document.getElementById('searchDropdownMenu');
+  if(menu && !menu.contains(e.target) && trigger && !trigger.contains(e.target)){
+    menu.style.display = 'none';
+  }
+});
 
 // ── Init ──
 document.addEventListener('DOMContentLoaded', function(){
