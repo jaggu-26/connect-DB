@@ -188,7 +188,48 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
 .sit-btn-outline{background:var(--blue-light);color:var(--brand);border:1px solid var(--brand)}
 .sit-btn-outline:hover{background:var(--blue-mid);border-color:var(--brand)}
 
-.situation-stats-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px}
+.situation-stats-row{display:grid;grid-template-columns:1.6fr 1fr;gap:18px}
+/* ═══ GLOBAL SEARCH BAR ═══ */
+.global-search-bar{background:var(--card);border:1px solid var(--border);border-radius:4px;padding:0 14px;display:flex;align-items:center;gap:10px;height:44px;box-shadow:var(--shadow-sm);transition:box-shadow .25s var(--ease),border-color .25s var(--ease);flex-shrink:0}
+.global-search-bar:focus-within{border-color:var(--brand);box-shadow:0 0 0 3px rgba(24,82,254,.12)}
+.global-search-bar svg{width:15px;height:15px;stroke:var(--text-3);fill:none;stroke-width:1.75;stroke-linecap:round;flex-shrink:0}
+.global-search-input{border:none;outline:none;background:transparent;font-family:inherit;font-size:13.5px;color:var(--text);flex:1;min-width:0}
+.global-search-input::placeholder{color:var(--text-3)}
+.search-chips{display:flex;align-items:center;gap:6px;flex-shrink:0}
+.search-filter-chip{padding:4px 12px;border-radius:999px;font-size:11.5px;font-weight:600;color:var(--text-2);background:var(--bg);border:1px solid var(--border);cursor:pointer;transition:all .15s var(--ease);white-space:nowrap}
+.search-filter-chip:hover{background:#EEF4FF;color:var(--brand);border-color:var(--blue-mid)}
+.search-filter-chip.active{background:var(--blue-light);color:var(--brand);border-color:var(--brand)}
+.search-divider{width:1px;height:20px;background:var(--border);flex-shrink:0}
+/* ═══ QUERY ROWS (Operational Health) ═══ */
+.query-row{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:10px;background:var(--bg);transition:background .18s var(--ease)}
+.query-row:hover{background:#EEF4FF}
+.query-badge{font-size:10px;font-weight:700;padding:2px 8px;border-radius:999px;white-space:nowrap;flex-shrink:0}
+.query-badge.op{background:var(--blue-light);color:var(--brand)}
+.query-badge.ag{background:var(--teal-bg);color:var(--teal-dark)}
+.query-main{flex:1;min-width:0}
+.query-desc{font-size:12.5px;font-weight:700;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.query-by{font-size:11px;color:var(--text-3);margin-top:1px}
+.query-status{font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:999px;white-space:nowrap;flex-shrink:0}
+.query-status.inprocess{background:var(--amber-mid);color:#844D0F}
+.query-status.awaiting{background:var(--blue-light);color:var(--brand)}
+/* ═══ MERGED SIT-VAL DUAL ═══ */
+.sit-dual{display:flex;gap:24px;position:relative;z-index:1}
+.sit-dual-item{display:flex;flex-direction:column;gap:2px}
+.sit-dual-num{font-size:32px;font-weight:800;line-height:1;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.sit-dual-lbl{font-size:11.5px;font-weight:600;opacity:.85}
+/* ═══ SIDE PANEL ═══ */
+.side-panel-overlay{position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:500;opacity:0;pointer-events:none;transition:opacity .25s}
+.side-panel-overlay.open{opacity:1;pointer-events:all}
+.side-panel{position:fixed;top:0;right:0;width:420px;height:100vh;background:var(--card);box-shadow:-4px 0 24px rgba(0,0,0,.12);z-index:501;transform:translateX(100%);transition:transform .3s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column}
+.side-panel.open{transform:translateX(0)}
+.side-panel-hdr{display:flex;align-items:center;justify-content:space-between;padding:20px 24px;border-bottom:1px solid var(--border)}
+.side-panel-title{font-size:16px;font-weight:700;color:var(--nav)}
+.side-panel-close{width:32px;height:32px;border:none;background:var(--bg);border-radius:6px;cursor:pointer;font-size:18px;color:var(--text-2);display:flex;align-items:center;justify-content:center}
+.side-panel-body{flex:1;overflow-y:auto;padding:20px 24px;display:flex;flex-direction:column;gap:14px}
+.side-panel-footer{padding:16px 24px;border-top:1px solid var(--border);display:flex;gap:10px}
+.sp-row{display:flex;justify-content:space-between;align-items:flex-start;padding:8px 0;border-bottom:1px solid var(--border)}
+.sp-lbl{font-size:12px;color:var(--text-2);font-weight:600}
+.sp-val{font-size:13px;font-weight:700;color:var(--text);text-align:right}
 
 /* ═══ OPERATIONAL HEALTH — stat tiles ═══ */
 .health-tiles{display:grid;grid-template-columns:repeat(2,1fr);grid-template-rows:1fr 1fr;gap:10px;flex:1}
@@ -655,6 +696,21 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
     </div>
   </div>
 
+  <!-- GLOBAL SEARCH BAR -->
+  <div style="padding:0 28px 6px;flex-shrink:0" id="global-search-wrap">
+    <div class="global-search-bar" onclick="this.querySelector('input').focus()">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input class="global-search-input" type="text" placeholder="Search by vessel, port, or vessel + port…" id="global-search-input" oninput="globalSearchInput(this)">
+      <div class="search-divider"></div>
+      <div class="search-chips">
+        <span class="search-filter-chip active" onclick="toggleSearchChip(this)">All Port Calls</span>
+        <span class="search-filter-chip" onclick="toggleSearchChip(this)">Vessel</span>
+        <span class="search-filter-chip" onclick="toggleSearchChip(this)">Port</span>
+        <span class="search-filter-chip" onclick="toggleSearchChip(this)">Open DAs</span>
+      </div>
+    </div>
+  </div>
+
   <div class="crumbbar" id="crumbbar" style="display:none">
     <span class="crumb-root" id="crumb-root" onclick="showView('view-dashboard')" style="display:none">Dashboard</span>
     <span class="crumb-sep" id="crumb-sep" style="display:none">›</span>
@@ -675,11 +731,12 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
         <span class="last-updated">Last Updated: 22 Aug 2026, 06:27 GMT</span>
       </div>
       <div class="situation-grid">
+        <!-- Card 1: Act Now — Approvals -->
         <div class="sit-card sit-urgent" onclick="goDetail('view-pending','Pending Approval',event)">
           <span class="sit-badge"><span class="sit-dot"></span>Act Now — Approvals</span>
           <div class="sit-val" data-count="15">0</div>
           <div class="sit-lbl">DAs are waiting for your sign-off.</div>
-          <div class="sit-sub">Oldest waiting 6 days · $172K total value</div>
+          <div class="sit-sub">Oldest waiting 6 days · USD 172K total value</div>
           <div class="sit-actions" style="align-items:center">
             <button class="sit-btn sit-btn-onred" onclick="event.stopPropagation();goDetail('view-pending','Pending Approval',event)"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Review &amp; Approve</button>
             <div style="display:flex;flex-direction:column;gap:2px;padding-left:6px">
@@ -688,51 +745,35 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
             </div>
           </div>
         </div>
+        <!-- Card 2: Pending Appointments -->
         <div class="sit-card" onclick="goDetail('view-appt','Pending Appointment',event)">
           <span class="sit-badge sit-info"><span class="sit-dot"></span>Pending Appointments</span>
           <div class="sit-val" data-count="8">0</div>
           <div class="sit-lbl">Vessels arriving without an agent appointed.</div>
           <div class="sit-sub">2 due today · furthest ETA in 16 days</div>
           <div class="sit-actions">
-            <button class="sit-btn sit-btn-teal" onclick="event.stopPropagation();goDetail('view-appt','Pending Appointment',event)"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Assign agents</button>
-            <button class="sit-btn sit-btn-outline" onclick="event.stopPropagation();goDetail('view-appt','Pending Appointment',event)">View schedule</button>
+            <button class="sit-btn sit-btn-teal" onclick="event.stopPropagation();goDetail('view-appt','Pending Appointment',event)">Assign agents</button>
+            <button class="sit-btn sit-btn-outline" onclick="event.stopPropagation()">View schedule</button>
           </div>
         </div>
+        <!-- Overdue DAs -->
         <div class="sit-card" onclick="goDetail('view-overdue','Overdue DAs',event)">
           <span class="sit-badge sit-warn"><span class="sit-dot"></span>Overdue</span>
           <div class="sit-val" data-count="5">0</div>
           <div class="sit-lbl">FDAs not received from agents past their deadline.</div>
-          <div class="sit-sub">$151K outstanding · oldest is 12 days overdue</div>
+          <div class="sit-sub">oldest is 12 days overdue</div>
           <div class="sit-actions">
-            <button class="sit-btn sit-btn-orange" onclick="fireToast('Escalated all 5 overdue DAs',event)"><svg viewBox="0 0 24 24"><path d="M7 17l9.2-9.2M17 17V7H7"/></svg>Escalate all 5</button>
-            <button class="sit-btn sit-btn-outline" onclick="event.stopPropagation();goDetail('view-overdue','Overdue DAs',event)">Review <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
+            <button class="sit-btn sit-btn-teal" onclick="event.stopPropagation();goDetail('view-overdue','Overdue DAs',event)">Chase Agent →</button>
           </div>
         </div>
-        <div class="sit-card sit-milestone">
-          <span class="sit-badge sit-gold"><span class="sit-dot"></span>Milestone — June 2026</span>
-          <div style="display:flex;align-items:center;gap:12px;margin-bottom:5px;margin-top:10px">
-            <div class="milestone-icon">
-              <svg viewBox="0 0 24 24"><path d="M8 21h8"/><path d="M12 17v4"/><path d="M7 4h10v5a5 5 0 0 1-10 0V4z"/><path d="M17 5h2a2 2 0 0 1 2 2c0 2-2 4-4 4"/><path d="M7 5H5a2 2 0 0 0-2 2c0 2 2 4 4 4"/></svg>
-            </div>
-            <div class="milestone-headline">Your best month yet!</div>
-          </div>
-          <div style="margin-top:auto;display:flex;gap:36px">
-            <div style="display:flex;flex-direction:column">
-              <span style="font-size:18px;font-weight:800;color:#78350F;line-height:1.1">27 DAs</span>
-              <span style="font-size:12px;font-weight:600;color:#92400E">approved</span>
-            </div>
-            <div style="display:flex;flex-direction:column">
-              <span style="font-size:18px;font-weight:800;color:#78350F;line-height:1.1">1.8d</span>
-              <span style="font-size:12px;font-weight:600;color:#92400E">avg</span>
-            </div>
-            <div style="display:flex;flex-direction:column">
-              <span style="font-size:18px;font-weight:800;color:#78350F;line-height:1.1">18%</span>
-              <span style="font-size:12px;font-weight:600;color:#92400E">faster</span>
-            </div>
-          </div>
-          <div class="milestone-chips">
-            <span class="milestone-chip">▲ 8 vs last month</span>
-            <span class="milestone-chip">🔥 12-day streak</span>
+        <!-- DAs Due in 5 Days -->
+        <div class="sit-card" style="background:var(--teal-bg);border-color:rgba(0,218,193,.3)" onclick="goDetail('view-overdue','Due Soon',event)">
+          <span class="sit-badge sit-info"><span class="sit-dot"></span>Due Soon</span>
+          <div class="sit-val" style="color:var(--teal-dark)" data-count="7">0</div>
+          <div class="sit-lbl" style="color:var(--teal-dark)">DAs due in the next 5 days</div>
+          <div class="sit-sub" style="color:var(--teal-dark);opacity:.8">Based on Port Call Timebar configuration</div>
+          <div class="sit-actions">
+            <button class="sit-btn" style="background:var(--teal-dark);color:#fff" onclick="event.stopPropagation();goDetail('view-overdue','Due Soon',event)">View Due DAs →</button>
           </div>
         </div>
       </div>
@@ -740,107 +781,43 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
       <div class="situation-stats-row">
         <div class="card reveal">
           <div class="tile-hdr"><div class="tile-title">Operational Health <span style="font-size:11px;font-weight:400;color:var(--text-2)">· June 2026</span></div></div>
-          <div class="health-tiles">
-            <div class="health-tile" onclick="goDetail('view-clar','Under Clarification',event)">
-              <div class="health-tile-top">
-                <span class="health-tile-lbl">Under Clarification</span>
-                <div class="health-tile-icon" style="background:#fff;color:#9BAABF">
-                  <svg class="health-tile-default" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-                  <svg class="health-tile-arrow" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-                </div>
+          <div style="display:flex;flex-direction:column;gap:8px;flex:1">
+            <!-- Query Row 1 -->
+            <div class="query-row">
+              <span class="query-badge op">Operator Query</span>
+              <div class="query-main">
+                <div class="query-desc">TST2600082 — Vessel Omicron West</div>
+                <div class="query-by">Sahithi Alluru · 2 days ago</div>
               </div>
-              <div class="health-tile-val">15</div>
-              <div class="health-tile-bottom">
-                <div class="health-tile-bar"><div class="health-tile-bar-fill" style="--w:60%;background:#1852FE"></div></div>
-                <span class="health-tile-trend neg">▲ 2 since yesterday</span>
-              </div>
+              <span class="query-status inprocess">In Process</span>
+              <button class="btn-mini" style="height:28px;padding:0 10px;font-size:11px;background:var(--brand);color:#fff" onclick="fireToast('Opening query TST2600082',event)">Respond →</button>
             </div>
-            <div class="health-tile" onclick="goDetail('view-approved','Approved DAs',event)">
-              <div class="health-tile-top">
-                <span class="health-tile-lbl">Approvals (this month)</span>
-                <div class="health-tile-icon" style="background:#fff;color:#9BAABF">
-                  <svg class="health-tile-default" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-                  <svg class="health-tile-arrow" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-                </div>
+            <!-- Query Row 2 -->
+            <div class="query-row">
+              <span class="query-badge ag">Agent Query</span>
+              <div class="query-main">
+                <div class="query-desc">TST2600091 — Pacific Wind · Hamburg</div>
+                <div class="query-by">ABC Test Shipping · 4 days ago</div>
               </div>
-              <div class="health-tile-val">27</div>
-              <div class="health-tile-bottom">
-                <div class="health-tile-bar"><div class="health-tile-bar-fill" style="--w:78%;background:#4274FF"></div></div>
-                <span class="health-tile-trend pos">▲ 8 vs last month</span>
-              </div>
+              <span class="query-status awaiting">Awaiting Response</span>
+              <button class="btn-mini" style="height:28px;padding:0 10px;font-size:11px;background:var(--brand);color:#fff" onclick="fireToast('Opening query TST2600091',event)">Respond →</button>
             </div>
-            <div class="health-tile" onclick="goDetail('view-pending','Pending Approval',event)">
-              <div class="health-tile-top">
-                <span class="health-tile-lbl">Avg. approval time</span>
-                <div class="health-tile-icon" style="background:#fff;color:#9BAABF">
-                  <svg class="health-tile-default" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                  <svg class="health-tile-arrow" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-                </div>
+            <!-- Query Row 3 -->
+            <div class="query-row">
+              <span class="query-badge op">Operator Query</span>
+              <div class="query-main">
+                <div class="query-desc">TST2600114 — Nordic Star · Rotterdam</div>
+                <div class="query-by">Priya Menon · 6 days ago</div>
               </div>
-              <div class="health-tile-val">1.8<span style="font-size:12px;font-weight:600;color:var(--text-2)">d</span></div>
-              <div class="health-tile-bottom">
-                <div class="health-tile-bar"><div class="health-tile-bar-fill" style="--w:70%;background:#0A3BC4"></div></div>
-                <span class="health-tile-trend pos">▼ 0.4d faster</span>
-              </div>
+              <span class="query-status inprocess">In Process</span>
+              <button class="btn-mini" style="height:28px;padding:0 10px;font-size:11px;background:var(--brand);color:#fff" onclick="fireToast('Opening query TST2600114',event)">Respond →</button>
             </div>
-            <div class="health-tile" onclick="goDetail('view-created','Port Calls Created',event)">
-              <div class="health-tile-top">
-                <span class="health-tile-lbl">Port-call volume</span>
-                <div class="health-tile-icon" style="background:#fff;color:#9BAABF">
-                  <svg class="health-tile-default" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
-                  <svg class="health-tile-arrow" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-                </div>
-              </div>
-              <div class="health-tile-val">9</div>
-              <div class="health-tile-bottom">
-                <div class="health-tile-bar"><div class="health-tile-bar-fill" style="--w:85%;background:#6B9BFF"></div></div>
-                <span class="health-tile-trend pos">▲ 22% vs last month</span>
-              </div>
+            <!-- Footer -->
+            <div style="margin-top:6px;padding-top:8px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between">
+              <span style="font-size:11.5px;color:var(--text-2)">3 queries in process at GeoConnect</span>
+              <span style="font-size:12px;font-weight:700;color:var(--brand);cursor:pointer" onclick="goDetail('view-pending','Query Listing',event)">Oldest query: 6 days →</span>
             </div>
           </div>
-        </div>
-
-        <div class="card reveal">
-          <div class="cash-hdr">
-            <div>
-              <div class="cash-title" style="font-size:16px">Cash Outstanding exposure</div>
-            </div>
-            <span class="cash-trend-chip">▲ 6% vs last month</span>
-          </div>
-          <div class="cash-body">
-            <div class="cash-kpi">
-              <div class="cash-kpi-val">$78,371</div>
-              <div class="cash-kpi-sub">14 open balances</div>
-            </div>
-            <div class="cash-bar-wrap">
-              <div class="cash-bar">
-                <div class="cash-seg" data-slice="0" style="flex:30;background:#8FB6F0" onmouseenter="cashHover(0)" onmouseleave="cashHover(-1)"></div>
-                <div class="cash-seg" data-slice="1" style="flex:20;background:#E3A73E" onmouseenter="cashHover(1)" onmouseleave="cashHover(-1)"></div>
-                <div class="cash-seg" data-slice="2" style="flex:50;background:#DC5B54" onmouseenter="cashHover(2)" onmouseleave="cashHover(-1)"></div>
-              </div>
-            </div>
-            <div class="cash-legend">
-              <div class="cash-legend-row" data-slice="0" onmouseenter="cashHover(0)" onmouseleave="cashHover(-1)">
-                <span class="cash-legend-dot" style="background:#8FB6F0"></span>
-                <span class="cash-legend-lbl">0–5 days</span>
-                <span class="cash-legend-amt">$23,511</span>
-                <span class="cash-legend-pct">30%</span>
-              </div>
-              <div class="cash-legend-row" data-slice="1" onmouseenter="cashHover(1)" onmouseleave="cashHover(-1)">
-                <span class="cash-legend-dot" style="background:#E3A73E"></span>
-                <span class="cash-legend-lbl">6–10 days</span>
-                <span class="cash-legend-amt">$15,660</span>
-                <span class="cash-legend-pct">20%</span>
-              </div>
-              <div class="cash-legend-row" data-slice="2" onmouseenter="cashHover(2)" onmouseleave="cashHover(-1)">
-                <span class="cash-legend-dot" style="background:#DC5B54"></span>
-                <span class="cash-legend-lbl">&gt;10 days</span>
-                <span class="cash-legend-amt">$39,200</span>
-                <span class="cash-legend-pct">50%</span>
-              </div>
-            </div>
-          </div>
-          <div class="cash-alert">$39,200 (50%) aging beyond 10 days — prioritize collection</div>
         </div>
 
         <div class="card reveal">
@@ -933,6 +910,136 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
         </div>
       </div>
 
+      <!-- SAVINGS PERFORMANCE (moved from Financial tab) -->
+      <div class="section-lbl">Savings Performance</div>
+      <div class="situation-stats-row" style="grid-template-columns:1fr 1fr 1fr">
+        <div class="card reveal">
+          <div class="tile-hdr"><div class="tile-title">Savings Performance <span style="font-size:11px;font-weight:400;color:var(--text-2)">· YTD</span></div></div>
+          <div class="health-tiles">
+            <div class="health-tile">
+              <div class="health-tile-top"><span class="health-tile-lbl">YTD Savings</span><div class="health-tile-icon" style="background:#fff;color:#9BAABF"><svg class="health-tile-default" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg class="health-tile-arrow" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div></div>
+              <div class="health-tile-val">$150K</div>
+              <div class="health-tile-bottom"><div class="health-tile-bar"><div class="health-tile-bar-fill" style="--w:75%;background:#1852FE"></div></div><span class="health-tile-trend pos">▲ 18% vs last year</span></div>
+            </div>
+            <div class="health-tile">
+              <div class="health-tile-top"><span class="health-tile-lbl">Cashflow Savings</span><div class="health-tile-icon" style="background:#fff;color:#9BAABF"><svg class="health-tile-default" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg><svg class="health-tile-arrow" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div></div>
+              <div class="health-tile-val">$75K</div>
+              <div class="health-tile-bottom"><div class="health-tile-bar"><div class="health-tile-bar-fill" style="--w:50%;background:#4274FF"></div></div><span class="health-tile-trend pos">★ Record savings</span></div>
+            </div>
+            <div class="health-tile">
+              <div class="health-tile-top"><span class="health-tile-lbl">DA Savings</span><div class="health-tile-icon" style="background:#fff;color:#9BAABF"><svg class="health-tile-default" viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg><svg class="health-tile-arrow" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div></div>
+              <div class="health-tile-val">$25K</div>
+              <div class="health-tile-bottom"><div class="health-tile-bar"><div class="health-tile-bar-fill" style="--w:25%;background:#0A3BC4"></div></div><span class="health-tile-trend pos">★ Record savings</span></div>
+            </div>
+            <div class="health-tile">
+              <div class="health-tile-top"><span class="health-tile-lbl">Contractual Savings</span><div class="health-tile-icon" style="background:#fff;color:#9BAABF"><svg class="health-tile-default" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg><svg class="health-tile-arrow" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div></div>
+              <div class="health-tile-val">$50K</div>
+              <div class="health-tile-bottom"><div class="health-tile-bar"><div class="health-tile-bar-fill" style="--w:33%;background:#6B9BFF"></div></div><span class="health-tile-trend pos">★ Direct contract</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card reveal">
+          <div class="tile-hdr"><div class="tile-title">Savings by Type <span style="font-size:11px;font-weight:400;color:var(--text-2)">· MTD</span></div></div>
+          <div style="height:18px;border-radius:99px;overflow:hidden;display:flex;gap:2px;margin-bottom:18px;flex-shrink:0">
+            <div style="flex:85.2;background:#1852FE"></div><div style="flex:8.1;background:#4274FF"></div><div style="flex:4.1;background:#0A3BC4"></div><div style="flex:2.0;background:#6B9BFF"></div><div style="flex:0.6;background:#B8CFFE"></div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:14px;flex:1;justify-content:space-evenly">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:8px"><div style="display:flex;align-items:center;gap:8px"><span style="width:10px;height:10px;border-radius:3px;background:#1852FE;flex-shrink:0"></span><span style="font-size:12.5px;color:var(--text-2)">Contractual Discount</span></div><div style="display:flex;align-items:center;gap:10px"><span style="font-size:10px;color:var(--text-3);font-weight:600">85%</span><span style="font-size:13.5px;font-weight:700;color:var(--text)">$55.9K</span></div></div>
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:8px"><div style="display:flex;align-items:center;gap:8px"><span style="width:10px;height:10px;border-radius:3px;background:#4274FF;flex-shrink:0"></span><span style="font-size:12.5px;color:var(--text-2)">Hidden Cost</span></div><div style="display:flex;align-items:center;gap:10px"><span style="font-size:10px;color:var(--text-3);font-weight:600">8%</span><span style="font-size:13.5px;font-weight:700;color:var(--text)">$5.3K</span></div></div>
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:8px"><div style="display:flex;align-items:center;gap:8px"><span style="width:10px;height:10px;border-radius:3px;background:#0A3BC4;flex-shrink:0"></span><span style="font-size:12.5px;color:var(--text-2)">Agent Error</span></div><div style="display:flex;align-items:center;gap:10px"><span style="font-size:10px;color:var(--text-3);font-weight:600">4%</span><span style="font-size:13.5px;font-weight:700;color:var(--text)">$2.7K</span></div></div>
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:8px"><div style="display:flex;align-items:center;gap:8px"><span style="width:10px;height:10px;border-radius:3px;background:#6B9BFF;flex-shrink:0"></span><span style="font-size:12.5px;color:var(--text-2)">Escalated Cost</span></div><div style="display:flex;align-items:center;gap:10px"><span style="font-size:10px;color:var(--text-3);font-weight:600">2%</span><span style="font-size:13.5px;font-weight:700;color:var(--text)">$1.3K</span></div></div>
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:8px"><div style="display:flex;align-items:center;gap:8px"><span style="width:10px;height:10px;border-radius:3px;background:#B8CFFE;flex-shrink:0"></span><span style="font-size:12.5px;color:var(--text-2)">Negotiation</span></div><div style="display:flex;align-items:center;gap:10px"><span style="font-size:10px;color:var(--text-3);font-weight:600">1%</span><span style="font-size:13.5px;font-weight:700;color:var(--text)">$0.4K</span></div></div>
+          </div>
+          <div style="margin-top:16px;padding-top:10px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-shrink:0"><span style="font-size:11px;color:var(--text-2)">Saving per Port Call</span><span style="font-size:20px;font-weight:800;color:var(--text)">$556</span></div>
+        </div>
+
+        <div class="card reveal">
+          <div class="tile-hdr"><div class="tile-title">Savings Breakdown <span style="font-size:11px;font-weight:400;color:var(--text-2)">· By Agent</span></div></div>
+          <div class="health-tiles">
+            <div class="health-tile"><div class="health-tile-top"><span class="health-tile-lbl">ABC Test Shipping</span><div class="health-tile-icon" style="background:#fff;color:#9BAABF"><svg class="health-tile-default" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg><svg class="health-tile-arrow" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div></div><div class="health-tile-val">$307K</div><div class="health-tile-bottom"><div class="health-tile-bar"><div class="health-tile-bar-fill" style="--w:100%;background:#1852FE"></div></div><span class="health-tile-trend pos">★ Top agent</span></div></div>
+            <div class="health-tile"><div class="health-tile-top"><span class="health-tile-lbl">Keppel Smit</span><div class="health-tile-icon" style="background:#fff;color:#9BAABF"><svg class="health-tile-default" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg><svg class="health-tile-arrow" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div></div><div class="health-tile-val">$37K</div><div class="health-tile-bottom"><div class="health-tile-bar"><div class="health-tile-bar-fill" style="--w:12%;background:#4274FF"></div></div><span class="health-tile-trend pos">▲ 2nd place</span></div></div>
+            <div class="health-tile"><div class="health-tile-top"><span class="health-tile-lbl">Test Vendor 22</span><div class="health-tile-icon" style="background:#fff;color:#9BAABF"><svg class="health-tile-default" viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg><svg class="health-tile-arrow" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div></div><div class="health-tile-val">$24K</div><div class="health-tile-bottom"><div class="health-tile-bar"><div class="health-tile-bar-fill" style="--w:8%;background:#0A3BC4"></div></div><span class="health-tile-trend pos">▲ 3rd place</span></div></div>
+            <div class="health-tile"><div class="health-tile-top"><span class="health-tile-lbl">Test Vendor -A</span><div class="health-tile-icon" style="background:#fff;color:#9BAABF"><svg class="health-tile-default" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg><svg class="health-tile-arrow" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div></div><div class="health-tile-val">$12K</div><div class="health-tile-bottom"><div class="health-tile-bar"><div class="health-tile-bar-fill" style="--w:4%;background:#6B9BFF"></div></div><span class="health-tile-trend pos">▲ 4th place</span></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SINGAPORE vs HAMBURG -->
+      <div class="section-lbl">Port Comparison</div>
+      <div class="card reveal">
+        <div class="tile-hdr"><div class="tile-title">Singapore vs Hamburg <span style="font-size:11px;font-weight:400;color:var(--text-2)">· YTD 2026</span></div></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+          <!-- Singapore -->
+          <div style="border-radius:12px;overflow:hidden;border:1px solid var(--border)">
+            <div style="background:linear-gradient(135deg,var(--brand) 0%,#0B3FE0 100%);padding:12px 16px"><span style="font-size:13px;font-weight:800;color:#fff">Singapore</span></div>
+            <div style="padding:12px 16px;display:flex;flex-direction:column;gap:10px">
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--border)">
+                <span style="font-size:12px;color:var(--text-2)">Port Calls</span>
+                <span style="font-size:14px;font-weight:700;color:var(--text)">34 <span style="font-size:11px;color:var(--success)">▲</span></span>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--border)">
+                <span style="font-size:12px;color:var(--text-2)">Avg DA</span>
+                <span style="font-size:14px;font-weight:700;color:var(--text)">USD 18,420 <span style="font-size:11px;color:var(--success)">▲</span></span>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--border)">
+                <span style="font-size:12px;color:var(--text-2)">Avg Turnaround</span>
+                <span style="font-size:14px;font-weight:700;color:var(--text)">1.6d <span style="font-size:11px;color:var(--success)">▲</span></span>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0">
+                <span style="font-size:12px;color:var(--text-2)">On-Time</span>
+                <span style="font-size:14px;font-weight:700;color:#147638">91% <span style="font-size:11px;color:var(--success)">▲</span></span>
+              </div>
+            </div>
+          </div>
+          <!-- Hamburg -->
+          <div style="border-radius:12px;overflow:hidden;border:1px solid var(--border)">
+            <div style="background:linear-gradient(135deg,var(--nav) 0%,#1a3a6e 100%);padding:12px 16px"><span style="font-size:13px;font-weight:800;color:#fff">Hamburg</span></div>
+            <div style="padding:12px 16px;display:flex;flex-direction:column;gap:10px">
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--border)">
+                <span style="font-size:12px;color:var(--text-2)">Port Calls</span>
+                <span style="font-size:14px;font-weight:700;color:var(--text)">21 <span style="font-size:11px;color:var(--danger)">▼</span></span>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--border)">
+                <span style="font-size:12px;color:var(--text-2)">Avg DA</span>
+                <span style="font-size:14px;font-weight:700;color:var(--text)">USD 24,180 <span style="font-size:11px;color:var(--danger)">▼</span></span>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--border)">
+                <span style="font-size:12px;color:var(--text-2)">Avg Turnaround</span>
+                <span style="font-size:14px;font-weight:700;color:var(--text)">2.1d <span style="font-size:11px;color:var(--danger)">▼</span></span>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0">
+                <span style="font-size:12px;color:var(--text-2)">On-Time</span>
+                <span style="font-size:14px;font-weight:700;color:var(--warning)">78% <span style="font-size:11px;color:var(--danger)">▼</span></span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="margin-top:12px;padding:10px 14px;background:var(--blue-light);border-radius:8px;font-size:12px;color:var(--brand);font-weight:600">Singapore outperforms Hamburg on turnaround (1.6d vs 2.1d) and on-time rate (91% vs 78%). Hamburg has 31% higher avg DA cost.</div>
+      </div>
+
+      <!-- MILESTONE CARD (moved from sit-cards) -->
+      <div class="card sit-milestone reveal" style="padding:20px;border-radius:16px">
+        <span class="sit-badge sit-gold" style="position:relative;z-index:1"><span class="sit-dot"></span>Milestone — June 2026</span>
+        <div style="display:flex;align-items:center;gap:12px;margin-top:10px;position:relative;z-index:1">
+          <div class="milestone-icon">
+            <svg viewBox="0 0 24 24"><path d="M8 21h8"/><path d="M12 17v4"/><path d="M7 4h10v5a5 5 0 0 1-10 0V4z"/><path d="M17 5h2a2 2 0 0 1 2 2c0 2-2 4-4 4"/><path d="M7 5H5a2 2 0 0 0-2 2c0 2 2 4 4 4"/></svg>
+          </div>
+          <div>
+            <div class="milestone-headline">Your best month yet!</div>
+            <div style="display:flex;gap:28px;margin-top:8px">
+              <div style="display:flex;flex-direction:column"><span style="font-size:16px;font-weight:800;color:#78350F;line-height:1.1">27 DAs</span><span style="font-size:11px;font-weight:600;color:#92400E">approved</span></div>
+              <div style="display:flex;flex-direction:column"><span style="font-size:16px;font-weight:800;color:#78350F;line-height:1.1">1.8d</span><span style="font-size:11px;font-weight:600;color:#92400E">avg</span></div>
+              <div style="display:flex;flex-direction:column"><span style="font-size:16px;font-weight:800;color:#78350F;line-height:1.1">18%</span><span style="font-size:11px;font-weight:600;color:#92400E">faster</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="milestone-chips" style="position:relative;z-index:1">
+          <span class="milestone-chip">▲ 8 vs last month</span>
+          <span class="milestone-chip">🔥 12-day streak</span>
+        </div>
+      </div>
+
       </div><!-- /dash-panel-disbursements -->
 
       <!-- FINANCIAL PANEL -->
@@ -996,7 +1103,9 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
 
         </div>
 
-        <!-- Savings Performance / Savings by Type / Fastest Settling — Financial tab row -->
+        <!-- Savings sections removed from Financial tab (moved to Disbursements) -->
+        <!-- Contractual & Currency section continues below -->
+        <div style="display:none">
         <div class="situation-stats-row">
         <div class="card reveal">
           <div class="tile-hdr"><div class="tile-title">Savings Performance <span style="font-size:11px;font-weight:400;color:var(--text-2)">· YTD</span></div></div>
@@ -1188,65 +1297,60 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
           </div>
         </div>
         </div>
-
+        </div><!-- end hidden savings block -->
 
         <!-- Contractual & Currency -->
         <div class="section-lbl">Contractual &amp; Currency</div>
         <div class="fin-2col" style="display:grid;grid-template-columns:1fr 1fr;gap:18px">
           <div class="card" style="display:flex;flex-direction:column">
-            <!-- Header with tabs -->
-            <div class="tile-hdr" style="margin-bottom:14px">
-              <div class="agent-tabs" style="display:flex;align-items:center;gap:6px;background:var(--bg);border-radius:8px;padding:3px">
-                <button class="agent-tab-btn active" onclick="switchAgentTab('cd-discount',this)" style="font-size:11px">Contractual Discount</button>
-                <button class="agent-tab-btn" onclick="switchAgentTab('cd-invoices',this)" style="font-size:11px">Top Discount Invoices</button>
-              </div>
+            <!-- Header -->
+            <div class="tile-hdr" style="margin-bottom:16px">
+              <div class="tile-title">Contractual Discount <span style="font-size:11px;font-weight:400;color:var(--text-2)">· MTD</span></div>
               <span style="font-size:11px;color:var(--success);font-weight:600;background:#EDFAF4;padding:2px 8px;border-radius:99px">▲ 8.2%</span>
             </div>
-            <!-- Tab 1: Contractual Discount -->
-            <div id="agent-panel-cd-discount" class="agent-tab-panel" style="display:flex;flex-direction:column;flex:1">
-              <!-- Arc gauge + total -->
-              <div style="display:flex;align-items:center;gap:18px;margin-bottom:18px">
-                <div style="position:relative;width:88px;height:88px;flex-shrink:0">
-                  <svg viewBox="0 0 88 88" width="88" height="88">
-                    <circle cx="44" cy="44" r="36" fill="none" stroke="var(--border)" stroke-width="8"/>
-                    <circle cx="44" cy="44" r="36" fill="none" stroke="#1852FE" stroke-width="8"
-                      stroke-dasharray="204.2 226"
-                      stroke-dashoffset="56.5"
-                      stroke-linecap="round"
-                      transform="rotate(-90 44 44)"/>
-                  </svg>
-                  <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center">
-                    <span style="font-size:16px;font-weight:800;color:var(--nav);line-height:1">91%</span>
-                    <span style="font-size:8px;color:var(--text-3);font-weight:600;margin-top:1px">of target</span>
-                  </div>
-                </div>
-                <div>
-                  <div style="font-size:24px;font-weight:800;color:var(--text);letter-spacing:-.5px;line-height:1">$1,434,340</div>
-                  <div style="font-size:11px;color:var(--text-2);margin-top:4px">saved this month</div>
-                  <div style="font-size:11px;color:var(--text-3);margin-top:2px">Target: $1,575,000</div>
+            <!-- Arc gauge + total -->
+            <div style="display:flex;align-items:center;gap:18px;margin-bottom:18px">
+              <div style="position:relative;width:88px;height:88px;flex-shrink:0">
+                <svg viewBox="0 0 88 88" width="88" height="88">
+                  <circle cx="44" cy="44" r="36" fill="none" stroke="var(--border)" stroke-width="8"/>
+                  <circle cx="44" cy="44" r="36" fill="none" stroke="#1852FE" stroke-width="8"
+                    stroke-dasharray="204.2 226"
+                    stroke-dashoffset="56.5"
+                    stroke-linecap="round"
+                    transform="rotate(-90 44 44)"/>
+                </svg>
+                <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center">
+                  <span style="font-size:16px;font-weight:800;color:var(--nav);line-height:1">91%</span>
+                  <span style="font-size:8px;color:var(--text-3);font-weight:600;margin-top:1px">of target</span>
                 </div>
               </div>
-              <!-- Contract performance bars -->
-              <div style="font-size:10px;font-weight:700;color:var(--text-2);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Contract Performance</div>
-              <div style="display:flex;flex-direction:column;gap:8px;flex:1">
-                <div>
-                  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
-                    <div style="display:flex;align-items:center;gap:5px"><span style="width:7px;height:7px;border-radius:2px;background:#1852FE;display:inline-block"></span><span style="font-size:11.5px;color:var(--text-2)">GeoConnect Contract</span></div>
-                    <span style="font-size:12px;font-weight:700;color:var(--text)">$890,450</span>
-                  </div>
-                  <div style="height:6px;background:var(--border);border-radius:99px;overflow:hidden"><div style="height:100%;width:62%;background:#1852FE;border-radius:99px"></div></div>
-                </div>
-                <div>
-                  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
-                    <div style="display:flex;align-items:center;gap:5px"><span style="width:7px;height:7px;border-radius:2px;background:#93BBFF;display:inline-block"></span><span style="font-size:11.5px;color:var(--text-2)">My Contracts</span></div>
-                    <span style="font-size:12px;font-weight:700;color:var(--text)">$543,890</span>
-                  </div>
-                  <div style="height:6px;background:var(--border);border-radius:99px;overflow:hidden"><div style="height:100%;width:38%;background:#93BBFF;border-radius:99px"></div></div>
-                </div>
+              <div>
+                <div style="font-size:24px;font-weight:800;color:var(--text);letter-spacing:-.5px;line-height:1">$1,434,340</div>
+                <div style="font-size:11px;color:var(--text-2);margin-top:4px">saved this month</div>
+                <div style="font-size:11px;color:var(--text-3);margin-top:2px">Target: $1,575,000</div>
               </div>
             </div>
-            <!-- Tab 2: Top Discount Invoices -->
-            <div id="agent-panel-cd-invoices" class="agent-tab-panel" style="display:none;flex-direction:column;flex:1;gap:5px">
+            <!-- Contract performance bars -->
+            <div style="font-size:10px;font-weight:700;color:var(--text-2);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Contract Performance</div>
+            <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:16px">
+              <div>
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+                  <div style="display:flex;align-items:center;gap:5px"><span style="width:7px;height:7px;border-radius:2px;background:#1852FE;display:inline-block"></span><span style="font-size:11.5px;color:var(--text-2)">GeoConnect Contract</span></div>
+                  <span style="font-size:12px;font-weight:700;color:var(--text)">$890,450</span>
+                </div>
+                <div style="height:6px;background:var(--border);border-radius:99px;overflow:hidden"><div style="height:100%;width:62%;background:#1852FE;border-radius:99px"></div></div>
+              </div>
+              <div>
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+                  <div style="display:flex;align-items:center;gap:5px"><span style="width:7px;height:7px;border-radius:2px;background:#93BBFF;display:inline-block"></span><span style="font-size:11.5px;color:var(--text-2)">My Contracts</span></div>
+                  <span style="font-size:12px;font-weight:700;color:var(--text)">$543,890</span>
+                </div>
+                <div style="height:6px;background:var(--border);border-radius:99px;overflow:hidden"><div style="height:100%;width:38%;background:#93BBFF;border-radius:99px"></div></div>
+              </div>
+            </div>
+            <!-- Vendor leaderboard -->
+            <div style="font-size:10px;font-weight:700;color:var(--text-2);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Top Discount Invoices</div>
+            <div style="display:flex;flex-direction:column;gap:5px;flex:1">
               <div style="display:flex;align-items:center;gap:8px;padding:7px 10px;background:linear-gradient(135deg,#EEF3FF,#F5F7FB);border-radius:8px;border:1px solid #D8E4FF">
                 <span style="font-size:10px;font-weight:800;color:#1852FE;width:14px;flex-shrink:0">#1</span>
                 <div style="flex:1;min-width:0"><div style="font-size:11.5px;font-weight:600;color:var(--text)">VI-2026-0035</div><div style="font-size:10px;color:var(--text-3)">DA $212,450</div></div>
@@ -1356,24 +1460,46 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
         </div>
         <div class="dtable-scroll"><table class="dtable">
           <thead>
-            <tr><th>Port Call</th><th>Type</th><th>Vessel</th><th>Port</th><th>Agent</th><th class="num">Amount</th><th class="mid">Days</th><th style="text-align:left">Actions</th></tr>
+            <tr><th>Port Call</th><th>Type</th><th>Vessel</th><th>Port</th><th>Agent</th><th class="num">Amount / Advance</th><th class="mid">Days</th><th style="text-align:left">Actions</th></tr>
           </thead>
           <tbody>
-            <tr data-type="FDA"><td class="pc-id">TST2600082</td><td><span class="da-tier fda">FDA</span></td><td>Omicron West</td><td>Singapore</td><td>ABC Test Shipping</td><td class="num">$25,624</td><td class="mid"><span class="da-pill info">6 days</span></td><td class="actions"><button class="btn-mini btn-approve" onclick="fireToast('Approved TST2600082',event)">Approve</button><button class="btn-mini btn-reject" onclick="fireToast('Rejected',event)">Reject</button></td></tr>
-            <tr data-type="FDA"><td class="pc-id">TST2600113</td><td><span class="da-tier fda">FDA</span></td><td>Test Vessel 1</td><td>Singapore</td><td>ABC Test Shipping</td><td class="num">$18,450</td><td class="mid"><span class="da-pill info">3 days</span></td><td class="actions"><button class="btn-mini btn-approve" onclick="fireToast('Approved TST2600113',event)">Approve</button><button class="btn-mini btn-reject" onclick="fireToast('Rejected',event)">Reject</button></td></tr>
-            <tr data-type="APDA"><td class="pc-id">TST2600067</td><td><span class="da-tier apda">APDA</span></td><td>Test Vessel 1</td><td>Test Port</td><td>ABC Test Shipping</td><td class="num">$6,318</td><td class="mid"><span class="da-pill info">3 days</span></td><td class="actions"><button class="btn-mini btn-approve" onclick="fireToast('Approved TST2600067',event)">Approve</button><button class="btn-mini btn-reject" onclick="fireToast('Rejected',event)">Reject</button></td></tr>
-            <tr data-type="SDA"><td class="pc-id">TST2600114</td><td><span class="da-tier sda">SDA</span></td><td>Test Vessel 1</td><td>Test Port</td><td>Keppel Smit</td><td class="num">$637</td><td class="mid"><span class="da-pill ok">Today</span></td><td class="actions"><button class="btn-mini btn-approve" onclick="fireToast('Approved TST2600114',event)">Approve</button><button class="btn-mini btn-reject" onclick="fireToast('Rejected',event)">Reject</button></td></tr>
-            <tr data-type="PDA"><td class="pc-id">TST2600117</td><td><span class="da-tier pda">PDA</span></td><td>Test Vessel 1</td><td>Test Port</td><td>Test Vendor 22</td><td class="num">$4,200</td><td class="mid"><span class="da-pill info">1 day</span></td><td class="actions"><button class="btn-mini btn-approve" onclick="fireToast('Approved TST2600117',event)">Approve</button><button class="btn-mini btn-reject" onclick="fireToast('Rejected',event)">Reject</button></td></tr>
-            <tr data-type="DDA"><td class="pc-id">TST2600119</td><td><span class="da-tier dda">DDA</span></td><td>Nordic Star</td><td>Rotterdam</td><td>Boskalis Terminal</td><td class="num">$11,750</td><td class="mid"><span class="da-pill info">4 days</span></td><td class="actions"><button class="btn-mini btn-approve" onclick="fireToast('Approved TST2600119',event)">Approve</button><button class="btn-mini btn-reject" onclick="fireToast('Rejected',event)">Reject</button></td></tr>
-            <tr data-type="VI"><td class="pc-id">TST2600121</td><td><span class="da-tier vi">VI</span></td><td>Pacific Wind</td><td>Singapore</td><td>Test Vendor-A</td><td class="num">$9,880</td><td class="mid"><span class="da-pill warn">5 days</span></td><td class="actions"><button class="btn-mini btn-approve" onclick="fireToast('Approved TST2600121',event)">Approve</button><button class="btn-mini btn-reject" onclick="fireToast('Rejected',event)">Reject</button></td></tr>
-            <tr data-type="APDA"><td class="pc-id">TST2600122</td><td><span class="da-tier apda">APDA</span></td><td>Atlantic Hope</td><td>Hamburg</td><td>Eurogate Agency</td><td class="num">$3,415</td><td class="mid"><span class="da-pill warn">6 days</span></td><td class="actions"><button class="btn-mini btn-approve" onclick="fireToast('Approved TST2600122',event)">Approve</button><button class="btn-mini btn-reject" onclick="fireToast('Rejected',event)">Reject</button></td></tr>
-            <tr data-type="PDA"><td class="pc-id">TST2600125</td><td><span class="da-tier pda">PDA</span></td><td>Crimson Jade</td><td>Port Klang</td><td>Straits Agency</td><td class="num">$7,820</td><td class="mid"><span class="da-pill info">2 days</span></td><td class="actions"><button class="btn-mini btn-approve" onclick="fireToast('Approved TST2600125',event)">Approve</button><button class="btn-mini btn-reject" onclick="fireToast('Rejected',event)">Reject</button></td></tr>
-            <tr data-type="FDA"><td class="pc-id">TST2600127</td><td><span class="da-tier fda">FDA</span></td><td>Eastern Horizon</td><td>Busan</td><td>Hanjin Agency</td><td class="num">$14,950</td><td class="mid"><span class="da-pill info">5 days</span></td><td class="actions"><button class="btn-mini btn-approve" onclick="fireToast('Approved TST2600127',event)">Approve</button><button class="btn-mini btn-reject" onclick="fireToast('Rejected',event)">Reject</button></td></tr>
-            <tr data-type="SDA"><td class="pc-id">TST2600128</td><td><span class="da-tier sda">SDA</span></td><td>Nordic Star</td><td>Antwerp</td><td>Boskalis Terminal</td><td class="num">$5,430</td><td class="mid"><span class="da-pill info">2 days</span></td><td class="actions"><button class="btn-mini btn-approve" onclick="fireToast('Approved TST2600128',event)">Approve</button><button class="btn-mini btn-reject" onclick="fireToast('Rejected',event)">Reject</button></td></tr>
-            <tr data-type="DDA"><td class="pc-id">TST2600130</td><td><span class="da-tier dda">DDA</span></td><td>MSC Voyager</td><td>Rotterdam</td><td>Maersk Agency</td><td class="num">$19,200</td><td class="mid"><span class="da-pill warn">7 days</span></td><td class="actions"><button class="btn-mini btn-approve" onclick="fireToast('Approved TST2600130',event)">Approve</button><button class="btn-mini btn-reject" onclick="fireToast('Rejected',event)">Reject</button></td></tr>
-            <tr data-type="VI"><td class="pc-id">TST2600132</td><td><span class="da-tier vi">VI</span></td><td>Pacific Wind</td><td>Hamburg</td><td>Test Vendor-A</td><td class="num">$12,640</td><td class="mid"><span class="da-pill info">3 days</span></td><td class="actions"><button class="btn-mini btn-approve" onclick="fireToast('Approved TST2600132',event)">Approve</button><button class="btn-mini btn-reject" onclick="fireToast('Rejected',event)">Reject</button></td></tr>
-            <tr data-type="FDA"><td class="pc-id">TST2600134</td><td><span class="da-tier fda">FDA</span></td><td>Crimson Jade</td><td>Singapore</td><td>Keppel Smit</td><td class="num">$21,300</td><td class="mid"><span class="da-pill warn">4 days</span></td><td class="actions"><button class="btn-mini btn-approve" onclick="fireToast('Approved TST2600134',event)">Approve</button><button class="btn-mini btn-reject" onclick="fireToast('Rejected',event)">Reject</button></td></tr>
-            <tr data-type="PDA"><td class="pc-id">TST2600136</td><td><span class="da-tier pda">PDA</span></td><td>Atlantic Hope</td><td>Port Klang</td><td>Straits Agency</td><td class="num">$8,900</td><td class="mid"><span class="da-pill info">1 day</span></td><td class="actions"><button class="btn-mini btn-approve" onclick="fireToast('Approved TST2600136',event)">Approve</button><button class="btn-mini btn-reject" onclick="fireToast('Rejected',event)">Reject</button></td></tr>
+            <tr data-type="FDA"><td class="pc-id">TST2600082</td><td><span class="da-tier fda">FDA</span></td><td>Omicron West</td><td>Singapore</td><td>ABC Test Shipping</td><td class="num">$25,624</td><td class="mid"><span class="da-pill info">6 days</span></td><td class="actions"><button class="btn-mini" style="background:var(--blue-light);color:var(--brand);border:1px solid var(--brand)" onclick="openSidePanel({title:'TST2600082',pc:'TST2600082',type:'FDA',vessel:'Omicron West',port:'Singapore',agent:'ABC Test Shipping',amount:'USD 25,624',days:'6 days',summary:'FDA submitted by agent. All supporting documents attached.'});event.stopPropagation()">View →</button></td></tr>
+            <tr data-type="FDA"><td class="pc-id">TST2600113</td><td><span class="da-tier fda">FDA</span></td><td>Test Vessel 1</td><td>Singapore</td><td>ABC Test Shipping</td><td class="num">$18,450</td><td class="mid"><span class="da-pill info">3 days</span></td><td class="actions"><button class="btn-mini" style="background:var(--blue-light);color:var(--brand);border:1px solid var(--brand)" onclick="openSidePanel({title:'TST2600113',pc:'TST2600113',type:'FDA',vessel:'Test Vessel 1',port:'Singapore',agent:'ABC Test Shipping',amount:'USD 18,450',days:'3 days',summary:'FDA submitted for review. Vessel completed port call on schedule.'});event.stopPropagation()">View →</button></td></tr>
+            <tr data-type="APDA"><td class="pc-id">TST2600067</td><td><span class="da-tier apda">APDA</span></td><td>Test Vessel 1</td><td>Test Port</td><td>ABC Test Shipping</td><td class="num">$6,318</td><td class="mid"><span class="da-pill info">3 days</span></td><td class="actions"><button class="btn-mini" style="background:var(--blue-light);color:var(--brand);border:1px solid var(--brand)" onclick="openSidePanel({title:'TST2600067',pc:'TST2600067',type:'APDA',vessel:'Test Vessel 1',port:'Test Port',agent:'ABC Test Shipping',amount:'USD 6,318',days:'3 days',summary:'Additional PDA submitted. Minor port dues adjustment required.'});event.stopPropagation()">View →</button></td></tr>
+            <tr data-type="SDA"><td class="pc-id">TST2600114</td><td><span class="da-tier sda">SDA</span></td><td>Test Vessel 1</td><td>Test Port</td><td>Keppel Smit</td><td class="num">$637</td><td class="mid"><span class="da-pill ok">Today</span></td><td class="actions"><button class="btn-mini" style="background:var(--blue-light);color:var(--brand);border:1px solid var(--brand)" onclick="openSidePanel({title:'TST2600114',pc:'TST2600114',type:'SDA',vessel:'Test Vessel 1',port:'Test Port',agent:'Keppel Smit',amount:'USD 637',days:'Today',summary:'Supplementary DA for additional crew services.'});event.stopPropagation()">View →</button></td></tr>
+            <tr data-type="PDA"><td class="pc-id">TST2600117</td><td><span class="da-tier pda">PDA</span></td><td>Test Vessel 1</td><td>Test Port</td><td>Test Vendor 22</td><td class="num">$4,200</td><td class="mid"><span class="da-pill info">1 day</span></td><td class="actions"><button class="btn-mini" style="background:var(--blue-light);color:var(--brand);border:1px solid var(--brand)" onclick="openSidePanel({title:'TST2600117',pc:'TST2600117',type:'PDA',vessel:'Test Vessel 1',port:'Test Port',agent:'Test Vendor 22',amount:'USD 4,200',days:'1 day',summary:'Preliminary DA advance submitted ahead of vessel arrival.'});event.stopPropagation()">View →</button></td></tr>
+            <tr data-type="DDA"><td class="pc-id">TST2600119</td><td><span class="da-tier dda">DDA</span></td><td>Nordic Star</td><td>Rotterdam</td><td>Boskalis Terminal</td><td class="num">$11,750</td><td class="mid"><span class="da-pill info">4 days</span></td><td class="actions"><button class="btn-mini" style="background:var(--blue-light);color:var(--brand);border:1px solid var(--brand)" onclick="openSidePanel({title:'TST2600119',pc:'TST2600119',type:'DDA',vessel:'Nordic Star',port:'Rotterdam',agent:'Boskalis Terminal',amount:'USD 11,750',days:'4 days',summary:'Disbursement DA pending final sign-off.'});event.stopPropagation()">View →</button></td></tr>
+            <tr data-type="VI"><td class="pc-id">TST2600121</td><td><span class="da-tier vi">VI</span></td><td>Pacific Wind</td><td>Singapore</td><td>Test Vendor-A</td><td class="num">$9,880</td><td class="mid"><span class="da-pill warn">5 days</span></td><td class="actions"><button class="btn-mini" style="background:var(--blue-light);color:var(--brand);border:1px solid var(--brand)" onclick="openSidePanel({title:'TST2600121',pc:'TST2600121',type:'VI',vessel:'Pacific Wind',port:'Singapore',agent:'Test Vendor-A',amount:'USD 9,880',days:'5 days',summary:'Vendor invoice awaiting approval. Amount matches PDA estimate.'});event.stopPropagation()">View →</button></td></tr>
+            <tr data-type="APDA"><td class="pc-id">TST2600122</td><td><span class="da-tier apda">APDA</span></td><td>Atlantic Hope</td><td>Hamburg</td><td>Eurogate Agency</td><td class="num">$3,415</td><td class="mid"><span class="da-pill warn">6 days</span></td><td class="actions"><button class="btn-mini" style="background:var(--blue-light);color:var(--brand);border:1px solid var(--brand)" onclick="openSidePanel({title:'TST2600122',pc:'TST2600122',type:'APDA',vessel:'Atlantic Hope',port:'Hamburg',agent:'Eurogate Agency',amount:'USD 3,415',days:'6 days',summary:'Additional advance required for overtime berth charges.'});event.stopPropagation()">View →</button></td></tr>
+            <tr data-type="PDA"><td class="pc-id">TST2600125</td><td><span class="da-tier pda">PDA</span></td><td>Crimson Jade</td><td>Port Klang</td><td>Straits Agency</td><td class="num">$7,820</td><td class="mid"><span class="da-pill info">2 days</span></td><td class="actions"><button class="btn-mini" style="background:var(--blue-light);color:var(--brand);border:1px solid var(--brand)" onclick="openSidePanel({title:'TST2600125',pc:'TST2600125',type:'PDA',vessel:'Crimson Jade',port:'Port Klang',agent:'Straits Agency',amount:'USD 7,820',days:'2 days',summary:'PDA submitted for upcoming port call. ETA confirmed.'});event.stopPropagation()">View →</button></td></tr>
+            <tr data-type="FDA"><td class="pc-id">TST2600127</td><td><span class="da-tier fda">FDA</span></td><td>Eastern Horizon</td><td>Busan</td><td>Hanjin Agency</td><td class="num">$14,950</td><td class="mid"><span class="da-pill info">5 days</span></td><td class="actions"><button class="btn-mini" style="background:var(--blue-light);color:var(--brand);border:1px solid var(--brand)" onclick="openSidePanel({title:'TST2600127',pc:'TST2600127',type:'FDA',vessel:'Eastern Horizon',port:'Busan',agent:'Hanjin Agency',amount:'USD 14,950',days:'5 days',summary:'Final DA submitted post-vessel departure. Documents complete.'});event.stopPropagation()">View →</button></td></tr>
+            <tr data-type="SDA"><td class="pc-id">TST2600128</td><td><span class="da-tier sda">SDA</span></td><td>Nordic Star</td><td>Antwerp</td><td>Boskalis Terminal</td><td class="num">$5,430</td><td class="mid"><span class="da-pill info">2 days</span></td><td class="actions"><button class="btn-mini" style="background:var(--blue-light);color:var(--brand);border:1px solid var(--brand)" onclick="openSidePanel({title:'TST2600128',pc:'TST2600128',type:'SDA',vessel:'Nordic Star',port:'Antwerp',agent:'Boskalis Terminal',amount:'USD 5,430',days:'2 days',summary:'Supplementary DA for additional port services incurred.'});event.stopPropagation()">View →</button></td></tr>
+            <tr data-type="DDA"><td class="pc-id">TST2600130</td><td><span class="da-tier dda">DDA</span></td><td>MSC Voyager</td><td>Rotterdam</td><td>Maersk Agency</td><td class="num">$19,200</td><td class="mid"><span class="da-pill warn">7 days</span></td><td class="actions"><button class="btn-mini" style="background:var(--blue-light);color:var(--brand);border:1px solid var(--brand)" onclick="openSidePanel({title:'TST2600130',pc:'TST2600130',type:'DDA',vessel:'MSC Voyager',port:'Rotterdam',agent:'Maersk Agency',amount:'USD 19,200',days:'7 days',summary:'DDA pending sign-off. Oldest item in queue — priority review recommended.'});event.stopPropagation()">View →</button></td></tr>
+            <tr data-type="VI"><td class="pc-id">TST2600132</td><td><span class="da-tier vi">VI</span></td><td>Pacific Wind</td><td>Hamburg</td><td>Test Vendor-A</td><td class="num">$12,640</td><td class="mid"><span class="da-pill info">3 days</span></td><td class="actions"><button class="btn-mini" style="background:var(--blue-light);color:var(--brand);border:1px solid var(--brand)" onclick="openSidePanel({title:'TST2600132',pc:'TST2600132',type:'VI',vessel:'Pacific Wind',port:'Hamburg',agent:'Test Vendor-A',amount:'USD 12,640',days:'3 days',summary:'Vendor invoice for pilotage and towage services.'});event.stopPropagation()">View →</button></td></tr>
+            <tr data-type="FDA"><td class="pc-id">TST2600134</td><td><span class="da-tier fda">FDA</span></td><td>Crimson Jade</td><td>Singapore</td><td>Keppel Smit</td><td class="num">$21,300</td><td class="mid"><span class="da-pill warn">4 days</span></td><td class="actions"><button class="btn-mini" style="background:var(--blue-light);color:var(--brand);border:1px solid var(--brand)" onclick="openSidePanel({title:'TST2600134',pc:'TST2600134',type:'FDA',vessel:'Crimson Jade',port:'Singapore',agent:'Keppel Smit',amount:'USD 21,300',days:'4 days',summary:'FDA awaiting final approval. All charges verified by agent.'});event.stopPropagation()">View →</button></td></tr>
+            <tr data-type="PDA"><td class="pc-id">TST2600136</td><td><span class="da-tier pda">PDA</span></td><td>Atlantic Hope</td><td>Port Klang</td><td>Straits Agency</td><td class="num">$8,900</td><td class="mid"><span class="da-pill info">1 day</span></td><td class="actions"><button class="btn-mini" style="background:var(--blue-light);color:var(--brand);border:1px solid var(--brand)" onclick="openSidePanel({title:'TST2600136',pc:'TST2600136',type:'PDA',vessel:'Atlantic Hope',port:'Port Klang',agent:'Straits Agency',amount:'USD 8,900',days:'1 day',summary:'PDA just submitted. Vessel arriving in 3 days.'});event.stopPropagation()">View →</button></td></tr>
+          </tbody>
+        </table></div>
+      </div>
+
+      <!-- PENDING APPOINTMENTS section in view-pending -->
+      <div class="table-card" style="margin-top:4px">
+        <div style="padding:14px 16px;border-bottom:1.5px solid var(--border);font-size:15px;font-weight:700;color:var(--text);background:var(--card);display:flex;align-items:center;gap:10px">
+          Pending Appointments <span class="page-count" style="color:var(--teal-dark);background:var(--teal-bg)">8</span>
+        </div>
+        <div class="dtable-scroll"><table class="dtable">
+          <thead>
+            <tr><th>Vessel</th><th>Port</th><th class="mid">ETA</th><th>Agent</th><th style="text-align:left">Action</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="pc-id">Omicron West</td><td>Singapore</td><td class="mid"><span class="da-pill ok">02 Jul · Today</span></td><td style="color:var(--text-3);font-style:italic">Unassigned</td><td class="actions"><button class="btn-mini btn-appoint" onclick="fireToast('Assigning agent for Omicron West',event)">Assign Agent</button></td></tr>
+            <tr><td class="pc-id">Nordic Star</td><td>Rotterdam</td><td class="mid"><span class="da-pill info">04 Jul · in 2d</span></td><td style="color:var(--text-3);font-style:italic">Unassigned</td><td class="actions"><button class="btn-mini btn-appoint" onclick="fireToast('Assigning agent for Nordic Star',event)">Assign Agent</button></td></tr>
+            <tr><td class="pc-id">Pacific Wind</td><td>Hamburg</td><td class="mid"><span class="da-pill info">06 Jul · in 4d</span></td><td style="color:var(--text-3);font-style:italic">Unassigned</td><td class="actions"><button class="btn-mini btn-appoint" onclick="fireToast('Assigning agent for Pacific Wind',event)">Assign Agent</button></td></tr>
+            <tr><td class="pc-id">Atlantic Hope</td><td>Test Port</td><td class="mid"><span class="da-pill info">08 Jul · in 6d</span></td><td style="color:var(--text-3);font-style:italic">Unassigned</td><td class="actions"><button class="btn-mini btn-appoint" onclick="fireToast('Assigning agent for Atlantic Hope',event)">Assign Agent</button></td></tr>
+            <tr><td class="pc-id">Test Vessel 3</td><td>Singapore</td><td class="mid"><span class="da-pill slate">10 Jul · in 8d</span></td><td style="color:var(--text-3);font-style:italic">Unassigned</td><td class="actions"><button class="btn-mini btn-appoint" onclick="fireToast('Assigning agent for Test Vessel 3',event)">Assign Agent</button></td></tr>
+            <tr><td class="pc-id">Crimson Jade</td><td>Antwerp</td><td class="mid"><span class="da-pill slate">12 Jul · in 10d</span></td><td style="color:var(--text-3);font-style:italic">Unassigned</td><td class="actions"><button class="btn-mini btn-appoint" onclick="fireToast('Assigning agent for Crimson Jade',event)">Assign Agent</button></td></tr>
+            <tr><td class="pc-id">Eastern Horizon</td><td>Busan</td><td class="mid"><span class="da-pill slate">14 Jul · in 12d</span></td><td style="color:var(--text-3);font-style:italic">Unassigned</td><td class="actions"><button class="btn-mini btn-appoint" onclick="fireToast('Assigning agent for Eastern Horizon',event)">Assign Agent</button></td></tr>
+            <tr><td class="pc-id">MSC Voyager</td><td>Port Klang</td><td class="mid"><span class="da-pill slate">16 Jul · in 14d</span></td><td style="color:var(--text-3);font-style:italic">Unassigned</td><td class="actions"><button class="btn-mini btn-appoint" onclick="fireToast('Assigning agent for MSC Voyager',event)">Assign Agent</button></td></tr>
           </tbody>
         </table></div>
       </div>
@@ -1391,28 +1517,28 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
         </div>
       </div>
       <div class="table-card">
-        <table class="dtable" id="overdue-table">
+        <div class="dtable-scroll"><table class="dtable" id="overdue-table">
           <thead>
             <tr>
               <th>Port Call</th>
-              <th>Type</th>
               <th>Vessel</th>
               <th>Port</th>
-              <th>Sailed</th>
-              <th class="num">FDA Amount</th>
+              <th>Agent</th>
               <th class="num">PDA Total</th>
-              <th class="mid">Overdue</th>
-              <th class="mid">Actions</th>
+              <th class="num">Charterers Exp.</th>
+              <th class="num">Owner Exp.</th>
+              <th class="mid">Days Overdue</th>
+              <th style="text-align:left">Action</th>
             </tr>
           </thead>
           <tbody>
-            <tr><td class="pc-id">TST2600082</td><td><span class="da-tier fda">FDA</span></td><td>Omicron West</td><td>Singapore</td><td>12 Jun 2026</td><td class="num">$38,720</td><td class="num">$42,310</td><td class="mid"><span class="da-pill urgent">12d overdue</span></td><td class="actions"><button class="btn-mini btn-escalate" onclick="fireToast('Escalated TST2600082',event)">Escalate</button><button class="btn-mini btn-ghost" onclick="fireToast('Chase sent',event)">Chase</button></td></tr>
-            <tr><td class="pc-id">TST2600089</td><td><span class="da-tier fda">FDA</span></td><td>Nordic Star</td><td>Rotterdam</td><td>18 Jun 2026</td><td class="num">$22,100</td><td class="num">$24,500</td><td class="mid"><span class="da-pill urgent">8d overdue</span></td><td class="actions"><button class="btn-mini btn-escalate" onclick="fireToast('Escalated TST2600089',event)">Escalate</button><button class="btn-mini btn-ghost" onclick="fireToast('Chase sent',event)">Chase</button></td></tr>
-            <tr><td class="pc-id">TST2600091</td><td><span class="da-tier pda">PDA</span></td><td>Pacific Wind</td><td>Hamburg</td><td>20 Jun 2026</td><td class="num">$31,500</td><td class="num">$33,200</td><td class="mid"><span class="da-pill warn">6d overdue</span></td><td class="actions"><button class="btn-mini btn-escalate" onclick="fireToast('Escalated TST2600091',event)">Escalate</button><button class="btn-mini btn-ghost" onclick="fireToast('Chase sent',event)">Chase</button></td></tr>
-            <tr><td class="pc-id">TST2600114</td><td><span class="da-tier sda">SDA</span></td><td>Test Vessel 1</td><td>Test Port</td><td>24 Jun 2026</td><td class="num">$8,640</td><td class="num">$9,200</td><td class="mid"><span class="da-pill warn">5d overdue</span></td><td class="actions"><button class="btn-mini btn-escalate" onclick="fireToast('Escalated TST2600114',event)">Escalate</button><button class="btn-mini btn-ghost" onclick="fireToast('Chase sent',event)">Chase</button></td></tr>
-            <tr><td class="pc-id">TST2600023</td><td><span class="da-tier vi">VI</span></td><td>Test Vessel 3</td><td>Singapore</td><td>27 Jun 2026</td><td class="num">$50,420</td><td class="num">$52,100</td><td class="mid"><span class="da-pill warn">2d overdue</span></td><td class="actions"><button class="btn-mini btn-escalate" onclick="fireToast('Escalated TST2600023',event)">Escalate</button><button class="btn-mini btn-ghost" onclick="fireToast('Chase sent',event)">Chase</button></td></tr>
+            <tr><td class="pc-id">TST2600082</td><td>Omicron West</td><td>Singapore</td><td>ABC Test Shipping</td><td class="num">$42,310</td><td class="num">$24,180</td><td class="num">$18,130</td><td class="mid"><span class="da-pill urgent">12d</span></td><td class="actions"><button class="btn-mini" style="background:var(--teal-bg);color:var(--teal-dark);border:1px solid var(--teal-dark)" onclick="fireToast('Opening message composer…',event)">Chase Agent</button></td></tr>
+            <tr><td class="pc-id">TST2600089</td><td>Nordic Star</td><td>Rotterdam</td><td>Boskalis Terminal</td><td class="num">$24,500</td><td class="num">$14,700</td><td class="num">$9,800</td><td class="mid"><span class="da-pill urgent">8d</span></td><td class="actions"><button class="btn-mini" style="background:var(--teal-bg);color:var(--teal-dark);border:1px solid var(--teal-dark)" onclick="fireToast('Opening message composer…',event)">Chase Agent</button></td></tr>
+            <tr><td class="pc-id">TST2600091</td><td>Pacific Wind</td><td>Hamburg</td><td>Eurogate Agency</td><td class="num">$33,200</td><td class="num">$19,920</td><td class="num">$13,280</td><td class="mid"><span class="da-pill warn">6d</span></td><td class="actions"><button class="btn-mini" style="background:var(--teal-bg);color:var(--teal-dark);border:1px solid var(--teal-dark)" onclick="fireToast('Opening message composer…',event)">Chase Agent</button></td></tr>
+            <tr><td class="pc-id">TST2600114</td><td>Test Vessel 1</td><td>Test Port</td><td>Keppel Smit</td><td class="num">$9,200</td><td class="num">$5,520</td><td class="num">$3,680</td><td class="mid"><span class="da-pill warn">5d</span></td><td class="actions"><button class="btn-mini" style="background:var(--teal-bg);color:var(--teal-dark);border:1px solid var(--teal-dark)" onclick="fireToast('Opening message composer…',event)">Chase Agent</button></td></tr>
+            <tr><td class="pc-id">TST2600023</td><td>Test Vessel 3</td><td>Singapore</td><td>Test Vendor-A</td><td class="num">$52,100</td><td class="num">$31,260</td><td class="num">$20,840</td><td class="mid"><span class="da-pill warn">2d</span></td><td class="actions"><button class="btn-mini" style="background:var(--teal-bg);color:var(--teal-dark);border:1px solid var(--teal-dark)" onclick="fireToast('Opening message composer…',event)">Chase Agent</button></td></tr>
           </tbody>
-        </table>
+        </table></div>
       </div>
     </div>
     <div class="view" id="view-clar">
@@ -1582,6 +1708,22 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
 
 <div id="toast-wrap" style="position:fixed;bottom:22px;right:22px;display:flex;flex-direction:column;gap:8px;z-index:999"></div>
 
+<!-- SIDE PANEL -->
+<div class="side-panel-overlay" id="sidePanelOverlay" onclick="closeSidePanel()"></div>
+<div class="side-panel" id="sidePanel">
+  <div class="side-panel-hdr">
+    <div class="side-panel-title" id="sidePanelTitle">Port Call Summary</div>
+    <button class="side-panel-close" onclick="closeSidePanel()">×</button>
+  </div>
+  <div class="side-panel-body" id="sidePanelBody">
+    <!-- filled by JS -->
+  </div>
+  <div class="side-panel-footer">
+    <button class="btn-mini btn-approve" onclick="fireToast('Approved',event);closeSidePanel()">Approve</button>
+    <button class="btn-mini btn-reject" onclick="fireToast('Rejected',event);closeSidePanel()">Reject</button>
+  </div>
+</div>
+
 <script>
 // ── Toast ──
 function fireToast(msg, e){
@@ -1652,18 +1794,21 @@ function showView(id, title){
   const sep = document.getElementById('crumb-sep');
   const current = document.getElementById('crumb-current');
   const dashTabsBar = document.getElementById('dash-tabs-bar');
+  const searchWrap = document.getElementById('global-search-wrap');
   if(id === 'view-dashboard'){
     crumbbar.style.display = 'none';
     crumbRoot.style.display = 'none';
     sep.style.display = 'none';
     current.textContent = '';
     if(dashTabsBar) dashTabsBar.style.visibility = 'visible';
+    if(searchWrap) searchWrap.style.display = '';
   } else {
     crumbbar.style.display = '';
     crumbRoot.style.display = '';
     sep.style.display = '';
     current.textContent = title || '';
     if(dashTabsBar) dashTabsBar.style.visibility = 'hidden';
+    if(searchWrap) searchWrap.style.display = 'none';
   }
   if(target){
     target.querySelectorAll('.drow-list, .table-card').forEach(staggerRows);
@@ -1702,8 +1847,7 @@ function switchAgentTab(tab, btn){
   const card = btn.closest('.card');
   card.querySelectorAll('.agent-tab-panel').forEach(p => p.style.display = 'none');
   card.querySelector('#agent-panel-' + tab).style.display = '';
-  const hdrTitle = card.querySelector('.agent-tab-hdr-title');
-  if(hdrTitle) hdrTitle.textContent = tab === 'settling' ? 'Fastest Settling' : 'Top Turnaround';
+  card.querySelector('.agent-tab-hdr-title').textContent = tab === 'settling' ? 'Fastest Settling' : 'Top Turnaround';
 }
 function switchDashTab(panel, tabEl){
   document.querySelectorAll('.dash-tab').forEach(t => t.classList.remove('active'));
@@ -1912,9 +2056,41 @@ function initReveals(scope){
   (scope || document).querySelectorAll('.reveal:not(.in)').forEach(el => revealObs.observe(el));
 }
 
+// ── Side Panel ──
+function openSidePanel(data){
+  document.getElementById('sidePanelTitle').textContent = data.title || 'Port Call Summary';
+  const body = document.getElementById('sidePanelBody');
+  body.innerHTML = `
+    <div class="sp-row"><span class="sp-lbl">Port Call</span><span class="sp-val">${data.pc}</span></div>
+    <div class="sp-row"><span class="sp-lbl">Type</span><span class="sp-val">${data.type}</span></div>
+    <div class="sp-row"><span class="sp-lbl">Vessel</span><span class="sp-val">${data.vessel}</span></div>
+    <div class="sp-row"><span class="sp-lbl">Port</span><span class="sp-val">${data.port}</span></div>
+    <div class="sp-row"><span class="sp-lbl">Agent</span><span class="sp-val">${data.agent}</span></div>
+    <div class="sp-row"><span class="sp-lbl">Amount</span><span class="sp-val">${data.amount}</span></div>
+    <div class="sp-row"><span class="sp-lbl">Days Waiting</span><span class="sp-val">${data.days}</span></div>
+    <div style="margin-top:8px;font-size:12px;color:var(--text-2)">Summary</div>
+    <div style="background:var(--bg);border-radius:8px;padding:12px;font-size:13px;color:var(--text-2);line-height:1.6">${data.summary || 'FDA submitted by agent for review. All supporting documents attached.'}</div>
+  `;
+  document.getElementById('sidePanelOverlay').classList.add('open');
+  document.getElementById('sidePanel').classList.add('open');
+}
+function closeSidePanel(){
+  document.getElementById('sidePanelOverlay').classList.remove('open');
+  document.getElementById('sidePanel').classList.remove('open');
+}
+
+// ── Global Search ──
+function toggleSearchChip(el){
+  el.closest('.search-chips').querySelectorAll('.search-filter-chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+}
+function globalSearchInput(input){
+  // placeholder for future search logic
+}
+
 // ── Init ──
 document.addEventListener('DOMContentLoaded', function(){
-  document.querySelectorAll('.kpi-bento [data-count], .situation-grid [data-count]').forEach(countUp);
+  document.querySelectorAll('.kpi-bento [data-count], .situation-grid [data-count], .sit-dual [data-count]').forEach(countUp);
   staggerRows(document.getElementById('view-dashboard'));
   initReveals(document.getElementById('view-dashboard'));
 });
