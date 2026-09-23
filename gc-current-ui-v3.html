@@ -210,6 +210,7 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
 .version-wheel{width:20px;height:20px;border-radius:50%;display:block;background:conic-gradient(from 0deg,#EF4444,#F59E0B,#FACC15,#22C55E,#06B6D4,#1852FE,#8B5CF6,#EC4899,#EF4444);box-shadow:inset 0 0 0 1px rgba(0,0,0,.08)}
 /* Anomaly card */
 .anomaly-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px 20px;display:flex;flex-direction:column;gap:14px;box-shadow:var(--shadow-sm)}
+.anomaly-content{background:var(--bg);border-radius:12px;padding:14px 16px;display:flex;flex-direction:column;gap:14px}
 .anomaly-badge{display:inline-flex;align-items:center;gap:8px}
 .anomaly-pill{background:var(--amber-mid);color:#844D0F;font-size:10px;font-weight:800;letter-spacing:.06em;padding:3px 9px;border-radius:999px;text-transform:uppercase}
 .anomaly-label{font-size:12px;font-weight:500;color:var(--text-2)}
@@ -848,28 +849,32 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
           </div>
           <div class="anomaly-slider" id="anomalySlider">
             <div class="anomaly-slide active">
-              <div class="anomaly-badge">
-                <span class="anomaly-pill">Anomaly</span>
-                <span class="anomaly-label">Pre-appointment check</span>
-              </div>
-              <div class="anomaly-title">Pacific Wind PDA is <span class="anomaly-highlight">12% above</span> your Hamburg benchmark.</div>
-              <div class="anomaly-vs">
-                <div class="anomaly-num"><div class="anomaly-num-val">5,900</div><div class="anomaly-num-lbl">this PDA</div></div>
-                <div class="anomaly-vs-sep">VS</div>
-                <div class="anomaly-num"><div class="anomaly-num-val" style="color:var(--text-2)">5,270</div><div class="anomaly-num-lbl">Hamburg typical</div></div>
+              <div class="anomaly-content">
+                <div class="anomaly-badge">
+                  <span class="anomaly-pill">Anomaly</span>
+                  <span class="anomaly-label">Pre-appointment check</span>
+                </div>
+                <div class="anomaly-title">Pacific Wind PDA is <span class="anomaly-highlight">12% above</span> your Hamburg benchmark.</div>
+                <div class="anomaly-vs">
+                  <div class="anomaly-num"><div class="anomaly-num-val">5,900</div><div class="anomaly-num-lbl">this PDA</div></div>
+                  <div class="anomaly-vs-sep">VS</div>
+                  <div class="anomaly-num"><div class="anomaly-num-val" style="color:var(--text-2)">5,270</div><div class="anomaly-num-lbl">Hamburg typical</div></div>
+                </div>
               </div>
               <button class="anomaly-link" onclick="fireToast('Opening Pacific Wind PDA anomaly',event)">Review before appointment →</button>
             </div>
             <div class="anomaly-slide">
-              <div class="anomaly-badge">
-                <span class="anomaly-pill">Anomaly</span>
-                <span class="anomaly-label">Cost spike detected</span>
-              </div>
-              <div class="anomaly-title">Singapore berth fees <span class="anomaly-highlight">23% higher</span> than prior 3 calls.</div>
-              <div class="anomaly-vs">
-                <div class="anomaly-num"><div class="anomaly-num-val">4,120</div><div class="anomaly-num-lbl">this call</div></div>
-                <div class="anomaly-vs-sep">VS</div>
-                <div class="anomaly-num"><div class="anomaly-num-val" style="color:var(--text-2)">3,350</div><div class="anomaly-num-lbl">avg prior 3</div></div>
+              <div class="anomaly-content">
+                <div class="anomaly-badge">
+                  <span class="anomaly-pill">Anomaly</span>
+                  <span class="anomaly-label">Cost spike detected</span>
+                </div>
+                <div class="anomaly-title">Singapore berth fees <span class="anomaly-highlight">23% higher</span> than prior 3 calls.</div>
+                <div class="anomaly-vs">
+                  <div class="anomaly-num"><div class="anomaly-num-val">4,120</div><div class="anomaly-num-lbl">this call</div></div>
+                  <div class="anomaly-vs-sep">VS</div>
+                  <div class="anomaly-num"><div class="anomaly-num-val" style="color:var(--text-2)">3,350</div><div class="anomaly-num-lbl">avg prior 3</div></div>
+                </div>
               </div>
               <button class="anomaly-link" onclick="fireToast('Opening Singapore anomaly',event)">Review charges →</button>
             </div>
