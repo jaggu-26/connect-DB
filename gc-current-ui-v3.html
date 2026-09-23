@@ -934,7 +934,49 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
         </div>
 
         <div class="card reveal">
-          <div class="tile-hdr"><div class="tile-title">By Type <span style="font-size:11px;font-weight:400;color:var(--text-2)">· MTD</span></div></div>
+          <div class="tile-hdr">
+            <div class="tile-title">By Type <span style="font-size:11px;font-weight:400;color:var(--text-2)">· MTD</span></div>
+            <div style="position:relative">
+              <div id="typeFilterTrigger" onclick="event.stopPropagation();toggleTypeFilterMenu()" style="display:flex;align-items:center;gap:4px;cursor:pointer;white-space:nowrap">
+                <span id="typeFilterLabel" style="font-size:12px;font-weight:600;color:var(--brand)">Contractual Discount</span>
+                <svg viewBox="0 0 24 24" style="width:11px;height:11px;stroke:var(--brand);fill:none;stroke-width:2.5;stroke-linecap:round;flex-shrink:0"><polyline points="6 9 12 15 18 9"/></svg>
+              </div>
+              <div id="typeFilterMenu" style="display:none;position:absolute;top:calc(100% + 6px);right:0;background:var(--card);border:1px solid var(--border);border-radius:6px;box-shadow:0 8px 24px rgba(0,0,0,.12);z-index:200;min-width:280px;max-height:280px;overflow-y:auto;padding:4px 0">
+                <div class="search-dd-item type-dd-item" style="display:flex;align-items:center;justify-content:space-between;gap:10px" onclick="selectTypeFilter('Agent Error',this)"><span><span style="color:var(--text-3);font-weight:600;margin-right:6px">STP044</span>Agent Error</span></div>
+                <div class="search-dd-item type-dd-item active" style="display:flex;align-items:center;justify-content:space-between;gap:10px" onclick="selectTypeFilter('Contractual Discount',this)"><span><span style="color:var(--text-3);font-weight:600;margin-right:6px">STP002</span>Contractual Discount</span><span class="version-check">✓</span></div>
+                <div class="search-dd-item type-dd-item" style="display:flex;align-items:center;justify-content:space-between;gap:10px" onclick="selectTypeFilter('Contractual Discount - QC',this)"><span><span style="color:var(--text-3);font-weight:600;margin-right:6px">STP013</span>Contractual Discount - QC</span></div>
+                <div class="search-dd-item type-dd-item" style="display:flex;align-items:center;justify-content:space-between;gap:10px" onclick="selectTypeFilter('Cost Not applicable',this)"><span><span style="color:var(--text-3);font-weight:600;margin-right:6px">STP042</span>Cost Not applicable</span></div>
+                <div class="search-dd-item type-dd-item" style="display:flex;align-items:center;justify-content:space-between;gap:10px" onclick="selectTypeFilter('Cost Not applicable - QC',this)"><span><span style="color:var(--text-3);font-weight:600;margin-right:6px">STP043</span>Cost Not applicable - QC</span></div>
+                <div class="search-dd-item type-dd-item" style="display:flex;align-items:center;justify-content:space-between;gap:10px" onclick="selectTypeFilter('Covid-19 charges',this)"><span><span style="color:var(--text-3);font-weight:600;margin-right:6px">STP008</span>Covid-19 charges</span></div>
+                <div class="search-dd-item type-dd-item" style="display:flex;align-items:center;justify-content:space-between;gap:10px" onclick="selectTypeFilter('Covid-19 charges - QC',this)"><span><span style="color:var(--text-3);font-weight:600;margin-right:6px">STP014</span>Covid-19 charges - QC</span></div>
+                <div class="search-dd-item type-dd-item" style="display:flex;align-items:center;justify-content:space-between;gap:10px" onclick="selectTypeFilter('Custom Clearance (Husbandry)',this)"><span><span style="color:var(--text-3);font-weight:600;margin-right:6px">STP031</span>Custom Clearance (Husbandry)</span></div>
+                <div class="search-dd-item type-dd-item" style="display:flex;align-items:center;justify-content:space-between;gap:10px" onclick="selectTypeFilter('Custom Clearance (Husbandry) - QC',this)"><span><span style="color:var(--text-3);font-weight:600;margin-right:6px">STP033</span>Custom Clearance (Husbandry) - QC</span></div>
+                <div class="search-dd-item type-dd-item" style="display:flex;align-items:center;justify-content:space-between;gap:10px" onclick="selectTypeFilter('ESI',this)"><span><span style="color:var(--text-3);font-weight:600;margin-right:6px">STP004</span>ESI</span></div>
+                <div class="search-dd-item type-dd-item" style="display:flex;align-items:center;justify-content:space-between;gap:10px" onclick="selectTypeFilter('ESI - QC',this)"><span><span style="color:var(--text-3);font-weight:600;margin-right:6px">STP015</span>ESI - QC</span></div>
+                <div class="search-dd-item type-dd-item" style="display:flex;align-items:center;justify-content:space-between;gap:10px" onclick="selectTypeFilter('Improper Documents',this)"><span><span style="color:var(--text-3);font-weight:600;margin-right:6px">STP003</span>Improper Documents</span></div>
+                <div class="search-dd-item type-dd-item" style="display:flex;align-items:center;justify-content:space-between;gap:10px" onclick="selectTypeFilter('Improper Documents - QC',this)"><span><span style="color:var(--text-3);font-weight:600;margin-right:6px">STP016</span>Improper Documents - QC</span></div>
+                <div class="search-dd-item type-dd-item" style="display:flex;align-items:center;justify-content:space-between;gap:10px" onclick="selectTypeFilter('ISO',this)"><span><span style="color:var(--text-3);font-weight:600;margin-right:6px">STP005</span>ISO</span></div>
+                <div class="search-dd-item type-dd-item" style="display:flex;align-items:center;justify-content:space-between;gap:10px" onclick="selectTypeFilter('ISO - QC',this)"><span><span style="color:var(--text-3);font-weight:600;margin-right:6px">STP017</span>ISO - QC</span></div>
+                <div class="search-dd-item type-dd-item" style="display:flex;align-items:center;justify-content:space-between;gap:10px" onclick="selectTypeFilter('Launch Hire (Husbandry)',this)"><span><span style="color:var(--text-3);font-weight:600;margin-right:6px">STP032</span>Launch Hire (Husbandry)</span></div>
+                <div class="search-dd-item type-dd-item" style="display:flex;align-items:center;justify-content:space-between;gap:10px" onclick="selectTypeFilter('Launch Hire (Husbandry) -QC',this)"><span><span style="color:var(--text-3);font-weight:600;margin-right:6px">STP034</span>Launch Hire (Husbandry) -QC</span></div>
+                <div class="search-dd-item type-dd-item" style="display:flex;align-items:center;justify-content:space-between;gap:10px" onclick="selectTypeFilter('Negotiation',this)"><span><span style="color:var(--text-3);font-weight:600;margin-right:6px">STP040</span>Negotiation</span></div>
+                <div class="search-dd-item type-dd-item" style="display:flex;align-items:center;justify-content:space-between;gap:10px" onclick="selectTypeFilter('Negotiation - QC',this)"><span><span style="color:var(--text-3);font-weight:600;margin-right:6px">STP041</span>Negotiation - QC</span></div>
+                <div class="search-dd-item type-dd-item" style="display:flex;align-items:center;justify-content:space-between;gap:10px" onclick="selectTypeFilter('Operator Saving',this)"><span><span style="color:var(--text-3);font-weight:600;margin-right:6px">STP028</span>Operator Saving</span></div>
+                <div class="search-dd-item type-dd-item" style="display:flex;align-items:center;justify-content:space-between;gap:10px" onclick="selectTypeFilter('Rebill - Owners',this)"><span><span style="color:var(--text-3);font-weight:600;margin-right:6px">STP022</span>Rebill - Owners</span></div>
+                <div class="search-dd-item type-dd-item" style="display:flex;align-items:center;justify-content:space-between;gap:10px" onclick="selectTypeFilter('Rebill - Owners - QC',this)"><span><span style="color:var(--text-3);font-weight:600;margin-right:6px">STP023</span>Rebill - Owners - QC</span></div>
+                <div class="search-dd-item type-dd-item" style="display:flex;align-items:center;justify-content:space-between;gap:10px" onclick="selectTypeFilter('Rebill - Owners - Saving',this)"><span><span style="color:var(--text-3);font-weight:600;margin-right:6px">STP036</span>Rebill - Owners - Saving</span></div>
+                <div class="search-dd-item type-dd-item" style="display:flex;align-items:center;justify-content:space-between;gap:10px" onclick="selectTypeFilter('Rebill - Owners - Saving - QC',this)"><span><span style="color:var(--text-3);font-weight:600;margin-right:6px">STP037</span>Rebill - Owners - Saving - QC</span></div>
+                <div class="search-dd-item type-dd-item" style="display:flex;align-items:center;justify-content:space-between;gap:10px" onclick="selectTypeFilter('Rebill charterers',this)"><span><span style="color:var(--text-3);font-weight:600;margin-right:6px">STP025</span>Rebill charterers</span></div>
+                <div class="search-dd-item type-dd-item" style="display:flex;align-items:center;justify-content:space-between;gap:10px" onclick="selectTypeFilter('Rebill charterers - QC',this)"><span><span style="color:var(--text-3);font-weight:600;margin-right:6px">STP024</span>Rebill charterers - QC</span></div>
+                <div class="search-dd-item type-dd-item" style="display:flex;align-items:center;justify-content:space-between;gap:10px" onclick="selectTypeFilter('Rebill charterers - Saving',this)"><span><span style="color:var(--text-3);font-weight:600;margin-right:6px">STP038</span>Rebill charterers - Saving</span></div>
+                <div class="search-dd-item type-dd-item" style="display:flex;align-items:center;justify-content:space-between;gap:10px" onclick="selectTypeFilter('Rebill charterers - Saving QC',this)"><span><span style="color:var(--text-3);font-weight:600;margin-right:6px">STP039</span>Rebill charterers - Saving QC</span></div>
+                <div class="search-dd-item type-dd-item" style="display:flex;align-items:center;justify-content:space-between;gap:10px" onclick="selectTypeFilter('Tariff Related',this)"><span><span style="color:var(--text-3);font-weight:600;margin-right:6px">STP001</span>Tariff Related</span></div>
+                <div class="search-dd-item type-dd-item" style="display:flex;align-items:center;justify-content:space-between;gap:10px" onclick="selectTypeFilter('Tariff Related- QC',this)"><span><span style="color:var(--text-3);font-weight:600;margin-right:6px">STP019</span>Tariff Related- QC</span></div>
+                <div class="search-dd-item type-dd-item" style="display:flex;align-items:center;justify-content:space-between;gap:10px" onclick="selectTypeFilter('Transportation Charges (Husbandry)',this)"><span><span style="color:var(--text-3);font-weight:600;margin-right:6px">STP030</span>Transportation Charges (Husbandry)</span></div>
+                <div class="search-dd-item type-dd-item" style="display:flex;align-items:center;justify-content:space-between;gap:10px" onclick="selectTypeFilter('Transportation Charges (Husbandry) - QC',this)"><span><span style="color:var(--text-3);font-weight:600;margin-right:6px">STP035</span>Transportation Charges (Husbandry) - QC</span></div>
+              </div>
+            </div>
+          </div>
           <div style="height:18px;border-radius:99px;overflow:hidden;display:flex;gap:2px;margin-bottom:18px;flex-shrink:0">
             <div style="flex:85.2;background:#1852FE"></div><div style="flex:8.1;background:#4274FF"></div><div style="flex:4.1;background:#0A3BC4"></div><div style="flex:2.0;background:#6B9BFF"></div><div style="flex:0.6;background:#B8CFFE"></div>
           </div>
@@ -2092,6 +2134,30 @@ function toggleVersionMenu(){
   const menu = document.getElementById('versionMenu');
   menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
 }
+function toggleTypeFilterMenu(){
+  const menu = document.getElementById('typeFilterMenu');
+  menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+}
+function selectTypeFilter(label, el){
+  document.getElementById('typeFilterLabel').textContent = label;
+  const menu = el.closest('#typeFilterMenu');
+  menu.querySelectorAll('.type-dd-item').forEach(i => {
+    i.classList.remove('active');
+    const chk = i.querySelector('.version-check');
+    if(chk) chk.remove();
+  });
+  el.classList.add('active');
+  el.insertAdjacentHTML('beforeend', '<span class="version-check">✓</span>');
+  menu.style.display = 'none';
+  fireToast('Filtered by ' + label, event);
+}
+document.addEventListener('click', function(e){
+  const menu = document.getElementById('typeFilterMenu');
+  const trigger = document.getElementById('typeFilterTrigger');
+  if(menu && menu.style.display === 'block' && !menu.contains(e.target) && trigger && !trigger.contains(e.target)){
+    menu.style.display = 'none';
+  }
+});
 const VERSION_URLS = {
   'Version 1': 'gc-db.html',
   'Version 2': 'gc-current-ui.html',
