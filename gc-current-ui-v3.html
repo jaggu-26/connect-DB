@@ -1046,7 +1046,11 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
             <path id="chart-area"  class="trend-fill2" fill="url(#grad-main)" d="M62,104 L142,90 L222,97 L302,69 L382,79 L462,55 L542,62 L618,41 L618,160 L62,160 Z"/>
             <path id="chart-line1" class="trend-line2" d="M62,104 L142,90 L222,97 L302,69 L382,79 L462,55 L542,62 L618,41"/>
             <path id="chart-line2" class="trend-line3" d="M62,125 L142,111 L222,118 L302,97 L382,104 L462,83 L542,90 L618,69"/>
+            <line id="chart-hover-line" x1="0" y1="20" x2="0" y2="160" stroke="var(--border)" stroke-width="1" style="display:none"/>
+            <g id="chart-hover-dots"></g>
+            <g id="chart-hover-hits"></g>
           </svg>
+          <div id="chartTooltip" style="display:none;position:fixed;z-index:600;background:var(--nav);color:#fff;border-radius:8px;padding:8px 12px;font-size:11.5px;line-height:1.6;box-shadow:0 8px 20px rgba(0,0,0,.18);pointer-events:none;white-space:nowrap"></div>
           <div class="chart-foot-stats">
             <div class="cfoot-item"><span class="cfoot-val" id="stat-disbursed">$341K</span><span class="cfoot-lbl">Total Disbursed</span></div>
             <div class="cfoot-item"><span class="cfoot-val" id="stat-approved" style="color:#147638">27</span><span class="cfoot-lbl" id="stat-approved-lbl">Approved this month</span></div>
@@ -1994,6 +1998,8 @@ function cashHover(idx){
       xs:     [62, 142, 222, 302, 382, 462, 542, 618],
       sub1:   [104, 90, 97, 69, 79, 55, 62, 41],   // submitted (lower y = higher)
       sub2:   [125, 111, 118, 97, 104, 83, 90, 69], // approved
+      val1:   [16, 20, 18, 26, 23, 30, 28, 34],
+      val2:   [10, 14, 12, 18, 16, 22, 20, 26],
       disbursed: '$341K', approved: '27', rejected: '3',
       subText: 'Weekly totals across all vessels and ports',
       approvedLbl: 'Approved this week', rejectedLbl: 'Rejected this week'
@@ -2003,6 +2009,8 @@ function cashHover(idx){
       xs:     [70, 182, 294, 406, 518, 618],
       sub1:   [111, 90, 76, 83, 62, 48],
       sub2:   [132, 111, 97, 104, 83, 69],
+      val1:   [14, 20, 24, 22, 28, 32],
+      val2:   [8, 14, 18, 16, 22, 26],
       disbursed: '$1.4M', approved: '112', rejected: '9',
       subText: 'Monthly disbursement submissions vs approvals',
       approvedLbl: 'Approved this year', rejectedLbl: 'Rejected this year'
@@ -2012,6 +2020,8 @@ function cashHover(idx){
       xs:     [120, 306, 492, 618],
       sub1:   [97, 76, 62, 41],
       sub2:   [118, 97, 83, 62],
+      val1:   [18, 24, 28, 34],
+      val2:   [12, 18, 22, 28],
       disbursed: '$4.1M', approved: '374', rejected: '28',
       subText: 'Quarterly performance — submissions vs approvals',
       approvedLbl: 'Approved (YTD)', rejectedLbl: 'Rejected (YTD)'
@@ -2023,6 +2033,61 @@ function cashHover(idx){
   }
   function area(xs, ys){
     return polyline(xs,ys)+' L'+xs[xs.length-1]+',160 L'+xs[0]+',160 Z';
+  }
+
+  const ns = 'http://www.w3.org/2000/svg';
+  function buildChartHoverPoints(d){
+    const hits = document.getElementById('chart-hover-hits');
+    const dots = document.getElementById('chart-hover-dots');
+    while(hits.firstChild) hits.removeChild(hits.firstChild);
+    while(dots.firstChild) dots.removeChild(dots.firstChild);
+    d.xs.forEach((x,i) => {
+      [ [d.sub1[i],'#1852FE'], [d.sub2[i],'var(--teal-dark)'] ].forEach(([y,color]) => {
+        const dot = document.createElementNS(ns,'circle');
+        dot.setAttribute('cx', x); dot.setAttribute('cy', y); dot.setAttribute('r', '3.5');
+        dot.setAttribute('fill', color); dot.setAttribute('stroke', '#fff'); dot.setAttribute('stroke-width','1.5');
+        dot.style.opacity = '0'; dot.style.transition = 'opacity .15s';
+        dot.dataset.idx = i;
+        dots.appendChild(dot);
+      });
+      const prevX = i>0 ? (x + d.xs[i-1])/2 : x - 40;
+      const nextX = i<d.xs.length-1 ? (x + d.xs[i+1])/2 : x + 40;
+      const hit = document.createElementNS(ns,'rect');
+      hit.setAttribute('x', prevX);
+      hit.setAttribute('y', 20);
+      hit.setAttribute('width', Math.max(nextX-prevX, 1));
+      hit.setAttribute('height', 140);
+      hit.setAttribute('fill', 'transparent');
+      hit.style.cursor = 'pointer';
+      hit.addEventListener('mouseenter', (e) => showChartTooltip(e, i, x, d));
+      hit.addEventListener('mousemove', positionTooltip);
+      hit.addEventListener('mouseleave', hideChartTooltip);
+      hits.appendChild(hit);
+    });
+  }
+  function showChartTooltip(e, i, x, d){
+    document.querySelectorAll('#chart-hover-dots circle').forEach(c => {
+      c.style.opacity = (+c.dataset.idx === i) ? '1' : '0';
+    });
+    const line = document.getElementById('chart-hover-line');
+    line.setAttribute('x1', x); line.setAttribute('x2', x);
+    line.style.display = 'block';
+    const tip = document.getElementById('chartTooltip');
+    tip.innerHTML = '<div style="font-weight:700;margin-bottom:3px">'+d.labels[i]+'</div>'
+      +'<div><span style="color:#8FB3FF">●</span> Submitted: '+d.val1[i]+'</div>'
+      +'<div><span style="color:#5EEAD4">●</span> Approved: '+d.val2[i]+'</div>';
+    tip.style.display = 'block';
+    positionTooltip(e);
+  }
+  function positionTooltip(e){
+    const tip = document.getElementById('chartTooltip');
+    tip.style.left = (e.clientX + 14) + 'px';
+    tip.style.top = (e.clientY - 10) + 'px';
+  }
+  function hideChartTooltip(){
+    document.querySelectorAll('#chart-hover-dots circle').forEach(c => c.style.opacity = '0');
+    document.getElementById('chart-hover-line').style.display = 'none';
+    document.getElementById('chartTooltip').style.display = 'none';
   }
 
   window.switchChartPeriod = function(period, tabEl){
@@ -2049,6 +2114,7 @@ function cashHover(idx){
     document.getElementById('chart-line1').setAttribute('d', polyline(d.xs, d.sub1));
     document.getElementById('chart-line2').setAttribute('d', polyline(d.xs, d.sub2));
     document.getElementById('chart-area').setAttribute('d', area(d.xs, d.sub1));
+    buildChartHoverPoints(d);
 
     // update footer stats
     document.getElementById('stat-disbursed').textContent  = d.disbursed;
@@ -2075,6 +2141,7 @@ function cashHover(idx){
       });
     });
   };
+  buildChartHoverPoints(CHART.week);
 })();
 
 // ── Role selector ──
