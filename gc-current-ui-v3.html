@@ -215,7 +215,7 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
 .anomaly-badge{display:inline-flex;align-items:center;gap:8px}
 .anomaly-pill{background:var(--amber-mid);color:#844D0F;font-size:10px;font-weight:800;letter-spacing:.06em;padding:3px 9px;border-radius:999px;text-transform:uppercase}
 .anomaly-label{font-size:12px;font-weight:500;color:var(--text-2)}
-.anomaly-title{font-size:15px;font-weight:700;color:var(--text);line-height:1.4}
+.anomaly-title{font-size:13px;font-weight:700;color:var(--text);line-height:1.4}
 .anomaly-highlight{color:inherit}
 .anomaly-vs{display:flex;align-items:center;gap:20px}
 .anomaly-num{display:flex;flex-direction:column;gap:2px}
@@ -792,7 +792,7 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
           <div class="sit-lbl">FDAs not received from agents past their deadline.</div>
           <div class="sit-sub">oldest is 12 days overdue</div>
           <div class="sit-actions">
-            <button class="sit-btn sit-btn-outline" onclick="event.stopPropagation();goDetail('view-overdue','Overdue DAs',event)">Chase Agent →</button>
+            <button class="sit-btn sit-btn-outline" onclick="event.stopPropagation();goDetail('view-overdue','Overdue DAs',event)">Chase Agent</button>
           </div>
         </div>
         <!-- DAs Due in 5 Days -->
@@ -802,7 +802,7 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
           <div class="sit-lbl">DAs due in the next 5 days</div>
           <div class="sit-sub">Based on Port Call Timebar configuration</div>
           <div class="sit-actions">
-            <button class="sit-btn sit-btn-outline" onclick="event.stopPropagation();goDetail('view-overdue','Due Soon',event)">View Due DAs →</button>
+            <button class="sit-btn sit-btn-outline" onclick="event.stopPropagation();goDetail('view-overdue','Due Soon',event)">View Due DAs</button>
           </div>
         </div>
       </div>
