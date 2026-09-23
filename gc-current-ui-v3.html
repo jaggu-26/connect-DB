@@ -737,21 +737,6 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
         <span class="mycalls-label">My Calls</span>
         <div class="toggle-switch"><div class="knob"></div></div>
       </div>
-      <div class="topbar-search" style="width:320px;gap:6px;position:relative" onclick="this.querySelector('input').focus()">
-        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <input type="text" placeholder="Search by vessel, port…" id="global-search-input" style="flex:1;border:none;outline:none;background:transparent;font-family:inherit;font-size:13px;color:var(--text)" oninput="globalSearchInput(this)">
-        <div style="width:1px;height:16px;background:var(--border);flex-shrink:0"></div>
-        <div class="topbar-search-dropdown" id="searchDropdownTrigger" onclick="event.stopPropagation();toggleSearchDropdown()" style="display:flex;align-items:center;gap:4px;cursor:pointer;white-space:nowrap;flex-shrink:0">
-          <span id="searchFilterLabel" style="font-size:12px;font-weight:600;color:var(--brand)">All Port Calls</span>
-          <svg viewBox="0 0 24 24" style="width:11px;height:11px;stroke:var(--brand);fill:none;stroke-width:2.5;stroke-linecap:round;flex-shrink:0"><polyline points="6 9 12 15 18 9"/></svg>
-        </div>
-        <div id="searchDropdownMenu" style="display:none;position:absolute;top:calc(100% + 6px);right:0;background:var(--card);border:1px solid var(--border);border-radius:6px;box-shadow:0 8px 24px rgba(0,0,0,.12);z-index:200;min-width:160px;padding:4px 0">
-          <div class="search-dd-item active" onclick="selectSearchFilter('All Port Calls',this)">All Port Calls</div>
-          <div class="search-dd-item" onclick="selectSearchFilter('Vessel',this)">Vessel</div>
-          <div class="search-dd-item" onclick="selectSearchFilter('Port',this)">Port</div>
-          <div class="search-dd-item" onclick="selectSearchFilter('Open DAs',this)">Open DAs</div>
-        </div>
-      </div>
       <button class="btn-primary">
         <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
         New Port Call
@@ -947,10 +932,19 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
           <div style="flex:1;min-width:0">
             <div class="dapipe-title">DA Pipeline — Where is every disbursement account right now?</div>
           </div>
-          <span class="dapipe-stat-pill">81 active DAs · $1.24M total</span>
-          <span class="dapipe-role-pill" style="color:var(--brand);background:var(--blue-light)">Operators</span>
-          <span class="dapipe-role-pill" style="color:var(--purple);background:var(--purple-bg)">Super Users</span>
-          <span class="dapipe-role-pill" style="color:#147638;background:var(--green-mid)">Accounts</span>
+          <div style="position:relative">
+            <div id="dapipeFilterTrigger" onclick="event.stopPropagation();toggleDapipeFilterMenu()" style="display:flex;align-items:center;gap:6px;cursor:pointer;white-space:nowrap;background:#fff;border:1px solid var(--green-mid);border-radius:6px;padding:7px 12px">
+              <span id="dapipeFilterLabel" style="font-size:12px;font-weight:700;color:#147638">Last 30 days</span>
+              <svg viewBox="0 0 24 24" style="width:11px;height:11px;stroke:#147638;fill:none;stroke-width:2.5;stroke-linecap:round;flex-shrink:0"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+            <div id="dapipeFilterMenu" style="display:none;position:absolute;top:calc(100% + 6px);right:0;background:var(--card);border:1px solid var(--border);border-radius:6px;box-shadow:0 8px 24px rgba(0,0,0,.12);z-index:200;min-width:170px;padding:4px 0">
+              <div class="search-dd-item active" onclick="selectDapipeFilter('Last 30 days',this)">Last 30 days</div>
+              <div class="search-dd-item" onclick="selectDapipeFilter('Last 60 days',this)">Last 60 days</div>
+              <div class="search-dd-item" onclick="selectDapipeFilter('Last 180 days',this)">Last 180 days</div>
+              <div class="search-dd-item" onclick="selectDapipeFilter('Last 1 year',this)">Last 1 year</div>
+              <div class="search-dd-item" onclick="selectDapipeFilter('Custom range',this)">📅 Custom range</div>
+            </div>
+          </div>
         </div>
         <div class="dapipe-body">
           <div class="dapipe-stages">
@@ -2356,6 +2350,25 @@ function toggleVersionMenu(){
   const menu = document.getElementById('versionMenu');
   menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
 }
+function toggleDapipeFilterMenu(){
+  const menu = document.getElementById('dapipeFilterMenu');
+  menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+}
+function selectDapipeFilter(label, el){
+  document.getElementById('dapipeFilterLabel').textContent = label;
+  const menu = el.closest('#dapipeFilterMenu');
+  menu.querySelectorAll('.search-dd-item').forEach(i => i.classList.remove('active'));
+  el.classList.add('active');
+  menu.style.display = 'none';
+  fireToast('Showing DA Pipeline for ' + label, event);
+}
+document.addEventListener('click', function(e){
+  const menu = document.getElementById('dapipeFilterMenu');
+  const trigger = document.getElementById('dapipeFilterTrigger');
+  if(menu && menu.style.display === 'block' && !menu.contains(e.target) && trigger && !trigger.contains(e.target)){
+    menu.style.display = 'none';
+  }
+});
 function toggleTypeFilterMenu(){
   const menu = document.getElementById('typeFilterMenu');
   menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
