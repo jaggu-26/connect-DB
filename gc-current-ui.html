@@ -2132,6 +2132,8 @@ document.addEventListener('DOMContentLoaded', function(){
   const el = document.getElementById('live-date');
   const DAYS = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
   const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  const MONTHS_SHORT = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const lastUpdatedEls = document.querySelectorAll('.last-updated');
   function updateDate(){
     const now = new Date();
     const day = DAYS[now.getDay()];
@@ -2141,7 +2143,9 @@ document.addEventListener('DOMContentLoaded', function(){
     const hh = String(now.getHours()).padStart(2,'0');
     const mm = String(now.getMinutes()).padStart(2,'0');
     const ss = String(now.getSeconds()).padStart(2,'0');
-    el.textContent = `${day}, ${month} ${date}, ${year} · ${hh}:${mm}:${ss} GMT`;
+    if(el) el.textContent = `${day}, ${month} ${date}, ${year} · ${hh}:${mm}:${ss} GMT`;
+    const shortMonth = MONTHS_SHORT[now.getMonth()];
+    lastUpdatedEls.forEach(e => e.textContent = `Last Updated: ${date} ${shortMonth} ${year}, ${hh}:${mm} GMT`);
   }
   updateDate();
   setInterval(updateDate, 1000);
