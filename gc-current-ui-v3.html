@@ -1505,7 +1505,6 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
           </div>
         </div>
 
-        <!-- Balance Recoveries -->
         <!-- Financial Insights -->
         <div class="section-lbl">Financial Insights</div>
         <div class="fi-card reveal">
@@ -1569,6 +1568,9 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
               <span class="fi-pill" style="color:var(--danger);background:#FEF1F2">$151K at risk</span>
             </div>
             <div class="fi-divider"></div>
+            <div style="text-align:right;padding:10px 20px;border-bottom:1px solid var(--border);font-size:12px;color:var(--text-2);white-space:nowrap">
+              Recovered YTD <strong style="color:#147638">$292,560</strong> · Pending <strong style="color:var(--text)">$48,320</strong>
+            </div>
             <div class="fi-agent-row">
               <div class="fi-avatar" style="background:#FEF1F2;color:var(--danger)">AB</div>
               <div style="flex:1;min-width:0">
@@ -1577,7 +1579,7 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
                 <div class="fi-agent-bar"><div class="fi-agent-bar-fill" style="width:95%;background:var(--danger)"></div></div>
               </div>
               <div>
-                <div class="fi-agent-amt" style="color:var(--danger)">$42,310</div>
+                <div class="fi-agent-amt" style="color:var(--danger)">$58,490</div>
                 <button class="fi-chase-btn" style="border-color:var(--danger);color:var(--danger)" onclick="fireToast('Chasing ABC Test Shipping',event)">Chase</button>
               </div>
             </div>
@@ -1589,7 +1591,7 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
                 <div class="fi-agent-bar"><div class="fi-agent-bar-fill" style="width:62%;background:var(--danger)"></div></div>
               </div>
               <div>
-                <div class="fi-agent-amt" style="color:var(--danger)">$33,200</div>
+                <div class="fi-agent-amt" style="color:var(--danger)">$45,900</div>
                 <button class="fi-chase-btn" style="border-color:var(--danger);color:var(--danger)" onclick="fireToast('Chasing Eurogate Agency',event)">Chase</button>
               </div>
             </div>
@@ -1601,7 +1603,7 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
                 <div class="fi-agent-bar"><div class="fi-agent-bar-fill" style="width:52%;background:var(--orange)"></div></div>
               </div>
               <div>
-                <div class="fi-agent-amt" style="color:var(--orange)">$24,500</div>
+                <div class="fi-agent-amt" style="color:var(--orange)">$33,880</div>
                 <button class="fi-chase-btn" style="border-color:var(--orange);color:var(--orange)" onclick="fireToast('Chasing Boskalis Terminal',event)">Chase</button>
               </div>
             </div>
@@ -1613,7 +1615,7 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
                 <div class="fi-agent-bar"><div class="fi-agent-bar-fill" style="width:38%;background:var(--warning)"></div></div>
               </div>
               <div>
-                <div class="fi-agent-amt" style="color:#92400E">$9,200</div>
+                <div class="fi-agent-amt" style="color:#92400E">$12,730</div>
                 <button class="fi-chase-btn" style="border-color:var(--warning);color:#92400E" onclick="fireToast('Chasing Keppel Smit',event)">Chase</button>
               </div>
             </div>
@@ -1662,19 +1664,6 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
               <span class="fi-footer-link" onclick="fireToast('Opening full variance report',event)">Full report →</span>
             </div>
           </div>
-        </div>
-
-        <div class="section-lbl">Balance Recoveries</div>
-        <div class="card">
-          <div class="tile-hdr"><div class="tile-title">Recovery Summary <span style="font-size:11px;font-weight:400;color:var(--text-2)">· YTD</span></div></div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">
-            <div style="background:var(--green-bg);border:1px solid var(--green-mid);border-radius:10px;padding:12px;text-align:center"><div style="font-size:18px;font-weight:700;color:#147638">$292,560</div><div style="font-size:10px;color:#147638;margin-top:2px">Total Recovered</div></div>
-            <div style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:12px;text-align:center"><div style="font-size:18px;font-weight:700">$48,320</div><div style="font-size:10px;color:var(--text-2);margin-top:2px">Pending Recovery</div></div>
-          </div>
-          <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;padding:5px 4px;border-bottom:1px solid var(--border);font-size:10px;font-weight:600;color:var(--text-2);text-transform:uppercase;letter-spacing:.04em"><span>Port Call</span><span>Agent</span><span style="text-align:right">Amount</span><span style="text-align:right">Status</span></div>
-          <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;padding:8px 4px;border-bottom:1px solid var(--border);font-size:12px;align-items:center"><span style="font-weight:600">TST2600045</span><span style="color:var(--text-2)">ABC Shipping</span><span style="text-align:right;font-weight:600">$84,320</span><span style="text-align:right"><span style="background:var(--green-mid);color:#147638;font-size:10px;font-weight:700;padding:2px 7px;border-radius:999px">Received</span></span></div>
-          <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;padding:8px 4px;border-bottom:1px solid var(--border);font-size:12px;align-items:center"><span style="font-weight:600">TST2600038</span><span style="color:var(--text-2)">Keppel Smit</span><span style="text-align:right;font-weight:600">$52,450</span><span style="text-align:right"><span style="background:var(--green-mid);color:#147638;font-size:10px;font-weight:700;padding:2px 7px;border-radius:999px">Received</span></span></div>
-          <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;padding:8px 4px;font-size:12px;align-items:center"><span style="font-weight:600">TST2600051</span><span style="color:var(--text-2)">Test Vendor-A</span><span style="text-align:right;font-weight:600">$48,320</span><span style="text-align:right"><span style="background:var(--amber-mid);color:#844D0F;font-size:10px;font-weight:700;padding:2px 7px;border-radius:999px">Pending</span></span></div>
         </div>
 
         <!-- Analytics Modules -->
