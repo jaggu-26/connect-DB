@@ -118,7 +118,7 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
 .dapipe-stages::before{content:'';position:absolute;top:22px;left:22px;right:22px;height:1px;background:var(--border);z-index:0}
 .dapipe-stage{flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;position:relative;z-index:1}
 .dapipe-circle{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;background:var(--card);border:2px solid var(--border);color:var(--text-3)}
-.dapipe-stage-label{font-size:12px;font-weight:700;color:var(--text);margin-top:10px;line-height:1.3}
+.dapipe-stage-label{font-size:12px;font-weight:700;color:var(--text);margin-top:10px;line-height:1.3;white-space:nowrap}
 .dapipe-stage-count{font-size:12.5px;font-weight:700;color:var(--text);margin-top:4px}
 .dapipe-stage-amt{font-size:11px;color:var(--text-3);margin-top:2px}
 .dapipe-alert{margin-top:20px;padding-top:14px;border-top:1px solid var(--border);font-size:12.5px;color:var(--text-2)}
@@ -956,37 +956,37 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
           <div class="dapipe-stages">
             <div class="dapipe-stage">
               <div class="dapipe-circle">8</div>
-              <div class="dapipe-stage-label">Pending<br>Appointment</div>
+              <div class="dapipe-stage-label">Pending Appointment</div>
               <div class="dapipe-stage-count">8 vessels</div>
               <div class="dapipe-stage-amt">—</div>
             </div>
             <div class="dapipe-stage">
               <div class="dapipe-circle" style="background:var(--brand);border-color:var(--brand);color:#fff">24</div>
-              <div class="dapipe-stage-label">PDA<br>Submitted</div>
+              <div class="dapipe-stage-label">PDA Submitted</div>
               <div class="dapipe-stage-count">24 DAs</div>
               <div class="dapipe-stage-amt">$342K</div>
             </div>
             <div class="dapipe-stage">
               <div class="dapipe-circle" style="border-color:var(--danger);color:var(--danger)">15</div>
-              <div class="dapipe-stage-label">Awaiting<br>Approval</div>
+              <div class="dapipe-stage-label">Awaiting Approval</div>
               <div class="dapipe-stage-count">15 DAs</div>
               <div class="dapipe-stage-amt">$172K</div>
             </div>
             <div class="dapipe-stage">
               <div class="dapipe-circle" style="border-color:var(--orange);color:var(--orange)">18</div>
-              <div class="dapipe-stage-label">Under<br>Clarification</div>
+              <div class="dapipe-stage-label">Under Clarification</div>
               <div class="dapipe-stage-count">18 DAs</div>
               <div class="dapipe-stage-amt">$218K</div>
             </div>
             <div class="dapipe-stage">
               <div class="dapipe-circle" style="border-color:var(--danger);color:var(--danger)">5</div>
-              <div class="dapipe-stage-label">Overdue<br>FDA</div>
+              <div class="dapipe-stage-label">Overdue FDA</div>
               <div class="dapipe-stage-count">5 DAs</div>
               <div class="dapipe-stage-amt">$151K</div>
             </div>
             <div class="dapipe-stage">
               <div class="dapipe-circle" style="border-color:var(--success);color:#147638">27</div>
-              <div class="dapipe-stage-label">Approved<br>MTD</div>
+              <div class="dapipe-stage-label">Approved MTD</div>
               <div class="dapipe-stage-count">27 DAs</div>
               <div class="dapipe-stage-amt">$341K</div>
             </div>
