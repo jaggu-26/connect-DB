@@ -122,6 +122,44 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
 .dapipe-stage-count{font-size:12.5px;font-weight:700;color:var(--text);margin-top:4px}
 .dapipe-stage-amt{font-size:11px;color:var(--text-3);margin-top:2px}
 .dapipe-alert{margin-top:20px;padding-top:14px;border-top:1px solid var(--border);font-size:12.5px;color:var(--text-2)}
+/* Predictive Insights */
+.pi-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.pi-hdr-left{display:flex;align-items:center;gap:10px}
+.pi-hdr-bar{width:3px;height:16px;background:#6355E0;border-radius:2px}
+.pi-hdr-title{font-size:13px;font-weight:800;color:var(--nav);text-transform:uppercase;letter-spacing:.04em}
+.pi-hdr-sub{font-size:12px;color:var(--text-3);font-weight:400;text-transform:none;letter-spacing:0}
+.pi-ai-pill{font-size:11px;font-weight:700;color:#6355E0;background:#EEF0FF;padding:5px 12px;border-radius:999px;white-space:nowrap;display:inline-flex;align-items:center;gap:5px}
+.pi-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.pi-card{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;display:flex;flex-direction:column}
+.pi-card-hdr{display:flex;align-items:center;gap:12px;padding:16px 18px}
+.pi-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.pi-icon svg{width:19px;height:19px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.pi-card-title{font-size:14px;font-weight:700;color:var(--nav)}
+.pi-card-sub{font-size:11.5px;color:var(--text-2);margin-top:2px}
+.pi-card-pill{font-size:11px;font-weight:700;padding:5px 11px;border-radius:999px;white-space:nowrap;flex-shrink:0}
+.pi-caption{display:flex;align-items:center;gap:6px;padding:9px 18px;background:var(--bg);font-size:11.5px;color:var(--text-3)}
+.pi-caption svg{width:12px;height:12px;stroke:var(--text-3);fill:none;stroke-width:2;flex-shrink:0}
+.pi-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 18px;border-bottom:1px solid var(--border)}
+.pi-row.watch{background:#FEFBEA}
+.pi-row-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.pi-row-id{font-size:13px;font-weight:700;color:var(--text)}
+.pi-row-sub{font-size:11.5px;color:var(--text-2);margin-top:2px}
+.pi-row-status{font-size:12px;font-weight:700;text-align:right;white-space:nowrap}
+.pi-row-days{font-size:10.5px;color:var(--text-3);margin-top:2px}
+.pi-row-bar{width:70px;height:4px;border-radius:99px;margin-top:6px;overflow:hidden;background:var(--border)}
+.pi-row-bar-fill{height:100%;border-radius:99px}
+.pi-footer{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 18px;font-size:11.5px;color:var(--text-3)}
+.pi-footer a, .pi-footer-link{font-size:12px;font-weight:700;color:var(--brand);cursor:pointer;white-space:nowrap}
+.pi-bars{display:flex;align-items:flex-end;justify-content:space-between;gap:8px;padding:18px 18px 6px;height:110px}
+.pi-bar-col{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;flex:1;height:100%;gap:6px}
+.pi-bar{width:100%;max-width:26px;border-radius:4px 4px 0 0;background:var(--border)}
+.pi-bar.peak{background:linear-gradient(180deg,#3B7CFF 0%,var(--brand) 100%)}
+.pi-bar-day{font-size:10.5px;color:var(--text-3);margin-top:6px}
+.pi-bar-day.peak{color:var(--brand);font-weight:700}
+.pi-peak-lbl{font-size:10px;font-weight:700;color:var(--brand);margin-bottom:2px}
+.pi-drivers-hdr{font-size:10px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.05em;padding:10px 18px 4px}
+.pi-driver-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:8px 18px;font-size:12px;color:var(--text-2)}
+.pi-driver-amt{font-weight:700;color:var(--brand);white-space:nowrap}
 .section-lbl::after{content:'';flex:1;height:1px;background:var(--border)}
 .info-icon{display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;border-radius:50%;background:var(--blue-light);color:var(--brand);font-size:9px;font-weight:700;cursor:pointer;position:relative;flex-shrink:0;line-height:1;transition:transform .2s var(--ease)}
 .info-icon:hover{transform:scale(1.15)}
@@ -1110,6 +1148,123 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
         </div>
         <div class="geoone-actions">
           <button class="geoone-btn-primary" onclick="fireToast('Opening GeoOne preview…',event)"><svg viewBox="0 0 24 24" style="width:13px;height:13px;stroke:#fff;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>Preview GeoOne</button>
+        </div>
+      </div>
+
+      <div class="reveal">
+        <div class="pi-hdr">
+          <div class="pi-hdr-left">
+            <span class="pi-hdr-bar"></span>
+            <span class="pi-hdr-title">Predictive Insights <span class="pi-hdr-sub">— Predictions and patterns detected from your live data</span></span>
+          </div>
+          <span class="pi-ai-pill">✦ AI · Updated 07:00 UTC</span>
+        </div>
+        <div class="pi-grid">
+          <div class="pi-card">
+            <div class="pi-card-hdr">
+              <div class="pi-icon" style="background:linear-gradient(135deg,#7C6FF5 0%,#5B4FE0 100%)">
+                <svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+              </div>
+              <div style="flex:1;min-width:0">
+                <div class="pi-card-title">Overdue Risk Prediction</div>
+                <div class="pi-card-sub">DAs likely to go overdue in the next 7 days</div>
+              </div>
+              <span class="pi-card-pill" style="color:#6355E0;background:#EEF0FF">3 at risk</span>
+            </div>
+            <div class="pi-caption">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              Based on agent's historical submission speed vs days remaining in timebar
+            </div>
+            <div class="pi-row">
+              <div style="display:flex;align-items:flex-start;gap:8px;min-width:0">
+                <span class="pi-row-dot" style="background:var(--danger);margin-top:6px"></span>
+                <div style="min-width:0">
+                  <div class="pi-row-id">TST2600082 · Omicron West</div>
+                  <div class="pi-row-sub">ABC Test Shipping · Singapore · $25,624</div>
+                </div>
+              </div>
+              <div>
+                <div class="pi-row-status" style="color:var(--danger)">Overdue in ~2d</div>
+                <div class="pi-row-days">Timebar: Day 28 of 30</div>
+                <div class="pi-row-bar"><div class="pi-row-bar-fill" style="width:93%;background:var(--danger)"></div></div>
+              </div>
+            </div>
+            <div class="pi-row">
+              <div style="display:flex;align-items:flex-start;gap:8px;min-width:0">
+                <span class="pi-row-dot" style="background:var(--danger);margin-top:6px"></span>
+                <div style="min-width:0">
+                  <div class="pi-row-id">TST2600091 · Pacific Wind</div>
+                  <div class="pi-row-sub">Eurogate Agency · Hamburg · $33,200</div>
+                </div>
+              </div>
+              <div>
+                <div class="pi-row-status" style="color:var(--danger)">Overdue in ~3d</div>
+                <div class="pi-row-days">Timebar: Day 27 of 30</div>
+                <div class="pi-row-bar"><div class="pi-row-bar-fill" style="width:90%;background:var(--danger)"></div></div>
+              </div>
+            </div>
+            <div class="pi-row watch">
+              <div style="display:flex;align-items:flex-start;gap:8px;min-width:0">
+                <span class="pi-row-dot" style="background:var(--warning);margin-top:6px"></span>
+                <div style="min-width:0">
+                  <div class="pi-row-id">TST2600119 · Nordic Star</div>
+                  <div class="pi-row-sub">Boskalis Terminal · Rotterdam · $24,500</div>
+                </div>
+              </div>
+              <div>
+                <div class="pi-row-status" style="color:#92400E">Watch · 5d left</div>
+                <div class="pi-row-days">Timebar: Day 25 of 30</div>
+                <div class="pi-row-bar"><div class="pi-row-bar-fill" style="width:83%;background:var(--warning)"></div></div>
+              </div>
+            </div>
+            <div class="pi-footer">
+              <span>Geonix will auto-chase at Day 21 · 2 already chased</span>
+              <span class="pi-footer-link" onclick="fireToast('Chasing all 3 at-risk DAs',event)">Chase all 3 →</span>
+            </div>
+          </div>
+
+          <div class="pi-card">
+            <div class="pi-card-hdr">
+              <div class="pi-icon" style="background:linear-gradient(135deg,#3B9EFF 0%,#1852FE 100%)">
+                <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              </div>
+              <div style="flex:1;min-width:0">
+                <div class="pi-card-title">Approval Workload Forecast</div>
+                <div class="pi-card-sub">DAs expected to land for approval — next 7 days</div>
+              </div>
+              <span class="pi-card-pill" style="color:var(--teal-dark);background:var(--teal-bg)">Peak: Thu–Fri</span>
+            </div>
+            <div class="pi-caption">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              Based on confirmed vessel ETAs, agent avg submission times, and DA type distribution
+            </div>
+            <div class="pi-bars">
+              <div class="pi-bar-col"><div class="pi-bar" style="height:33%"></div></div>
+              <div class="pi-bar-col"><div class="pi-bar" style="height:50%"></div></div>
+              <div class="pi-bar-col"><div class="pi-bar" style="height:58%"></div></div>
+              <div class="pi-bar-col"><span class="pi-peak-lbl">Peak</span><div class="pi-bar peak" style="height:100%"></div></div>
+              <div class="pi-bar-col"><div class="pi-bar peak" style="height:92%"></div></div>
+              <div class="pi-bar-col"><div class="pi-bar" style="height:42%"></div></div>
+              <div class="pi-bar-col"><div class="pi-bar" style="height:17%"></div></div>
+            </div>
+            <div style="display:flex;justify-content:space-between;padding:0 18px 14px;border-bottom:1px solid var(--border)">
+              <span class="pi-bar-day">Mon<br>~4</span>
+              <span class="pi-bar-day">Tue<br>~6</span>
+              <span class="pi-bar-day">Wed<br>~7</span>
+              <span class="pi-bar-day peak">Thu<br>~12</span>
+              <span class="pi-bar-day peak">Fri<br>~11</span>
+              <span class="pi-bar-day">Sat<br>~5</span>
+              <span class="pi-bar-day">Sun<br>~2</span>
+            </div>
+            <div class="pi-drivers-hdr">What's driving Thursday's peak</div>
+            <div class="pi-driver-row"><span>3 vessels arriving Wed–Thu — <strong>PDAs expected same day</strong></span><span class="pi-driver-amt">~$86K</span></div>
+            <div class="pi-driver-row"><span>2 FDAs due from Keppel Smit — <strong>historically submit on Day 14</strong></span><span class="pi-driver-amt">~$44K</span></div>
+            <div class="pi-driver-row" style="border-bottom:1px solid var(--border);padding-bottom:12px"><span>1 SDA expected from Straits Agency — <strong>post-discharge costs settling</strong></span><span class="pi-driver-amt">~$8K</span></div>
+            <div class="pi-footer">
+              <span>~47 DAs forecast this week · $138K estimated value</span>
+              <span class="pi-footer-link" onclick="fireToast('Opening full forecast',event)">Full forecast →</span>
+            </div>
+          </div>
         </div>
       </div>
 
