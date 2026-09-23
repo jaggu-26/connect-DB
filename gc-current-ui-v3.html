@@ -815,6 +815,9 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
         <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
         New Port Call
       </button>
+      <button class="version-wheel-btn" onclick="event.stopPropagation();openFeedbackPanel()" aria-label="Leave feedback" title="Leave feedback on Version 3">
+        <svg viewBox="0 0 24 24" style="width:20px;height:20px;stroke:var(--text-2);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/><line x1="8" y1="11" x2="16" y2="11"/><line x1="8" y1="15" x2="13" y2="15"/></svg>
+      </button>
       <div class="version-switch" style="position:relative">
         <button class="version-wheel-btn" onclick="event.stopPropagation();toggleVersionMenu()" aria-label="Switch version" title="Switch version">
           <span class="version-wheel"></span>
@@ -1394,7 +1397,7 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
             <div class="sit-lbl">DAs awaiting financial sign-off.</div>
             <div class="sit-sub">15 items · oldest 6 days · $172K</div>
             <div class="sit-actions">
-              <button class="sit-btn sit-btn-orange" onclick="fireToast('Opening approval queue',event)">Review &amp; approve</button>
+              <button class="sit-btn sit-btn-orange" onclick="fireToast('Opening approval queue',event)"><svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round"><polyline points="20 6 9 17 4 12"/></svg>Review &amp; approve</button>
             </div>
           </div>
 
@@ -1405,7 +1408,7 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
             <div class="sit-lbl">Active disbursements in progress.</div>
             <div class="sit-sub">34 port calls · 8 ports · largest $42K</div>
             <div class="sit-actions">
-              <button class="sit-btn sit-btn-outline" onclick="fireToast('Opening port calls',event)">View all</button>
+              <button class="sit-btn sit-btn-outline" onclick="fireToast('Opening port calls',event)">View breakdown</button>
             </div>
           </div>
 
@@ -1416,7 +1419,7 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
             <div class="sit-lbl">Goes negative after all commitments.</div>
             <div class="sit-sub">$309K shortfall · act before month-end</div>
             <div class="sit-actions">
-              <button class="sit-btn" style="background:var(--danger);color:#fff" onclick="fireToast('Opening cash forecast',event)">Review forecast</button>
+              <button class="sit-btn" style="background:var(--danger);color:#fff" onclick="fireToast('Opening cash forecast',event)"><svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:#fff;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round"><polyline points="20 6 9 17 4 12"/></svg>Review forecast</button>
             </div>
           </div>
 
@@ -1983,6 +1986,20 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
       </thead>
       <tbody id="agentListTableBody"></tbody>
     </table>
+  </div>
+</div>
+
+<!-- Feedback panel — no dark overlay, page stays interactive behind it -->
+<div class="side-panel" id="feedbackPanel">
+  <div class="side-panel-hdr">
+    <div class="side-panel-title">Feedback — Version 3</div>
+    <button class="side-panel-close" onclick="closeFeedbackPanel()">×</button>
+  </div>
+  <div class="side-panel-body" style="display:flex;flex-direction:column;gap:14px">
+    <div style="font-size:12.5px;color:var(--text-2);line-height:1.5">Reviewing this version? Leave a note for the product team below. Notes are visible only in this session.</div>
+    <textarea id="feedbackText" placeholder="Type your feedback…" style="width:100%;min-height:100px;border:1px solid var(--border);border-radius:8px;padding:10px 12px;font-family:inherit;font-size:13px;color:var(--text);resize:vertical;box-sizing:border-box"></textarea>
+    <button class="btn-primary" style="align-self:flex-start;box-shadow:none" onclick="submitFeedback()">Submit feedback</button>
+    <div id="feedbackList" style="display:flex;flex-direction:column;gap:10px;border-top:1px solid var(--border);padding-top:14px"></div>
   </div>
 </div>
 
@@ -2584,6 +2601,26 @@ function openAgentListPanel(){
 function closeAgentListPanel(){
   document.getElementById('agentListOverlay').classList.remove('open');
   document.getElementById('agentListPanel').classList.remove('open');
+}
+function openFeedbackPanel(){
+  document.getElementById('feedbackPanel').classList.add('open');
+}
+function closeFeedbackPanel(){
+  document.getElementById('feedbackPanel').classList.remove('open');
+}
+function submitFeedback(){
+  const ta = document.getElementById('feedbackText');
+  const text = ta.value.trim();
+  if(!text){ fireToast('Write something before submitting',event); return; }
+  const list = document.getElementById('feedbackList');
+  const now = new Date();
+  const stamp = now.toLocaleString('en-GB', {day:'2-digit', month:'short', hour:'2-digit', minute:'2-digit'});
+  const item = document.createElement('div');
+  item.style.cssText = 'background:var(--bg);border-radius:8px;padding:10px 12px;font-size:12.5px;color:var(--text)';
+  item.innerHTML = `<div style="color:var(--text-3);font-size:11px;margin-bottom:4px">${stamp}</div>${text.replace(/</g,'&lt;')}`;
+  list.prepend(item);
+  ta.value = '';
+  fireToast('Feedback submitted',event);
 }
 document.addEventListener('click', function(e){
   const menu = document.getElementById('typeFilterMenu');
