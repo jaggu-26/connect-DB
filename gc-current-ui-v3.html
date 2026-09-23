@@ -814,19 +814,24 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
         <div class="card reveal" style="grid-column:span 2;align-self:start">
           <div class="tile-hdr">
             <div class="tile-title">In Process at GeoConnect <span style="font-size:11px;font-weight:400;color:var(--text-2)">· June 2026</span></div>
+            <span style="font-size:12px;font-weight:600;color:var(--text-2);cursor:pointer" onclick="goDetail('view-pending','Query Listing',event)">More details</span>
           </div>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:start">
             <div class="sit-card" style="box-shadow:none;cursor:pointer;background:var(--bg);border-color:transparent" onclick="goDetail('view-pending','Under Process',event)">
               <span class="sit-badge sit-warn"><span class="sit-dot"></span>Under Process</span>
               <div class="sit-val">2</div>
               <div class="sit-lbl">Operator &amp; agent queries being worked on.</div>
-              <div class="sit-sub">TST2600082 · TST2600114</div>
+              <div style="display:flex;flex-direction:column;gap:2px">
+                <span style="font-size:10.5px;font-weight:700;color:var(--text-2)">1 FDA / DDA</span>
+              </div>
             </div>
             <div class="sit-card" style="box-shadow:none;cursor:pointer;background:var(--bg);border-color:transparent" onclick="goDetail('view-pending','Under Clarification',event)">
               <span class="sit-badge sit-warn"><span class="sit-dot"></span>Under Clarification</span>
               <div class="sit-val">1</div>
               <div class="sit-lbl">Awaiting agent response.</div>
-              <div class="sit-sub">TST2600091 · Pacific Wind</div>
+              <div style="display:flex;flex-direction:column;gap:2px">
+                <span style="font-size:10.5px;font-weight:700;color:var(--text-2)">1 VI</span>
+              </div>
             </div>
           </div>
           <div style="margin-top:14px;display:flex;align-items:center;justify-content:space-between">
