@@ -2023,7 +2023,8 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
     </div>
   </div>
   <div class="side-panel-body" id="feedbackEditorView" style="display:none;flex-direction:column;gap:12px;padding:16px 22px">
-    <input id="feedbackName" placeholder="Your name *" required oninput="onFeedbackNoteInput();this.style.borderColor='var(--border)'" style="width:100%;border:1px solid var(--border);border-radius:10px;padding:11px 14px;font-family:inherit;font-size:13px;font-weight:600;color:var(--text);box-sizing:border-box;background:var(--card);flex-shrink:0">
+    <input id="feedbackName" placeholder="Your name *" required oninput="onFeedbackNoteInput();this.style.borderColor='var(--border)';document.getElementById('feedbackNameError').style.display='none'" style="width:100%;border:1px solid var(--border);border-radius:10px;padding:11px 14px;font-family:inherit;font-size:13px;font-weight:600;color:var(--text);box-sizing:border-box;background:var(--card);flex-shrink:0">
+    <div id="feedbackNameError" style="display:none;font-size:11.5px;color:var(--danger);margin-top:-8px">Name is required</div>
     <textarea id="feedbackText" placeholder="Type your feedback…" oninput="onFeedbackNoteInput()" style="width:100%;flex:1;min-height:0;border:1px solid var(--border);border-radius:10px;padding:11px 14px;font-family:inherit;font-size:13px;color:var(--text);resize:none;box-sizing:border-box;background:var(--card)"></textarea>
     <div style="flex-shrink:0">
       <button class="btn-primary" style="box-shadow:none" onclick="submitFeedbackNote()">Submit feedback</button>
@@ -2739,7 +2740,10 @@ function openFeedbackNote(id){
   document.getElementById('feedbackEditorHdr').style.display = 'flex';
   document.getElementById('feedbackListView').style.display = 'none';
   document.getElementById('feedbackEditorView').style.display = 'flex';
-  document.getElementById('feedbackName').value = note.name || '';
+  const nameEl = document.getElementById('feedbackName');
+  nameEl.value = note.name || '';
+  nameEl.style.borderColor = 'var(--border)';
+  document.getElementById('feedbackNameError').style.display = 'none';
   const ta = document.getElementById('feedbackText');
   ta.value = note.text;
   setTimeout(()=>ta.focus(), 50);
@@ -2771,11 +2775,12 @@ function submitFeedbackNote(){
   const text = document.getElementById('feedbackText').value.trim();
   if(!name){
     nameEl.style.borderColor = 'var(--danger)';
+    document.getElementById('feedbackNameError').style.display = 'block';
     nameEl.focus();
-    fireToast('Name is required before submitting',event);
     return;
   }
   nameEl.style.borderColor = 'var(--border)';
+  document.getElementById('feedbackNameError').style.display = 'none';
   if(!text){ fireToast('Write something before submitting',event); return; }
   const items = loadSubmittedFeedback();
   items.unshift({ id: 's'+Date.now(), name, text, submitted: Date.now() });
