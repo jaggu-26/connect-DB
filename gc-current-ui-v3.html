@@ -97,15 +97,15 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
 .reveal{opacity:0;transform:translateY(16px);transition:opacity .5s var(--ease-out),transform .5s var(--ease-out)}
 .reveal.in{opacity:1;transform:translateY(0)}
 .section-lbl{font-size:10.5px;font-weight:700;color:var(--text-2);text-transform:uppercase;letter-spacing:.1em;padding:2px 0;display:flex;align-items:center;gap:10px}
-.geoone-banner{display:flex;align-items:center;gap:18px;padding:18px 22px;border-radius:16px;background:linear-gradient(120deg,var(--teal-bg) 0%,#F3FFFD 60%,#FBFFFE 100%);border:1px solid rgba(0,218,193,.3)}
-.geoone-icon{width:48px;height:48px;border-radius:12px;background:var(--teal-dark);display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.geoone-icon svg{width:24px;height:24px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.geoone-banner{display:flex;align-items:center;gap:18px;padding:18px 22px;border-radius:16px;background:linear-gradient(120deg,var(--blue-light) 0%,#F3F7FF 60%,#FBFCFF 100%);border:1px solid rgba(24,82,254,.25)}
+.geoone-icon{width:48px;height:48px;border-radius:12px;background:#fff;border:1px solid rgba(24,82,254,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.geoone-icon svg{width:22px;height:auto}
 .geoone-title{font-size:14.5px;font-weight:700;color:var(--nav)}
 .geoone-desc{font-size:12.5px;color:var(--text-2);margin-top:3px;line-height:1.5}
 .geoone-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
-.geoone-tag{font-size:11px;font-weight:600;color:var(--teal-dark);background:rgba(0,218,193,.14);padding:4px 10px;border-radius:999px;white-space:nowrap}
+.geoone-tag{font-size:11px;font-weight:600;color:var(--brand);background:var(--blue-light);padding:4px 10px;border-radius:999px;white-space:nowrap}
 .geoone-actions{display:flex;gap:10px;flex-shrink:0}
-.geoone-btn-primary{height:34px;padding:0 14px;border-radius:4px;background:var(--teal-dark);color:#fff;border:none;font-size:12.5px;font-weight:700;font-family:inherit;cursor:pointer;display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.geoone-btn-primary{height:34px;padding:0 14px;border-radius:4px;background:linear-gradient(135deg,var(--brand) 0%,#0B3FE0 100%);color:#fff;border:none;font-size:12.5px;font-weight:700;font-family:inherit;cursor:pointer;display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
 .geoone-btn-secondary{height:34px;padding:0 14px;border-radius:4px;background:#fff;color:var(--nav);border:1px solid var(--border);font-size:12.5px;font-weight:700;font-family:inherit;cursor:pointer;white-space:nowrap}
 .section-lbl::after{content:'';flex:1;height:1px;background:var(--border)}
 .info-icon{display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;border-radius:50%;background:var(--blue-light);color:var(--brand);font-size:9px;font-weight:700;cursor:pointer;position:relative;flex-shrink:0;line-height:1;transition:transform .2s var(--ease)}
@@ -1028,7 +1028,9 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
       <!-- TRENDS & ACTIVITY -->
       <div class="geoone-banner reveal">
         <div class="geoone-icon">
-          <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          <svg width="41" height="51" viewBox="0 0 41 51" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M18.0532 42.6533C11.0513 42.601 9.31567 42.6025 2.1636 42.6025C2.57874 47.1903 4.78176 50.6144 8.86637 50.7427H29.4431C35.6138 50.5486 38.292 44.524 38.7542 39.3223C34.535 39.3223 33.6763 39.3306 29.8779 39.3306C28.4198 39.3306 27.7298 42.617 26.1955 42.617C23.9449 42.6165 20.4871 42.6357 18.0532 42.6533ZM40.79 0.115625C31.8309 0.115625 24.4775 -0.18874 17.1598 0.190164C7.2612 0.701063 0.252001 8.32676 0.00612767 18.1984C-0.226805 27.5302 6.20576 35.4603 15.0991 36.8077C26.2504 38.4962 35.6272 33.4524 37.9219 23.808C39.0751 18.9656 38.0435 13.8669 37.2438 9.8548C38.4467 5.94981 39.512 4.01181 40.79 0.115625ZM19.4731 28.4708C13.9598 28.6022 9.67128 24.5 9.63867 18.7259C9.60502 12.9331 13.8967 8.60731 19.2546 8.68858C24.5293 8.7683 28.6429 12.8632 28.6874 18.5142C28.7314 24.2231 24.7322 28.3445 19.4731 28.4708Z" style="fill:var(--brand)"/>
+          </svg>
         </div>
         <div style="flex:1;min-width:0">
           <div class="geoone-title">Now available: GeoOne — Maritime Operator Suite</div>
