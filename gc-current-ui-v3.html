@@ -861,8 +861,8 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
           <div class="sit-actions" style="align-items:center">
             <button class="sit-btn sit-btn-onred" style="color:var(--brand)" onclick="event.stopPropagation();goDetail('view-pending','Pending Approval',event)"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Review &amp; Approve</button>
             <div style="display:flex;flex-direction:column;gap:2px;padding-left:6px">
-              <span style="font-size:10.5px;font-weight:700;color:rgba(255,255,255,.75)">6 PDA / APDA / DDA</span>
-              <span style="font-size:10.5px;font-weight:700;color:rgba(255,255,255,.75)">4 FDA / SDA / VI</span>
+              <span style="font-size:12px;font-weight:700;color:rgba(255,255,255,.75)">5 PDA / 3 APDA / 2 DDA</span>
+              <span style="font-size:12px;font-weight:700;color:rgba(255,255,255,.75)">2 FDA / 2 SDA / 1 VI</span>
             </div>
           </div>
         </div>
@@ -1989,17 +1989,29 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
   </div>
 </div>
 
-<!-- Feedback panel — no dark overlay, page stays interactive behind it -->
+<!-- Feedback panel — no dark overlay, page stays interactive behind it. Apple Notes-style: list + editor, auto-save, persisted locally -->
 <div class="side-panel" id="feedbackPanel">
-  <div class="side-panel-hdr">
+  <div class="side-panel-hdr" id="feedbackListHdr">
     <div class="side-panel-title">Feedback — Version 3</div>
-    <button class="side-panel-close" onclick="closeFeedbackPanel()">×</button>
+    <div style="display:flex;align-items:center;gap:6px">
+      <button onclick="createFeedbackNote()" title="New note" style="width:26px;height:26px;border-radius:7px;border:1px solid var(--border);background:var(--bg);color:var(--brand);font-size:16px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center">+</button>
+      <button class="side-panel-close" onclick="closeFeedbackPanel()">×</button>
+    </div>
   </div>
-  <div class="side-panel-body" style="display:flex;flex-direction:column;gap:14px">
-    <div style="font-size:12.5px;color:var(--text-2);line-height:1.5">Reviewing this version? Leave a note for the product team below. Notes are visible only in this session.</div>
-    <textarea id="feedbackText" placeholder="Type your feedback…" style="width:100%;flex:1;min-height:200px;border:1px solid var(--border);border-radius:8px;padding:10px 12px;font-family:inherit;font-size:13px;color:var(--text);resize:vertical;box-sizing:border-box"></textarea>
-    <button class="btn-primary" style="align-self:flex-start;box-shadow:none" onclick="submitFeedback()">Submit feedback</button>
-    <div id="feedbackList" style="display:flex;flex-direction:column;gap:10px;border-top:1px solid var(--border);padding-top:14px"></div>
+  <div class="side-panel-hdr" id="feedbackEditorHdr" style="display:none">
+    <button onclick="showFeedbackList()" style="border:none;background:none;color:var(--brand);font-size:13px;font-weight:600;cursor:pointer;padding:0;display:flex;align-items:center;gap:4px">‹ Notes</button>
+    <div style="display:flex;align-items:center;gap:6px">
+      <button onclick="deleteFeedbackNote()" title="Delete note" style="width:26px;height:26px;border-radius:7px;border:1px solid var(--border);background:var(--bg);color:var(--danger);font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center">🗑</button>
+      <button class="side-panel-close" onclick="closeFeedbackPanel()">×</button>
+    </div>
+  </div>
+  <div class="side-panel-body" id="feedbackListView" style="display:flex;flex-direction:column;gap:0;padding:0">
+    <div style="font-size:12px;color:var(--text-3);line-height:1.5;padding:12px 16px 4px">Notes are saved on this device, like Apple Notes — tap + to start one.</div>
+    <div id="feedbackList" style="display:flex;flex-direction:column"></div>
+    <div id="feedbackEmpty" style="display:none;padding:30px 16px;text-align:center;color:var(--text-3);font-size:12.5px">No notes yet. Tap + to add one.</div>
+  </div>
+  <div class="side-panel-body" id="feedbackEditorView" style="display:none;flex-direction:column;gap:0;padding:0">
+    <textarea id="feedbackText" placeholder="Type your feedback…" oninput="onFeedbackNoteInput()" style="width:100%;flex:1;min-height:100%;border:none;padding:14px 16px;font-family:inherit;font-size:13px;color:var(--text);resize:none;box-sizing:border-box;background:transparent"></textarea>
   </div>
 </div>
 
@@ -2602,25 +2614,91 @@ function closeAgentListPanel(){
   document.getElementById('agentListOverlay').classList.remove('open');
   document.getElementById('agentListPanel').classList.remove('open');
 }
+const FEEDBACK_KEY = 'gc_feedback_notes_v3';
+let feedbackActiveId = null;
+let feedbackSaveTimer = null;
+function loadFeedbackNotes(){
+  try{ return JSON.parse(localStorage.getItem(FEEDBACK_KEY) || '[]'); }catch(e){ return []; }
+}
+function saveFeedbackNotes(notes){
+  try{ localStorage.setItem(FEEDBACK_KEY, JSON.stringify(notes)); }catch(e){}
+}
+function feedbackStamp(ts){
+  return new Date(ts).toLocaleString('en-GB', {day:'2-digit', month:'short', hour:'2-digit', minute:'2-digit'});
+}
 function openFeedbackPanel(){
   document.getElementById('feedbackPanel').classList.add('open');
+  showFeedbackList();
 }
 function closeFeedbackPanel(){
   document.getElementById('feedbackPanel').classList.remove('open');
 }
-function submitFeedback(){
-  const ta = document.getElementById('feedbackText');
-  const text = ta.value.trim();
-  if(!text){ fireToast('Write something before submitting',event); return; }
+function renderFeedbackList(){
+  const notes = loadFeedbackNotes().sort((a,b)=>b.updated-a.updated);
   const list = document.getElementById('feedbackList');
-  const now = new Date();
-  const stamp = now.toLocaleString('en-GB', {day:'2-digit', month:'short', hour:'2-digit', minute:'2-digit'});
-  const item = document.createElement('div');
-  item.style.cssText = 'background:var(--bg);border-radius:8px;padding:10px 12px;font-size:12.5px;color:var(--text)';
-  item.innerHTML = `<div style="color:var(--text-3);font-size:11px;margin-bottom:4px">${stamp}</div>${text.replace(/</g,'&lt;')}`;
-  list.prepend(item);
-  ta.value = '';
-  fireToast('Feedback submitted',event);
+  const empty = document.getElementById('feedbackEmpty');
+  list.innerHTML = '';
+  empty.style.display = notes.length ? 'none' : 'block';
+  notes.forEach(n=>{
+    const firstLine = (n.text.split('\n')[0] || 'New note').slice(0,60) || 'New note';
+    const preview = (n.text.split('\n').slice(1).join(' ').trim() || n.text.trim()).slice(0,80);
+    const row = document.createElement('div');
+    row.style.cssText = 'padding:11px 16px;border-bottom:1px solid var(--border);cursor:pointer;display:flex;flex-direction:column;gap:3px';
+    row.onmouseenter = ()=>{ row.style.background = 'var(--bg)'; };
+    row.onmouseleave = ()=>{ row.style.background = 'transparent'; };
+    row.onclick = ()=>openFeedbackNote(n.id);
+    row.innerHTML = `<div style="font-size:13px;font-weight:600;color:var(--text)">${(firstLine||'New note').replace(/</g,'&lt;')}</div>
+      <div style="font-size:11.5px;color:var(--text-3)">${feedbackStamp(n.updated)}${preview ? ' — '+preview.replace(/</g,'&lt;') : ''}</div>`;
+    list.appendChild(row);
+  });
+}
+function showFeedbackList(){
+  feedbackActiveId = null;
+  document.getElementById('feedbackListHdr').style.display = 'flex';
+  document.getElementById('feedbackEditorHdr').style.display = 'none';
+  document.getElementById('feedbackListView').style.display = 'flex';
+  document.getElementById('feedbackEditorView').style.display = 'none';
+  renderFeedbackList();
+}
+function createFeedbackNote(){
+  const notes = loadFeedbackNotes();
+  const note = { id: 'n'+Date.now(), text: '', updated: Date.now() };
+  notes.unshift(note);
+  saveFeedbackNotes(notes);
+  openFeedbackNote(note.id);
+}
+function openFeedbackNote(id){
+  const notes = loadFeedbackNotes();
+  const note = notes.find(n=>n.id===id);
+  if(!note) return;
+  feedbackActiveId = id;
+  document.getElementById('feedbackListHdr').style.display = 'none';
+  document.getElementById('feedbackEditorHdr').style.display = 'flex';
+  document.getElementById('feedbackListView').style.display = 'none';
+  document.getElementById('feedbackEditorView').style.display = 'flex';
+  const ta = document.getElementById('feedbackText');
+  ta.value = note.text;
+  setTimeout(()=>ta.focus(), 50);
+}
+function onFeedbackNoteInput(){
+  if(!feedbackActiveId) return;
+  clearTimeout(feedbackSaveTimer);
+  feedbackSaveTimer = setTimeout(()=>{
+    const notes = loadFeedbackNotes();
+    const note = notes.find(n=>n.id===feedbackActiveId);
+    if(!note) return;
+    note.text = document.getElementById('feedbackText').value;
+    note.updated = Date.now();
+    saveFeedbackNotes(notes);
+  }, 350);
+}
+function deleteFeedbackNote(){
+  if(!feedbackActiveId) return;
+  let notes = loadFeedbackNotes();
+  notes = notes.filter(n=>n.id!==feedbackActiveId);
+  saveFeedbackNotes(notes);
+  fireToast('Note deleted',event);
+  showFeedbackList();
 }
 document.addEventListener('click', function(e){
   const menu = document.getElementById('typeFilterMenu');
