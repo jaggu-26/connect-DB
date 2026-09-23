@@ -246,7 +246,7 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
 /* ═══ SIDE PANEL ═══ */
 .side-panel-overlay{position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:500;opacity:0;pointer-events:none;transition:opacity .25s}
 .side-panel-overlay.open{opacity:1;pointer-events:all}
-.side-panel{position:fixed;top:0;right:0;width:420px;height:100vh;background:var(--card);box-shadow:-4px 0 24px rgba(0,0,0,.12);z-index:501;transform:translateX(100%);transition:transform .3s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column}
+.side-panel{position:fixed;top:16px;right:16px;bottom:16px;width:420px;height:auto;border-radius:16px;overflow:hidden;background:var(--card);box-shadow:-4px 0 24px rgba(0,0,0,.12);z-index:501;transform:translateX(calc(100% + 16px));transition:transform .3s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column}
 .side-panel.open{transform:translateX(0)}
 .side-panel-hdr{display:flex;align-items:center;justify-content:space-between;padding:20px 24px;border-bottom:1px solid var(--border)}
 .side-panel-title{font-size:16px;font-weight:700;color:var(--nav)}
@@ -988,18 +988,18 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
             <div style="flex:85.2;background:#1852FE"></div><div style="flex:8.1;background:#4274FF"></div><div style="flex:4.1;background:#0A3BC4"></div><div style="flex:2.0;background:#6B9BFF"></div><div style="flex:0.6;background:#B8CFFE"></div>
           </div>
           <div style="display:flex;flex-direction:column;gap:14px;flex:1;justify-content:space-evenly" id="typeBreakdownList">
-            <div class="type-row" data-type="Contractual Discount" style="display:flex;align-items:center;justify-content:space-between;gap:8px;border-radius:6px;padding:2px 6px;margin:-2px -6px"><div style="display:flex;align-items:center;gap:8px"><span style="width:10px;height:10px;border-radius:3px;background:#1852FE;flex-shrink:0"></span><span style="font-size:12.5px;color:var(--text-2)">Contractual Discount</span></div><div style="display:flex;align-items:center;gap:10px"><span style="font-size:10px;color:var(--text-3);font-weight:600">85%</span><span style="font-size:13.5px;font-weight:700;color:var(--text)">$55.9K</span></div></div>
-            <div class="type-row" data-type="Hidden Cost" style="display:flex;align-items:center;justify-content:space-between;gap:8px;border-radius:6px;padding:2px 6px;margin:-2px -6px"><div style="display:flex;align-items:center;gap:8px"><span style="width:10px;height:10px;border-radius:3px;background:#4274FF;flex-shrink:0"></span><span style="font-size:12.5px;color:var(--text-2)">Hidden Cost</span></div><div style="display:flex;align-items:center;gap:10px"><span style="font-size:10px;color:var(--text-3);font-weight:600">8%</span><span style="font-size:13.5px;font-weight:700;color:var(--text)">$5.3K</span></div></div>
-            <div class="type-row" data-type="Agent Error" style="display:flex;align-items:center;justify-content:space-between;gap:8px;border-radius:6px;padding:2px 6px;margin:-2px -6px"><div style="display:flex;align-items:center;gap:8px"><span style="width:10px;height:10px;border-radius:3px;background:#0A3BC4;flex-shrink:0"></span><span style="font-size:12.5px;color:var(--text-2)">Agent Error</span></div><div style="display:flex;align-items:center;gap:10px"><span style="font-size:10px;color:var(--text-3);font-weight:600">4%</span><span style="font-size:13.5px;font-weight:700;color:var(--text)">$2.7K</span></div></div>
-            <div class="type-row" data-type="Escalated Cost" style="display:flex;align-items:center;justify-content:space-between;gap:8px;border-radius:6px;padding:2px 6px;margin:-2px -6px"><div style="display:flex;align-items:center;gap:8px"><span style="width:10px;height:10px;border-radius:3px;background:#6B9BFF;flex-shrink:0"></span><span style="font-size:12.5px;color:var(--text-2)">Escalated Cost</span></div><div style="display:flex;align-items:center;gap:10px"><span style="font-size:10px;color:var(--text-3);font-weight:600">2%</span><span style="font-size:13.5px;font-weight:700;color:var(--text)">$1.3K</span></div></div>
-            <div class="type-row" data-type="Negotiation" style="display:flex;align-items:center;justify-content:space-between;gap:8px;border-radius:6px;padding:2px 6px;margin:-2px -6px"><div style="display:flex;align-items:center;gap:8px"><span style="width:10px;height:10px;border-radius:3px;background:#B8CFFE;flex-shrink:0"></span><span style="font-size:12.5px;color:var(--text-2)">Negotiation</span></div><div style="display:flex;align-items:center;gap:10px"><span style="font-size:10px;color:var(--text-3);font-weight:600">1%</span><span style="font-size:13.5px;font-weight:700;color:var(--text)">$0.4K</span></div></div>
+            <div class="type-row" data-type="Contractual Discount" style="display:flex;align-items:center;justify-content:space-between;gap:8px;border-radius:6px;padding:2px 6px;margin:-2px -6px"><div style="display:flex;align-items:center;gap:8px"><span style="width:10px;height:10px;border-radius:3px;background:#1852FE;flex-shrink:0"></span><span style="font-size:12.5px;color:var(--text-2)">Contractual Discount</span></div><div style="display:flex;align-items:center;gap:10px"><span style="font-size:13.5px;font-weight:700;color:var(--text)">$55.9K</span></div></div>
+            <div class="type-row" data-type="Hidden Cost" style="display:flex;align-items:center;justify-content:space-between;gap:8px;border-radius:6px;padding:2px 6px;margin:-2px -6px"><div style="display:flex;align-items:center;gap:8px"><span style="width:10px;height:10px;border-radius:3px;background:#4274FF;flex-shrink:0"></span><span style="font-size:12.5px;color:var(--text-2)">Hidden Cost</span></div><div style="display:flex;align-items:center;gap:10px"><span style="font-size:13.5px;font-weight:700;color:var(--text)">$5.3K</span></div></div>
+            <div class="type-row" data-type="Agent Error" style="display:flex;align-items:center;justify-content:space-between;gap:8px;border-radius:6px;padding:2px 6px;margin:-2px -6px"><div style="display:flex;align-items:center;gap:8px"><span style="width:10px;height:10px;border-radius:3px;background:#0A3BC4;flex-shrink:0"></span><span style="font-size:12.5px;color:var(--text-2)">Agent Error</span></div><div style="display:flex;align-items:center;gap:10px"><span style="font-size:13.5px;font-weight:700;color:var(--text)">$2.7K</span></div></div>
+            <div class="type-row" data-type="Escalated Cost" style="display:flex;align-items:center;justify-content:space-between;gap:8px;border-radius:6px;padding:2px 6px;margin:-2px -6px"><div style="display:flex;align-items:center;gap:8px"><span style="width:10px;height:10px;border-radius:3px;background:#6B9BFF;flex-shrink:0"></span><span style="font-size:12.5px;color:var(--text-2)">Escalated Cost</span></div><div style="display:flex;align-items:center;gap:10px"><span style="font-size:13.5px;font-weight:700;color:var(--text)">$1.3K</span></div></div>
+            <div class="type-row" data-type="Negotiation" style="display:flex;align-items:center;justify-content:space-between;gap:8px;border-radius:6px;padding:2px 6px;margin:-2px -6px"><div style="display:flex;align-items:center;gap:8px"><span style="width:10px;height:10px;border-radius:3px;background:#B8CFFE;flex-shrink:0"></span><span style="font-size:12.5px;color:var(--text-2)">Negotiation</span></div><div style="display:flex;align-items:center;gap:10px"><span style="font-size:13.5px;font-weight:700;color:var(--text)">$0.4K</span></div></div>
           </div>
           <div id="typeNoDataNote" style="display:none;margin-top:10px;font-size:12px;color:var(--text-3);text-align:center"></div>
           <div style="margin-top:16px;padding-top:10px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-shrink:0"><span style="font-size:11px;color:var(--text-2)" id="typeFooterLabel">Saving per Port Call</span><span style="font-size:20px;font-weight:800;color:var(--text)" id="typeFooterAmount">$556</span></div>
         </div>
 
         <div class="card reveal">
-          <div class="tile-hdr"><div class="tile-title">By Agent</div></div>
+          <div class="tile-hdr"><div class="tile-title">By Agent</div><span style="font-size:12px;font-weight:600;color:var(--text-2);cursor:pointer" onclick="openAgentListPanel()">More details</span></div>
           <div class="health-tiles">
             <div class="health-tile"><div class="health-tile-top"><span class="health-tile-lbl">ABC Test Shipping</span><div class="health-tile-icon" style="background:#fff;color:#9BAABF"><svg class="health-tile-default" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg><svg class="health-tile-arrow" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div></div><div class="health-tile-val">$307K</div><div class="health-tile-bottom"><div class="health-tile-bar"><div class="health-tile-bar-fill" style="--w:100%;background:#1852FE"></div></div><span class="health-tile-trend pos">★ Top agent</span></div></div>
             <div class="health-tile"><div class="health-tile-top"><span class="health-tile-lbl">Keppel Smit</span><div class="health-tile-icon" style="background:#fff;color:#9BAABF"><svg class="health-tile-default" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg><svg class="health-tile-arrow" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div></div><div class="health-tile-val">$37K</div><div class="health-tile-bottom"><div class="health-tile-bar"><div class="health-tile-bar-fill" style="--w:12%;background:#4274FF"></div></div><span class="health-tile-trend pos">▲ 2nd place</span></div></div>
@@ -1742,18 +1742,37 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
 <div class="side-panel-overlay" id="typeListOverlay" onclick="closeTypeListPanel()"></div>
 <div class="side-panel" id="typeListPanel">
   <div class="side-panel-hdr">
-    <div class="side-panel-title">Contractual Discount Types</div>
+    <div class="side-panel-title">Savings Types</div>
     <button class="side-panel-close" onclick="closeTypeListPanel()">×</button>
   </div>
   <div class="side-panel-body" style="padding:0;gap:0">
     <table style="width:100%;border-collapse:collapse">
       <thead>
         <tr style="position:sticky;top:0;background:var(--card);box-shadow:0 1px 0 var(--border)">
-          <th style="text-align:left;padding:12px 24px;font-size:11px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.04em">Code</th>
-          <th style="text-align:left;padding:12px 24px;font-size:11px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.04em">Type</th>
+          <th style="text-align:left;padding:12px 24px;font-size:11px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.04em">Savings Type</th>
+          <th style="text-align:right;padding:12px 24px;font-size:11px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.04em">Amount</th>
         </tr>
       </thead>
       <tbody id="typeListTableBody"></tbody>
+    </table>
+  </div>
+</div>
+
+<div class="side-panel-overlay" id="agentListOverlay" onclick="closeAgentListPanel()"></div>
+<div class="side-panel" id="agentListPanel">
+  <div class="side-panel-hdr">
+    <div class="side-panel-title">Savings by Agent</div>
+    <button class="side-panel-close" onclick="closeAgentListPanel()">×</button>
+  </div>
+  <div class="side-panel-body" style="padding:0;gap:0">
+    <table style="width:100%;border-collapse:collapse">
+      <thead>
+        <tr style="position:sticky;top:0;background:var(--card);box-shadow:0 1px 0 var(--border)">
+          <th style="text-align:left;padding:12px 24px;font-size:11px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.04em">Agent</th>
+          <th style="text-align:right;padding:12px 24px;font-size:11px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.04em">Amount</th>
+        </tr>
+      </thead>
+      <tbody id="agentListTableBody"></tbody>
     </table>
   </div>
 </div>
@@ -2182,7 +2201,7 @@ function updateTypeContent(label){
   if(data){
     note.style.display = 'none';
     footerLabel.textContent = label;
-    footerAmount.textContent = data.amount + ' · ' + data.pct;
+    footerAmount.textContent = data.amount;
   } else {
     note.style.display = 'block';
     note.textContent = 'No savings recorded for ' + label + ' this month.';
@@ -2218,15 +2237,33 @@ const TYPE_LIST = [
 ];
 function openTypeListPanel(){
   const body = document.getElementById('typeListTableBody');
-  body.innerHTML = TYPE_LIST.map(([code,label]) =>
-    `<tr style="border-bottom:1px solid var(--border)"><td style="padding:10px 24px;font-size:12.5px;color:var(--text-3);font-weight:600;white-space:nowrap">${code}</td><td style="padding:10px 24px;font-size:13px;color:var(--text)">${label}</td></tr>`
-  ).join('');
+  body.innerHTML = TYPE_LIST.map(([code,label]) => {
+    const amount = (TYPE_DATA[label] && TYPE_DATA[label].amount) || '$0.0K';
+    return `<tr style="border-bottom:1px solid var(--border)"><td style="padding:10px 24px;font-size:13px;color:var(--text)">${label}</td><td style="padding:10px 24px;font-size:13px;font-weight:700;color:var(--text);text-align:right">${amount}</td></tr>`;
+  }).join('');
   document.getElementById('typeListOverlay').classList.add('open');
   document.getElementById('typeListPanel').classList.add('open');
 }
 function closeTypeListPanel(){
   document.getElementById('typeListOverlay').classList.remove('open');
   document.getElementById('typeListPanel').classList.remove('open');
+}
+const AGENT_LIST = [
+  ['ABC Test Shipping','$307K'],['Keppel Smit','$37K'],['Test Vendor 22','$24K'],['Test Vendor -A','$12K'],
+  ['Straits Agency','$9.6K'],['Boskalis Terminal','$7.2K'],['Eurogate Agency','$5.8K'],
+  ['Maersk Agency','$4.4K'],['Hanjin Agency','$3.1K'],['Pacific Carriers','$1.9K']
+];
+function openAgentListPanel(){
+  const body = document.getElementById('agentListTableBody');
+  body.innerHTML = AGENT_LIST.map(([name,amount]) =>
+    `<tr style="border-bottom:1px solid var(--border)"><td style="padding:10px 24px;font-size:13px;color:var(--text)">${name}</td><td style="padding:10px 24px;font-size:13px;font-weight:700;color:var(--text);text-align:right">${amount}</td></tr>`
+  ).join('');
+  document.getElementById('agentListOverlay').classList.add('open');
+  document.getElementById('agentListPanel').classList.add('open');
+}
+function closeAgentListPanel(){
+  document.getElementById('agentListOverlay').classList.remove('open');
+  document.getElementById('agentListPanel').classList.remove('open');
 }
 document.addEventListener('click', function(e){
   const menu = document.getElementById('typeFilterMenu');
