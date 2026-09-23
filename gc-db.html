@@ -70,6 +70,13 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
 .btn-primary:hover::after{left:130%}
 .btn-primary:active{transform:translateY(0) scale(.97)}
 .btn-primary svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2.5;stroke-linecap:round}
+.search-dd-item{padding:8px 14px;font-size:13px;font-weight:500;color:var(--text);cursor:pointer;transition:background .12s}
+.search-dd-item:hover{background:var(--bg)}
+.search-dd-item.active{color:var(--brand);font-weight:700;background:var(--blue-light)}
+.version-check{color:var(--brand);font-weight:700;font-size:12px}
+.version-wheel-btn{width:36px;height:36px;border-radius:50%;border:none;background:transparent;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:transform .15s var(--ease);flex-shrink:0;padding:0}
+.version-wheel-btn:hover{transform:scale(1.08)}
+.version-wheel{width:20px;height:20px;border-radius:50%;display:block;background:conic-gradient(from 0deg,#EF4444,#F59E0B,#FACC15,#22C55E,#06B6D4,#1852FE,#8B5CF6,#EC4899,#EF4444);box-shadow:inset 0 0 0 1px rgba(0,0,0,.08)}
 .mycalls-wrap{display:flex;align-items:center;gap:6px;cursor:pointer;user-select:none}
 .mycalls-wrap:hover .mycalls-label{color:var(--text)}
 .mycalls-label{font-size:11px;font-weight:600;color:var(--text-2);transition:color .2s}
@@ -613,6 +620,16 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
         <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
         New Port Call
       </button>
+      <div class="version-switch" style="position:relative">
+        <button class="version-wheel-btn" onclick="event.stopPropagation();toggleVersionMenu()" aria-label="Switch version" title="Switch version">
+          <span class="version-wheel"></span>
+        </button>
+        <div id="versionMenu" style="display:none;position:absolute;top:calc(100% + 6px);right:0;background:var(--card);border:1px solid var(--border);border-radius:6px;box-shadow:0 8px 24px rgba(0,0,0,.12);z-index:200;min-width:150px;padding:4px 0">
+          <div class="search-dd-item active" style="display:flex;align-items:center;justify-content:space-between;gap:10px" onclick="selectVersion('Version 1',this)"><span>Version 1</span><span class="version-check">✓</span></div>
+          <div class="search-dd-item" style="display:flex;align-items:center;justify-content:space-between;gap:10px" onclick="selectVersion('Version 2',this)"><span>Version 2</span></div>
+          <div class="search-dd-item" style="display:flex;align-items:center;justify-content:space-between;gap:10px" onclick="selectVersion('Version 3',this)"><span>Version 3</span></div>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -1761,6 +1778,41 @@ document.addEventListener('DOMContentLoaded', function(){
   updateDate();
   setInterval(updateDate, 1000);
 })();
+
+const VERSION_URLS = {
+  'Version 1': 'gc-db.html',
+  'Version 2': 'gc-current-ui.html',
+  'Version 3': 'gc-current-ui-v3.html'
+};
+function selectVersion(label, el){
+  const menu = el.closest('#versionMenu');
+  menu.style.display = 'none';
+  const target = VERSION_URLS[label];
+  const current = window.location.pathname.split('/').pop();
+  if(target && target !== current){
+    window.location.href = target;
+    return;
+  }
+  menu.querySelectorAll('.search-dd-item').forEach(i => {
+    i.classList.remove('active');
+    const chk = i.querySelector('.version-check');
+    if(chk) chk.remove();
+  });
+  el.classList.add('active');
+  el.insertAdjacentHTML('beforeend', '<span class="version-check">✓</span>');
+  fireToast('Switched to ' + label, event);
+}
+function toggleVersionMenu(){
+  const menu = document.getElementById('versionMenu');
+  menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+}
+document.addEventListener('click', function(e){
+  const menu = document.getElementById('versionMenu');
+  const btn = document.querySelector('.version-wheel-btn');
+  if(menu && menu.style.display === 'block' && !menu.contains(e.target) && btn && !btn.contains(e.target)){
+    menu.style.display = 'none';
+  }
+});
 </script>
 </body>
 </html>
