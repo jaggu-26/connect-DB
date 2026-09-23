@@ -2090,8 +2090,20 @@ function toggleVersionMenu(){
   const menu = document.getElementById('versionMenu');
   menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
 }
+const VERSION_URLS = {
+  'Version 1': 'gc-db.html',
+  'Version 2': 'gc-current-ui.html',
+  'Version 3': 'gc-current-ui-v3.html'
+};
 function selectVersion(label, el){
   const menu = el.closest('#versionMenu');
+  menu.style.display = 'none';
+  const target = VERSION_URLS[label];
+  const current = window.location.pathname.split('/').pop();
+  if(target && target !== current){
+    window.location.href = target;
+    return;
+  }
   menu.querySelectorAll('.search-dd-item').forEach(i => {
     i.classList.remove('active');
     const chk = i.querySelector('.version-check');
@@ -2099,7 +2111,6 @@ function selectVersion(label, el){
   });
   el.classList.add('active');
   el.insertAdjacentHTML('beforeend', '<span class="version-check">✓</span>');
-  menu.style.display = 'none';
   fireToast('Switched to ' + label, event);
 }
 document.addEventListener('click', function(e){
