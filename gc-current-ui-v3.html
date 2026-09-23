@@ -107,6 +107,21 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
 .geoone-actions{display:flex;gap:10px;flex-shrink:0}
 .geoone-btn-primary{height:34px;padding:0 14px;border-radius:4px;background:linear-gradient(135deg,var(--brand) 0%,#0B3FE0 100%);color:#fff;border:none;font-size:12.5px;font-weight:700;font-family:inherit;cursor:pointer;display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
 .geoone-btn-secondary{height:34px;padding:0 14px;border-radius:4px;background:#fff;color:var(--nav);border:1px solid var(--border);font-size:12.5px;font-weight:700;font-family:inherit;cursor:pointer;white-space:nowrap}
+.dapipe-hdr{display:flex;align-items:center;gap:14px;padding:16px 20px;border-radius:16px 16px 0 0;background:linear-gradient(120deg,var(--green-bg) 0%,#F5FFF9 100%);border:1px solid var(--green-mid);border-bottom:none}
+.dapipe-icon{width:34px;height:34px;border-radius:8px;background:var(--success);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.dapipe-icon svg{width:18px;height:18px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.dapipe-title{font-size:14.5px;font-weight:700;color:var(--nav)}
+.dapipe-stat-pill{font-size:11.5px;font-weight:700;color:#147638;background:var(--green-mid);padding:5px 12px;border-radius:999px;white-space:nowrap}
+.dapipe-role-pill{font-size:10.5px;font-weight:700;padding:4px 10px;border-radius:999px;white-space:nowrap}
+.dapipe-body{background:var(--card);border:1px solid var(--border);border-top:none;border-radius:0 0 16px 16px;padding:24px 20px}
+.dapipe-stages{display:flex;align-items:flex-start;position:relative}
+.dapipe-stages::before{content:'';position:absolute;top:22px;left:22px;right:22px;height:1px;background:var(--border);z-index:0}
+.dapipe-stage{flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;position:relative;z-index:1}
+.dapipe-circle{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;background:var(--card);border:2px solid var(--border);color:var(--text-3)}
+.dapipe-stage-label{font-size:12px;font-weight:700;color:var(--text);margin-top:10px;line-height:1.3}
+.dapipe-stage-count{font-size:12.5px;font-weight:700;color:var(--text);margin-top:4px}
+.dapipe-stage-amt{font-size:11px;color:var(--text-3);margin-top:2px}
+.dapipe-alert{margin-top:20px;padding-top:14px;border-top:1px solid var(--border);font-size:12.5px;color:var(--text-2)}
 .section-lbl::after{content:'';flex:1;height:1px;background:var(--border)}
 .info-icon{display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;border-radius:50%;background:var(--blue-light);color:var(--brand);font-size:9px;font-weight:700;cursor:pointer;position:relative;flex-shrink:0;line-height:1;transition:transform .2s var(--ease)}
 .info-icon:hover{transform:scale(1.15)}
@@ -924,6 +939,62 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
 
       <!-- TRENDS & ACTIVITY -->
       <!-- SAVINGS PERFORMANCE (moved from Financial tab) -->
+      <div class="reveal" style="margin-bottom:4px">
+        <div class="dapipe-hdr">
+          <div class="dapipe-icon">
+            <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          </div>
+          <div style="flex:1;min-width:0">
+            <div class="dapipe-title">DA Pipeline — Where is every disbursement account right now?</div>
+          </div>
+          <span class="dapipe-stat-pill">81 active DAs · $1.24M total</span>
+          <span class="dapipe-role-pill" style="color:var(--brand);background:var(--blue-light)">Operators</span>
+          <span class="dapipe-role-pill" style="color:var(--purple);background:var(--purple-bg)">Super Users</span>
+          <span class="dapipe-role-pill" style="color:#147638;background:var(--green-mid)">Accounts</span>
+        </div>
+        <div class="dapipe-body">
+          <div class="dapipe-stages">
+            <div class="dapipe-stage">
+              <div class="dapipe-circle">8</div>
+              <div class="dapipe-stage-label">Pending<br>Appointment</div>
+              <div class="dapipe-stage-count">8 vessels</div>
+              <div class="dapipe-stage-amt">—</div>
+            </div>
+            <div class="dapipe-stage">
+              <div class="dapipe-circle" style="background:var(--brand);border-color:var(--brand);color:#fff">24</div>
+              <div class="dapipe-stage-label">PDA<br>Submitted</div>
+              <div class="dapipe-stage-count">24 DAs</div>
+              <div class="dapipe-stage-amt">$342K</div>
+            </div>
+            <div class="dapipe-stage">
+              <div class="dapipe-circle" style="border-color:var(--danger);color:var(--danger)">15</div>
+              <div class="dapipe-stage-label">Awaiting<br>Approval</div>
+              <div class="dapipe-stage-count">15 DAs</div>
+              <div class="dapipe-stage-amt">$172K</div>
+            </div>
+            <div class="dapipe-stage">
+              <div class="dapipe-circle" style="border-color:var(--orange);color:var(--orange)">18</div>
+              <div class="dapipe-stage-label">Under<br>Clarification</div>
+              <div class="dapipe-stage-count">18 DAs</div>
+              <div class="dapipe-stage-amt">$218K</div>
+            </div>
+            <div class="dapipe-stage">
+              <div class="dapipe-circle" style="border-color:var(--danger);color:var(--danger)">5</div>
+              <div class="dapipe-stage-label">Overdue<br>FDA</div>
+              <div class="dapipe-stage-count">5 DAs</div>
+              <div class="dapipe-stage-amt">$151K</div>
+            </div>
+            <div class="dapipe-stage">
+              <div class="dapipe-circle" style="border-color:var(--success);color:#147638">27</div>
+              <div class="dapipe-stage-label">Approved<br>MTD</div>
+              <div class="dapipe-stage-count">27 DAs</div>
+              <div class="dapipe-stage-amt">$341K</div>
+            </div>
+          </div>
+          <div class="dapipe-alert"><strong style="color:var(--text)">Bottleneck alert:</strong> 15 DAs stuck in approval stage — oldest for 6 days. 5 FDAs overdue totalling $151K. Resolving approvals first unblocks the most value.</div>
+        </div>
+      </div>
+
       <div class="section-lbl">Savings Performance</div>
       <div class="situation-stats-row" style="grid-template-columns:1fr 1fr 1fr">
         <div class="card reveal">
