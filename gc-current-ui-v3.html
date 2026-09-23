@@ -135,11 +135,11 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
 .role-opt.active .role-check{display:block}
 .situation-sub{font-size:16px;font-weight:600;color:var(--text-2);margin-top:2px}
 .situation-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}.situation-grid .sit-card{height:220px;box-sizing:border-box}
-.sit-card.sit-milestone{background:linear-gradient(150deg,#FFFBEF 0%,#FDF1CF 55%,#FCE8B5 100%);border:1px solid #F0D890;overflow:hidden;position:relative;cursor:default}
-.sit-card.sit-milestone::after{content:'';position:absolute;top:-36px;right:-36px;width:130px;height:130px;border-radius:50%;background:radial-gradient(circle,rgba(217,119,6,.20) 0%,transparent 70%);pointer-events:none}
-.sit-card.sit-milestone::before{content:'✦';position:absolute;top:16px;right:22px;font-size:13px;color:#D9A521;opacity:.8}
-.milestone-icon{width:52px;height:52px;border-radius:6px;background:linear-gradient(135deg,#F6B93B 0%,#D97706 50%,#F6B93B 100%);background-size:220% 220%;background-position:0% 50%;display:flex;align-items:center;justify-content:center;box-shadow:none;flex-shrink:0;position:relative;z-index:1;animation:trophyShine 5s linear infinite}
-.milestone-icon svg{width:30px;height:30px;stroke:#fff;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;transform-origin:70% 90%;animation:trophyWave 5s ease-in-out infinite}
+.sit-card.sit-milestone{background:linear-gradient(150deg,#FFFDF8 0%,#FEF8E7 55%,#FCF0D4 100%);border:1px solid #F5E4B8;overflow:hidden;position:relative;cursor:default}
+.sit-card.sit-milestone::after{content:'';position:absolute;top:-36px;right:-36px;width:130px;height:130px;border-radius:50%;background:radial-gradient(circle,rgba(217,119,6,.10) 0%,transparent 70%);pointer-events:none}
+.sit-card.sit-milestone::before{content:'✦';position:absolute;top:16px;right:22px;font-size:13px;color:#D9A521;opacity:.5}
+.milestone-icon{width:52px;height:52px;border-radius:6px;background:linear-gradient(135deg,#F8CB7A 0%,#E0983D 100%);display:flex;align-items:center;justify-content:center;box-shadow:none;flex-shrink:0;position:relative;z-index:1}
+.milestone-icon svg{width:28px;height:28px;fill:#fff;stroke:none}
 @keyframes trophyWave{
   0%,26%,100%{transform:rotate(0deg) translateY(0)}
   4%{transform:rotate(-16deg) translateY(-2px)}
@@ -784,8 +784,7 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
           <div class="sit-lbl">Vessels arriving without an agent appointed.</div>
           <div class="sit-sub">2 due today · furthest ETA in 16 days</div>
           <div class="sit-actions">
-            <button class="sit-btn sit-btn-teal" onclick="event.stopPropagation();goDetail('view-appt','Pending Appointment',event)">Assign agents</button>
-            <button class="sit-btn sit-btn-outline" onclick="event.stopPropagation()">View schedule</button>
+            <button class="sit-btn sit-btn-outline" onclick="event.stopPropagation();goDetail('view-appt','Pending Appointment',event)">Assign agents</button>
           </div>
         </div>
         <!-- Overdue DAs -->
@@ -895,7 +894,7 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
           <span class="sit-badge sit-gold" style="position:relative;z-index:1"><span class="sit-dot"></span>Milestone — June 2026</span>
           <div style="display:flex;align-items:center;gap:14px;margin-top:14px;position:relative;z-index:1">
             <div class="milestone-icon" style="width:60px;height:60px;border-radius:12px">
-              <svg viewBox="0 0 24 24" style="width:32px;height:32px"><path d="M8 21h8"/><path d="M12 17v4"/><path d="M7 4h10v5a5 5 0 0 1-10 0V4z"/><path d="M17 5h2a2 2 0 0 1 2 2c0 2-2 4-4 4"/><path d="M7 5H5a2 2 0 0 0-2 2c0 2 2 4 4 4"/></svg>
+              <svg viewBox="0 0 24 24" style="width:34px;height:34px"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
             </div>
             <div class="milestone-headline" style="font-size:20px">Your best month yet!</div>
           </div>
