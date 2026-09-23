@@ -2763,7 +2763,6 @@ function openFeedbackNote(id){
   document.getElementById('feedbackDeleteBtn').style.display = (note.name || note.text) ? 'flex' : 'none';
   const ta = document.getElementById('feedbackText');
   ta.value = note.text;
-  setTimeout(()=>ta.focus(), 50);
 }
 function onFeedbackNoteInput(){
   if(!feedbackActiveId) return;
