@@ -1372,224 +1372,29 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
 
           <!-- In Process — teal/info -->
           <div class="sit-card" style="gap:7px">
-            <span class="sit-badge sit-info"><span class="sit-dot"></span>In Process</span>
+            <span class="sit-badge"><span class="sit-dot" style="color:var(--teal-dark)"></span>In Process</span>
             <div class="sit-val">$237,409</div>
             <div class="sit-lbl">Active disbursements in progress.</div>
             <div class="sit-sub">34 port calls · 8 ports · largest $42K</div>
             <div class="sit-actions">
-              <button class="sit-btn sit-btn-teal" onclick="fireToast('Opening port calls',event)"><svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>View all</button>
+              <button class="sit-btn sit-btn-outline" onclick="fireToast('Opening port calls',event)"><svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>View all</button>
               <button class="sit-btn sit-btn-outline" onclick="fireToast('Downloading report',event)">Export</button>
             </div>
           </div>
 
-          <!-- Projected Balance — red/urgent alert -->
-          <div class="sit-card sit-urgent" style="gap:7px">
-            <span class="sit-badge"><span class="sit-dot"></span>Projected Balance — Alert</span>
+          <!-- Projected Balance — red only in dot + button -->
+          <div class="sit-card" style="gap:7px">
+            <span class="sit-badge"><span class="sit-dot" style="color:var(--danger)"></span>Projected Balance — Alert</span>
             <div class="sit-val">–$277,748</div>
             <div class="sit-lbl">Goes negative after all commitments.</div>
-            <div class="sit-sub" style="color:rgba(255,255,255,.75)">$309K shortfall · act before month-end</div>
+            <div class="sit-sub">$309K shortfall · act before month-end</div>
             <div class="sit-actions">
-              <button class="sit-btn sit-btn-onred" onclick="fireToast('Opening cash forecast',event)"><svg viewBox="0 0 24 24"><path d="M7 17l9.2-9.2M17 17V7H7"/></svg>Review forecast</button>
+              <button class="sit-btn" style="background:var(--danger);color:#fff" onclick="fireToast('Opening cash forecast',event)"><svg viewBox="0 0 24 24" style="stroke:#fff"><path d="M7 17l9.2-9.2M17 17V7H7"/></svg>Review forecast</button>
             </div>
           </div>
 
         </div>
 
-        <!-- Savings sections removed from Financial tab (moved to Disbursements) -->
-        <!-- Contractual & Currency section continues below -->
-        <div style="display:none">
-        <div class="situation-stats-row">
-        <div class="card reveal">
-          <div class="tile-hdr"><div class="tile-title">Savings Performance <span style="font-size:11px;font-weight:400;color:var(--text-2)">· YTD</span></div></div>
-          <div class="health-tiles">
-            <div class="health-tile">
-              <div class="health-tile-top">
-                <span class="health-tile-lbl">YTD Savings</span>
-                <div class="health-tile-icon" style="background:#fff;color:#9BAABF">
-                  <svg class="health-tile-default" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                  <svg class="health-tile-arrow" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-                </div>
-              </div>
-              <div class="health-tile-val">$150K</div>
-              <div class="health-tile-bottom">
-                <div class="health-tile-bar"><div class="health-tile-bar-fill" style="--w:75%;background:#1852FE"></div></div>
-                <span class="health-tile-trend pos">▲ 18% vs last year</span>
-              </div>
-            </div>
-            <div class="health-tile">
-              <div class="health-tile-top">
-                <span class="health-tile-lbl">Cashflow Savings</span>
-                <div class="health-tile-icon" style="background:#fff;color:#9BAABF">
-                  <svg class="health-tile-default" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-                  <svg class="health-tile-arrow" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-                </div>
-              </div>
-              <div class="health-tile-val">$75K</div>
-              <div class="health-tile-bottom">
-                <div class="health-tile-bar"><div class="health-tile-bar-fill" style="--w:50%;background:#4274FF"></div></div>
-                <span class="health-tile-trend pos">★ Record savings</span>
-              </div>
-            </div>
-            <div class="health-tile">
-              <div class="health-tile-top">
-                <span class="health-tile-lbl">DA Savings</span>
-                <div class="health-tile-icon" style="background:#fff;color:#9BAABF">
-                  <svg class="health-tile-default" viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
-                  <svg class="health-tile-arrow" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-                </div>
-              </div>
-              <div class="health-tile-val">$25K</div>
-              <div class="health-tile-bottom">
-                <div class="health-tile-bar"><div class="health-tile-bar-fill" style="--w:25%;background:#0A3BC4"></div></div>
-                <span class="health-tile-trend pos">★ Record savings</span>
-              </div>
-            </div>
-            <div class="health-tile">
-              <div class="health-tile-top">
-                <span class="health-tile-lbl">Contractual Savings</span>
-                <div class="health-tile-icon" style="background:#fff;color:#9BAABF">
-                  <svg class="health-tile-default" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-                  <svg class="health-tile-arrow" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-                </div>
-              </div>
-              <div class="health-tile-val">$50K</div>
-              <div class="health-tile-bottom">
-                <div class="health-tile-bar"><div class="health-tile-bar-fill" style="--w:33%;background:#6B9BFF"></div></div>
-                <span class="health-tile-trend pos">★ Direct contract</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="card reveal">
-          <div class="tile-hdr"><div class="tile-title">Savings by Type <span style="font-size:11px;font-weight:400;color:var(--text-2)">· MTD</span></div></div>
-          <!-- Stacked proportion bar -->
-          <div style="height:18px;border-radius:99px;overflow:hidden;display:flex;gap:2px;margin-bottom:18px;flex-shrink:0">
-            <div style="flex:85.2;background:#1852FE"></div>
-            <div style="flex:8.1;background:#4274FF"></div>
-            <div style="flex:4.1;background:#0A3BC4"></div>
-            <div style="flex:2.0;background:#6B9BFF"></div>
-            <div style="flex:0.6;background:#B8CFFE"></div>
-          </div>
-          <!-- Category list -->
-          <div style="display:flex;flex-direction:column;gap:14px;flex:1;justify-content:space-evenly">
-            <div style="display:flex;align-items:center;justify-content:space-between;gap:8px">
-              <div style="display:flex;align-items:center;gap:8px">
-                <span style="width:10px;height:10px;border-radius:3px;background:#1852FE;flex-shrink:0"></span>
-                <span style="font-size:12.5px;color:var(--text-2)">Contractual Discount</span>
-              </div>
-              <div style="display:flex;align-items:center;gap:10px">
-                <span style="font-size:10px;color:var(--text-3);font-weight:600">85%</span>
-                <span style="font-size:13.5px;font-weight:700;color:var(--text)">$55.9K</span>
-              </div>
-            </div>
-            <div style="display:flex;align-items:center;justify-content:space-between;gap:8px">
-              <div style="display:flex;align-items:center;gap:8px">
-                <span style="width:10px;height:10px;border-radius:3px;background:#4274FF;flex-shrink:0"></span>
-                <span style="font-size:12.5px;color:var(--text-2)">Hidden Cost</span>
-              </div>
-              <div style="display:flex;align-items:center;gap:10px">
-                <span style="font-size:10px;color:var(--text-3);font-weight:600">8%</span>
-                <span style="font-size:13.5px;font-weight:700;color:var(--text)">$5.3K</span>
-              </div>
-            </div>
-            <div style="display:flex;align-items:center;justify-content:space-between;gap:8px">
-              <div style="display:flex;align-items:center;gap:8px">
-                <span style="width:10px;height:10px;border-radius:3px;background:#0A3BC4;flex-shrink:0"></span>
-                <span style="font-size:12.5px;color:var(--text-2)">Agent Error</span>
-              </div>
-              <div style="display:flex;align-items:center;gap:10px">
-                <span style="font-size:10px;color:var(--text-3);font-weight:600">4%</span>
-                <span style="font-size:13.5px;font-weight:700;color:var(--text)">$2.7K</span>
-              </div>
-            </div>
-            <div style="display:flex;align-items:center;justify-content:space-between;gap:8px">
-              <div style="display:flex;align-items:center;gap:8px">
-                <span style="width:10px;height:10px;border-radius:3px;background:#6B9BFF;flex-shrink:0"></span>
-                <span style="font-size:12.5px;color:var(--text-2)">Escalated Cost</span>
-              </div>
-              <div style="display:flex;align-items:center;gap:10px">
-                <span style="font-size:10px;color:var(--text-3);font-weight:600">2%</span>
-                <span style="font-size:13.5px;font-weight:700;color:var(--text)">$1.3K</span>
-              </div>
-            </div>
-            <div style="display:flex;align-items:center;justify-content:space-between;gap:8px">
-              <div style="display:flex;align-items:center;gap:8px">
-                <span style="width:10px;height:10px;border-radius:3px;background:#B8CFFE;flex-shrink:0"></span>
-                <span style="font-size:12.5px;color:var(--text-2)">Negotiation</span>
-              </div>
-              <div style="display:flex;align-items:center;gap:10px">
-                <span style="font-size:10px;color:var(--text-3);font-weight:600">1%</span>
-                <span style="font-size:13.5px;font-weight:700;color:var(--text)">$0.4K</span>
-              </div>
-            </div>
-          </div>
-          <div style="margin-top:16px;padding-top:10px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-shrink:0"><span style="font-size:11px;color:var(--text-2)">Saving per Port Call</span><span style="font-size:20px;font-weight:800;color:var(--text)">$556</span></div>
-        </div>
-
-        <div class="card reveal">
-          <div class="tile-hdr"><div class="tile-title">Savings Breakdown <span style="font-size:11px;font-weight:400;color:var(--text-2)">· By Agent</span></div></div>
-          <div class="health-tiles">
-            <div class="health-tile">
-              <div class="health-tile-top">
-                <span class="health-tile-lbl">ABC Test Shipping</span>
-                <div class="health-tile-icon" style="background:#fff;color:#9BAABF">
-                  <svg class="health-tile-default" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-                  <svg class="health-tile-arrow" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-                </div>
-              </div>
-              <div class="health-tile-val">$307K</div>
-              <div class="health-tile-bottom">
-                <div class="health-tile-bar"><div class="health-tile-bar-fill" style="--w:100%;background:#1852FE"></div></div>
-                <span class="health-tile-trend pos">★ Top agent</span>
-              </div>
-            </div>
-            <div class="health-tile">
-              <div class="health-tile-top">
-                <span class="health-tile-lbl">Keppel Smit</span>
-                <div class="health-tile-icon" style="background:#fff;color:#9BAABF">
-                  <svg class="health-tile-default" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-                  <svg class="health-tile-arrow" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-                </div>
-              </div>
-              <div class="health-tile-val">$37K</div>
-              <div class="health-tile-bottom">
-                <div class="health-tile-bar"><div class="health-tile-bar-fill" style="--w:12%;background:#4274FF"></div></div>
-                <span class="health-tile-trend pos">▲ 2nd place</span>
-              </div>
-            </div>
-            <div class="health-tile">
-              <div class="health-tile-top">
-                <span class="health-tile-lbl">Test Vendor 22</span>
-                <div class="health-tile-icon" style="background:#fff;color:#9BAABF">
-                  <svg class="health-tile-default" viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
-                  <svg class="health-tile-arrow" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-                </div>
-              </div>
-              <div class="health-tile-val">$24K</div>
-              <div class="health-tile-bottom">
-                <div class="health-tile-bar"><div class="health-tile-bar-fill" style="--w:8%;background:#0A3BC4"></div></div>
-                <span class="health-tile-trend pos">▲ 3rd place</span>
-              </div>
-            </div>
-            <div class="health-tile">
-              <div class="health-tile-top">
-                <span class="health-tile-lbl">Test Vendor -A</span>
-                <div class="health-tile-icon" style="background:#fff;color:#9BAABF">
-                  <svg class="health-tile-default" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
-                  <svg class="health-tile-arrow" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-                </div>
-              </div>
-              <div class="health-tile-val">$12K</div>
-              <div class="health-tile-bottom">
-                <div class="health-tile-bar"><div class="health-tile-bar-fill" style="--w:4%;background:#6B9BFF"></div></div>
-                <span class="health-tile-trend pos">▲ 4th place</span>
-              </div>
-            </div>
-          </div>
-        </div>
-        </div>
-        </div><!-- end hidden savings block -->
 
         <!-- Contractual & Currency -->
         <div class="section-lbl">Contractual &amp; Currency</div>
@@ -1717,11 +1522,7 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
         <div class="quad-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:18px">
           <div class="atile"><div class="atile-icon" style="background:var(--blue-light)"><svg viewBox="0 0 24 24" style="stroke:var(--brand)"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div><div class="atile-name">PDA Timeline</div><div class="atile-desc">Submissions vs approvals by month</div></div>
           <div class="atile"><div class="atile-icon" style="background:var(--green-bg)"><svg viewBox="0 0 24 24" style="stroke:#147638"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div><div class="atile-name">FDA Timeline</div><div class="atile-desc">Final DA status &amp; approval rates</div></div>
-          <div class="atile"><div class="atile-icon" style="background:var(--amber-bg)"><svg viewBox="0 0 24 24" style="stroke:#844D0F"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div><div class="atile-name">Cash Proj. Calendar</div><div class="atile-desc">Monthly payment schedule view</div></div>
-          <div class="atile"><div class="atile-icon" style="background:var(--red-bg)"><svg viewBox="0 0 24 24" style="stroke:var(--danger)"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><div class="atile-name">Overdue FDA Report</div><div class="atile-desc">Outstanding final DAs past sailed</div></div>
           <div class="atile"><div class="atile-icon" style="background:var(--teal-bg)"><svg viewBox="0 0 24 24" style="stroke:var(--teal-dark)"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></div><div class="atile-name">SDA Timeline</div><div class="atile-desc">Supplementary DA trends</div></div>
-          <div class="atile"><div class="atile-icon" style="background:var(--purple-bg)"><svg viewBox="0 0 24 24" style="stroke:var(--purple)"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div><div class="atile-name">Cost Savings</div><div class="atile-desc">Savings by type, port &amp; agent</div></div>
-          <div class="atile"><div class="atile-icon" style="background:var(--blue-light)"><svg viewBox="0 0 24 24" style="stroke:var(--brand)"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div><div class="atile-name">Cash Projection</div><div class="atile-desc">Full projection planner &amp; calendar</div></div>
           <div class="atile"><div class="atile-icon" style="background:var(--green-bg)"><svg viewBox="0 0 24 24" style="stroke:#147638"><polyline points="20 6 9 17 4 12"/></svg></div><div class="atile-name">VI Timeline</div><div class="atile-desc">Vendor invoice status &amp; recovery</div></div>
         </div>
 
