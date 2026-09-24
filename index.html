@@ -2098,6 +2098,16 @@ function cpcNavMonth(dir, e){
   cpcScrollToAnchor(CPC_MONTH_ANCHOR[label]);
   fireToast('Showing ' + label, e);
 }
+let cpcInited = false;
+function cpcInitDefaultView(){
+  if(cpcInited) return;
+  cpcInited = true;
+  cpcMonthIdx = 1;
+  const titleEl = document.getElementById('cpcTitle');
+  if(titleEl) titleEl.textContent = CPC_MONTHS[cpcMonthIdx];
+  const today = document.querySelector('.cpc-day-col.today');
+  if(today) today.scrollIntoView({block:'center'});
+}
 function cpcGoToday(e){
   cpcMonthIdx = 1;
   document.getElementById('cpcTitle').textContent = CPC_MONTHS[cpcMonthIdx];
@@ -2317,6 +2327,7 @@ function switchDashTab(panel, tabEl){
   } else {
     dis.style.display = 'none'; fin.style.display = 'flex';
     syncFinCardHeight();
+    setTimeout(cpcInitDefaultView, 0);
   }
 }
 function syncFinCardHeight(){
