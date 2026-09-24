@@ -628,6 +628,7 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
           <div class="search-dd-item active" style="display:flex;align-items:center;justify-content:space-between;gap:10px" onclick="selectVersion('Version 1',this)"><span>Version 1</span><span class="version-check">✓</span></div>
           <div class="search-dd-item" style="display:flex;align-items:center;justify-content:space-between;gap:10px" onclick="selectVersion('Version 2',this)"><span>Version 2</span></div>
           <div class="search-dd-item" style="display:flex;align-items:center;justify-content:space-between;gap:10px" onclick="selectVersion('Version 3',this)"><span>Version 3</span></div>
+          <div class="search-dd-item" style="display:flex;align-items:center;justify-content:space-between;gap:10px" onclick="selectVersion('Version 4',this)"><span>Version 4</span></div>
         </div>
       </div>
     </div>
@@ -1786,7 +1787,8 @@ document.addEventListener('DOMContentLoaded', function(){
 const VERSION_URLS = {
   'Version 1': 'gc-db.html',
   'Version 2': 'gc-current-ui.html',
-  'Version 3': 'gc-current-ui-v3.html'
+  'Version 3': 'gc-current-ui-v3.html',
+  'Version 4': 'gc-current-ui-v4.html'
 };
 function selectVersion(label, el){
   const menu = el.closest('#versionMenu');

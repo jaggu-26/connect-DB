@@ -823,6 +823,7 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
           <div class="search-dd-item" style="display:flex;align-items:center;justify-content:space-between;gap:10px" onclick="selectVersion('Version 1',this)"><span>Version 1</span></div>
           <div class="search-dd-item" style="display:flex;align-items:center;justify-content:space-between;gap:10px" onclick="selectVersion('Version 2',this)"><span>Version 2</span></div>
           <div class="search-dd-item active" style="display:flex;align-items:center;justify-content:space-between;gap:10px" onclick="selectVersion('Version 3',this)"><span>Version 3</span><span class="version-check">✓</span></div>
+          <div class="search-dd-item" style="display:flex;align-items:center;justify-content:space-between;gap:10px" onclick="selectVersion('Version 4',this)"><span>Version 4</span></div>
         </div>
       </div>
     </div>
@@ -1167,73 +1168,94 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
       <div class="reveal">
         <div class="section-lbl" style="margin-bottom:22px">Predictive Insights</div>
         <div class="pi-grid">
-          <div class="card" style="display:flex;flex-direction:column">
-            <!-- Header -->
-            <div class="tile-hdr" style="margin-bottom:16px">
-              <div class="tile-title">Contractual Discount <span style="font-size:11px;font-weight:400;color:var(--text-2)">· MTD</span></div>
-              <span style="font-size:11px;color:var(--success);font-weight:600;background:#EDFAF4;padding:2px 8px;border-radius:99px">▲ 8.2%</span>
+          <div class="pi-card">
+            <div class="pi-card-hdr">
+              <div class="pi-icon" style="background:linear-gradient(135deg,#34D399 0%,#059669 100%)">
+                <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+              </div>
+              <div style="flex:1;min-width:0">
+                <div class="pi-card-title">Customer Satisfaction</div>
+                <div class="pi-card-sub">Operator feedback on DA turnaround this month</div>
+              </div>
+              <span class="pi-card-pill" style="color:#147638;background:#E8F7EE">4.8 / 5 avg</span>
             </div>
-            <!-- Arc gauge + total -->
-            <div style="display:flex;align-items:center;gap:18px;margin-bottom:18px">
-              <div style="position:relative;width:88px;height:88px;flex-shrink:0">
-                <svg viewBox="0 0 88 88" width="88" height="88">
-                  <circle cx="44" cy="44" r="36" fill="none" stroke="var(--border)" stroke-width="8"/>
-                  <circle cx="44" cy="44" r="36" fill="none" stroke="#1852FE" stroke-width="8"
-                    stroke-dasharray="204.2 226"
-                    stroke-dashoffset="56.5"
-                    stroke-linecap="round"
-                    transform="rotate(-90 44 44)"/>
-                </svg>
-                <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center">
-                  <span style="font-size:16px;font-weight:800;color:var(--nav);line-height:1">91%</span>
-                  <span style="font-size:8px;color:var(--text-3);font-weight:600;margin-top:1px">of target</span>
+            <div class="pi-caption" style="font-size:12.5px;color:var(--text-2)">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              Based on post-approval satisfaction surveys across 42 port calls
+            </div>
+            <div class="pi-row">
+              <div style="display:flex;align-items:flex-start;gap:8px;min-width:0">
+                <span class="pi-row-dot" style="background:var(--success);margin-top:6px"></span>
+                <div style="min-width:0">
+                  <div class="pi-row-id">TST2600091 · Pacific Wind</div>
+                  <div class="pi-row-sub">Eurogate Agency · Hamburg · “Fastest turnaround yet”</div>
                 </div>
               </div>
               <div>
-                <div style="font-size:24px;font-weight:800;color:var(--text);letter-spacing:-.5px;line-height:1">$1,434,340</div>
-                <div style="font-size:11px;color:var(--text-2);margin-top:4px">saved this month</div>
-                <div style="font-size:11px;color:var(--text-3);margin-top:2px">Target: $1,575,000</div>
+                <div class="pi-row-status" style="color:var(--success)">5 / 5</div>
+                <div class="pi-row-days">Approved in 2 days</div>
+                <div class="pi-row-bar"><div class="pi-row-bar-fill" style="width:100%;background:var(--success)"></div></div>
               </div>
             </div>
-            <!-- Contract performance bars -->
-            <div style="font-size:10px;font-weight:700;color:var(--text-2);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Contract Performance</div>
-            <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:16px">
-              <div>
-                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
-                  <div style="display:flex;align-items:center;gap:5px"><span style="width:7px;height:7px;border-radius:2px;background:#1852FE;display:inline-block"></span><span style="font-size:11.5px;color:var(--text-2)">GeoConnect Contract</span></div>
-                  <span style="font-size:12px;font-weight:700;color:var(--text)">$890,450</span>
+            <div class="pi-row">
+              <div style="display:flex;align-items:flex-start;gap:8px;min-width:0">
+                <span class="pi-row-dot" style="background:var(--success);margin-top:6px"></span>
+                <div style="min-width:0">
+                  <div class="pi-row-id">TST2600082 · Omicron West</div>
+                  <div class="pi-row-sub">ABC Test Shipping · Singapore · “Smooth approval process”</div>
                 </div>
-                <div style="height:6px;background:var(--border);border-radius:99px;overflow:hidden"><div style="height:100%;width:62%;background:#1852FE;border-radius:99px"></div></div>
               </div>
               <div>
-                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
-                  <div style="display:flex;align-items:center;gap:5px"><span style="width:7px;height:7px;border-radius:2px;background:#93BBFF;display:inline-block"></span><span style="font-size:11.5px;color:var(--text-2)">My Contracts</span></div>
-                  <span style="font-size:12px;font-weight:700;color:var(--text)">$543,890</span>
-                </div>
-                <div style="height:6px;background:var(--border);border-radius:99px;overflow:hidden"><div style="height:100%;width:38%;background:#93BBFF;border-radius:99px"></div></div>
+                <div class="pi-row-status" style="color:var(--success)">5 / 5</div>
+                <div class="pi-row-days">Approved in 3 days</div>
+                <div class="pi-row-bar"><div class="pi-row-bar-fill" style="width:100%;background:var(--success)"></div></div>
               </div>
             </div>
-            <!-- Vendor leaderboard -->
-            <div style="font-size:10px;font-weight:700;color:var(--text-2);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Top Discount Invoices</div>
-            <div style="display:flex;flex-direction:column;gap:5px;flex:1">
-              <div style="display:flex;align-items:center;gap:8px;padding:7px 10px;background:linear-gradient(135deg,#EEF3FF,#F5F7FB);border-radius:8px;border:1px solid #D8E4FF">
-                <span style="font-size:10px;font-weight:800;color:#1852FE;width:14px;flex-shrink:0">#1</span>
-                <div style="flex:1;min-width:0"><div style="font-size:11.5px;font-weight:600;color:var(--text)">VI-2026-0035</div><div style="font-size:10px;color:var(--text-3)">DA $212,450</div></div>
-                <span style="font-size:12px;font-weight:700;color:var(--success)">$19,121</span>
-                <span style="font-size:10px;background:#EDFAF4;color:var(--success);font-weight:700;padding:2px 6px;border-radius:99px">9%</span>
+            <div class="pi-row watch">
+              <div style="display:flex;align-items:flex-start;gap:8px;min-width:0">
+                <span class="pi-row-dot" style="background:var(--teal-dark);margin-top:6px"></span>
+                <div style="min-width:0">
+                  <div class="pi-row-id">TST2600119 · Nordic Star</div>
+                  <div class="pi-row-sub">Boskalis Terminal · Rotterdam · “Minor delay, great communication”</div>
+                </div>
               </div>
-              <div style="display:flex;align-items:center;gap:8px;padding:7px 10px;background:var(--bg);border-radius:8px">
-                <span style="font-size:10px;font-weight:800;color:var(--text-3);width:14px;flex-shrink:0">#2</span>
-                <div style="flex:1;min-width:0"><div style="font-size:11.5px;font-weight:600;color:var(--text)">VI-2026-0027</div><div style="font-size:10px;color:var(--text-3)">DA $145,670</div></div>
-                <span style="font-size:12px;font-weight:700;color:var(--success)">$13,110</span>
-                <span style="font-size:10px;background:#EDFAF4;color:var(--success);font-weight:700;padding:2px 6px;border-radius:99px">9%</span>
+              <div>
+                <div class="pi-row-status" style="color:var(--teal-dark)">4 / 5</div>
+                <div class="pi-row-days">Approved in 6 days</div>
+                <div class="pi-row-bar"><div class="pi-row-bar-fill" style="width:80%;background:var(--teal-dark)"></div></div>
               </div>
-              <div style="display:flex;align-items:center;gap:8px;padding:7px 10px;background:var(--bg);border-radius:8px">
-                <span style="font-size:10px;font-weight:800;color:var(--text-3);width:14px;flex-shrink:0">#3</span>
-                <div style="flex:1;min-width:0"><div style="font-size:11.5px;font-weight:600;color:var(--text)">VI-2026-0041</div><div style="font-size:10px;color:var(--text-3)">DA $124,500</div></div>
-                <span style="font-size:12px;font-weight:700;color:var(--success)">$12,450</span>
-                <span style="font-size:10px;background:#EDFAF4;color:var(--success);font-weight:700;padding:2px 6px;border-radius:99px">10%</span>
+            </div>
+            <div class="pi-row">
+              <div style="display:flex;align-items:flex-start;gap:8px;min-width:0">
+                <span class="pi-row-dot" style="background:var(--success);margin-top:6px"></span>
+                <div style="min-width:0">
+                  <div class="pi-row-id">TST2600104 · Keppel Smit</div>
+                  <div class="pi-row-sub">Keppel Smit Agency · Rotterdam · “Very responsive team”</div>
+                </div>
               </div>
+              <div>
+                <div class="pi-row-status" style="color:var(--success)">5 / 5</div>
+                <div class="pi-row-days">Approved in 4 days</div>
+                <div class="pi-row-bar"><div class="pi-row-bar-fill" style="width:100%;background:var(--success)"></div></div>
+              </div>
+            </div>
+            <div class="pi-row">
+              <div style="display:flex;align-items:flex-start;gap:8px;min-width:0">
+                <span class="pi-row-dot" style="background:var(--success);margin-top:6px"></span>
+                <div style="min-width:0">
+                  <div class="pi-row-id">TST2600096 · Southern Cross</div>
+                  <div class="pi-row-sub">Straits Agency · Singapore · “Clear documentation, no back-and-forth”</div>
+                </div>
+              </div>
+              <div>
+                <div class="pi-row-status" style="color:var(--success)">5 / 5</div>
+                <div class="pi-row-days">Approved in 3 days</div>
+                <div class="pi-row-bar"><div class="pi-row-bar-fill" style="width:100%;background:var(--success)"></div></div>
+              </div>
+            </div>
+            <div class="pi-footer">
+              <span>96% of surveyed operators rated 4★ or higher</span>
+              <span class="pi-footer-link" onclick="fireToast('Opening all ratings',event)">View all ratings →</span>
             </div>
           </div>
 
@@ -1430,8 +1452,56 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
 
 
         <!-- Contractual & Currency -->
+        <div class="section-lbl">Contractual &amp; Currency</div>
         <div class="fin-2col" style="display:grid;grid-template-columns:1fr 1fr;gap:18px">
-        <div class="card">
+          <div class="card" style="display:flex;flex-direction:column">
+            <!-- Header -->
+            <div class="tile-hdr" style="margin-bottom:16px">
+              <div class="tile-title">Contractual Discount <span style="font-size:11px;font-weight:400;color:var(--text-2)">· MTD</span></div>
+              <span style="font-size:11px;color:var(--success);font-weight:600;background:#EDFAF4;padding:2px 8px;border-radius:99px">▲ 8.2%</span>
+            </div>
+            <!-- Arc gauge + total -->
+            <div style="display:flex;align-items:center;gap:18px;margin-bottom:18px">
+              <div style="position:relative;width:88px;height:88px;flex-shrink:0">
+                <svg viewBox="0 0 88 88" width="88" height="88">
+                  <circle cx="44" cy="44" r="36" fill="none" stroke="var(--border)" stroke-width="8"/>
+                  <circle cx="44" cy="44" r="36" fill="none" stroke="#1852FE" stroke-width="8"
+                    stroke-dasharray="204.2 226"
+                    stroke-dashoffset="56.5"
+                    stroke-linecap="round"
+                    transform="rotate(-90 44 44)"/>
+                </svg>
+                <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center">
+                  <span style="font-size:16px;font-weight:800;color:var(--nav);line-height:1">91%</span>
+                  <span style="font-size:8px;color:var(--text-3);font-weight:600;margin-top:1px">of target</span>
+                </div>
+              </div>
+              <div>
+                <div style="font-size:24px;font-weight:800;color:var(--text);letter-spacing:-.5px;line-height:1">$1,434,340</div>
+                <div style="font-size:11px;color:var(--text-2);margin-top:4px">saved this month</div>
+                <div style="font-size:11px;color:var(--text-3);margin-top:2px">Target: $1,575,000</div>
+              </div>
+            </div>
+            <!-- Contract performance bars -->
+            <div style="font-size:10px;font-weight:700;color:var(--text-2);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Contract Performance</div>
+            <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:16px">
+              <div>
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+                  <div style="display:flex;align-items:center;gap:5px"><span style="width:7px;height:7px;border-radius:2px;background:#1852FE;display:inline-block"></span><span style="font-size:11.5px;color:var(--text-2)">GeoConnect Contract</span></div>
+                  <span style="font-size:12px;font-weight:700;color:var(--text)">$890,450</span>
+                </div>
+                <div style="height:6px;background:var(--border);border-radius:99px;overflow:hidden"><div style="height:100%;width:62%;background:#1852FE;border-radius:99px"></div></div>
+              </div>
+              <div>
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+                  <div style="display:flex;align-items:center;gap:5px"><span style="width:7px;height:7px;border-radius:2px;background:#93BBFF;display:inline-block"></span><span style="font-size:11.5px;color:var(--text-2)">My Contracts</span></div>
+                  <span style="font-size:12px;font-weight:700;color:var(--text)">$543,890</span>
+                </div>
+                <div style="height:6px;background:var(--border);border-radius:99px;overflow:hidden"><div style="height:100%;width:38%;background:#93BBFF;border-radius:99px"></div></div>
+              </div>
+            </div>
+          </div>
+          <div class="card">
             <div class="tile-hdr">
               <div class="tile-title">Cash Spent by Currency</div>
               <div class="tile-actions">
@@ -1458,8 +1528,10 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
               <span style="font-size:14px;font-weight:700;color:var(--text)" id="cur-total-val">$2,693,000</span>
             </div>
           </div>
+        </div>
 
         <!-- Financial Insights -->
+        <div class="section-lbl">Financial Insights</div>
         <div class="fi-card reveal">
           <div class="fi-card-hdr">
             <div class="fi-icon" style="background:linear-gradient(135deg,#7C6FF5 0%,#4B3FD8 100%)">
@@ -1507,9 +1579,9 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
             <span class="fi-alert-link" onclick="fireToast('Opening cash plan',event)">Plan →</span>
           </div>
         </div>
-        </div>
 
-        <div class="fi-card reveal">
+        <div class="fi-row2">
+          <div class="fi-card reveal">
             <div class="fi-card-hdr">
               <div class="fi-icon" style="background:linear-gradient(135deg,#EF4444 0%,#B02A24 100%)">
                 <svg viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
@@ -1577,6 +1649,47 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
               <span class="fi-footer-link" onclick="fireToast('Chasing all 4 overdue agents',event)">Chase all →</span>
             </div>
           </div>
+
+          <div class="fi-card reveal">
+            <div class="fi-card-hdr">
+              <div class="fi-icon" style="background:linear-gradient(135deg,#3B9EFF 0%,#1852FE 100%)">
+                <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+              </div>
+              <div style="flex:1;min-width:0">
+                <div class="fi-title">Spend Variance · PDA vs FDA</div>
+                <div class="fi-sub">How accurate were agent estimates vs actuals?</div>
+              </div>
+              <span class="fi-pill" style="color:var(--brand);background:var(--blue-light)">Avg +6.2% over</span>
+            </div>
+            <div class="fi-divider"></div>
+            <div class="fi-3stat">
+              <div class="fi-3stat-item"><div class="fi-3stat-val" style="color:var(--orange)">+6.2%</div><div class="fi-3stat-lbl">Avg overspend</div></div>
+              <div class="fi-3stat-item"><div class="fi-3stat-val" style="color:var(--danger)">4</div><div class="fi-3stat-lbl">Calls &gt;10% over</div></div>
+              <div class="fi-3stat-item"><div class="fi-3stat-val" style="color:#147638">$341K</div><div class="fi-3stat-lbl">FDA settled MTD</div></div>
+            </div>
+            <div class="fi-variance-hdr">Biggest Variances · by port call · agent · vessel · port</div>
+            <div class="fi-variance-row">
+              <div class="fi-variance-left"><span class="fi-variance-dot" style="background:var(--danger)"></span>TST2600082 · Omicron West · FDA 18% above PDA</div>
+              <span class="fi-variance-amt" style="color:var(--danger)">+$4,610</span>
+            </div>
+            <div class="fi-variance-row">
+              <div class="fi-variance-left"><span class="fi-variance-dot" style="background:var(--orange)"></span>Eurogate Agency · 12% above estimate across 3 calls</div>
+              <span class="fi-variance-amt" style="color:var(--orange)">+$3,960</span>
+            </div>
+            <div class="fi-variance-row">
+              <div class="fi-variance-left"><span class="fi-variance-dot" style="background:var(--warning)"></span>Nordic Star · Rotterdam · port dues 15% over estimate</div>
+              <span class="fi-variance-amt" style="color:#92400E">+$2,100</span>
+            </div>
+            <div class="fi-variance-row" style="padding-bottom:14px">
+              <div class="fi-variance-left"><span class="fi-variance-dot" style="background:var(--success)"></span>Singapore calls · FDA 2% under PDA — accurate estimating</div>
+              <span class="fi-variance-amt" style="color:#147638">–$480</span>
+            </div>
+            <div class="fi-footer">
+              <span>Large variances = poor estimating — review PDA benchmarks</span>
+              <span class="fi-footer-link" onclick="fireToast('Opening full variance report',event)">Full report →</span>
+            </div>
+          </div>
+        </div>
 
         <!-- Analytics Modules -->
         <div class="section-lbl">Analytics Modules</div>
@@ -2510,7 +2623,8 @@ document.addEventListener('click', function(e){
 const VERSION_URLS = {
   'Version 1': 'gc-db.html',
   'Version 2': 'gc-current-ui.html',
-  'Version 3': 'gc-current-ui-v3.html'
+  'Version 3': 'gc-current-ui-v3.html',
+  'Version 4': 'gc-current-ui-v4.html'
 };
 function selectVersion(label, el){
   const menu = el.closest('#versionMenu');
