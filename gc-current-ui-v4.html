@@ -217,12 +217,12 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
 .cpc-day-col.today .cpc-day-num{color:var(--brand);font-weight:800}
 .cpc-day-num{font-size:11.5px;font-weight:700;color:var(--text-2);text-align:right;padding:2px 2px 3px}
 .cpc-day-num.muted{color:var(--text-3);font-weight:600}
-.cpc-chip{font-size:10px;font-weight:700;color:#fff;border-radius:4px;padding:3px 5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.cpc-chip.pda{background:#4C8DFF}
-.cpc-chip.sda{background:#0B1E3D}
-.cpc-chip.fda{background:#16233E}
-.cpc-chip.vi{background:#7A4FC9}
-.cpc-chip.apda{background:#E0159C}
+.cpc-chip{font-size:10px;font-weight:700;color:#111;border-radius:4px;padding:3px 5px 3px 6px;border-left:3px solid transparent;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cpc-chip.pda{background:#E5EFFF;border-left-color:#4C8DFF}
+.cpc-chip.sda{background:#E6E9F0;border-left-color:#0B1E3D}
+.cpc-chip.fda{background:#EAECF1;border-left-color:#16233E}
+.cpc-chip.vi{background:#F1E9FB;border-left-color:#7A4FC9}
+.cpc-chip.apda{background:#FCE4F3;border-left-color:#E0159C}
 .section-lbl::after{content:'';flex:1;height:1px;background:var(--border)}
 .info-icon{display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;border-radius:50%;background:var(--blue-light);color:var(--brand);font-size:9px;font-weight:700;cursor:pointer;position:relative;flex-shrink:0;line-height:1;transition:transform .2s var(--ease)}
 .info-icon:hover{transform:scale(1.15)}
@@ -1591,12 +1591,12 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
           </div>
           <div class="cpc-toolbar">
             <div class="cpc-nav">
-              <button onclick="fireToast('Previous month',event)">‹</button>
-              <button class="today" onclick="fireToast('Jumped to today',event)">Today</button>
-              <button onclick="fireToast('Next month',event)">›</button>
+              <button onclick="cpcNavMonth('prev',event)">‹</button>
+              <button class="today" onclick="cpcGoToday(event)">Today</button>
+              <button onclick="cpcNavMonth('next',event)">›</button>
             </div>
-            <div class="cpc-title">September 2026</div>
-            <div class="cpc-view-tabs"><span class="on">Month</span><span>List</span><span>Quarter</span></div>
+            <div class="cpc-title" id="cpcTitle">September 2026</div>
+            <div class="cpc-view-tabs"><span class="on" onclick="cpcSetView('Month',this)">Month</span><span onclick="cpcSetView('List',this)">List</span><span onclick="cpcSetView('Quarter',this)">Quarter</span></div>
           </div>
           <div class="cpc-scroll">
             <div class="cpc-dow-row"><div></div><div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div></div>
@@ -2006,6 +2006,35 @@ function fireToast(msg, e){
   t.innerHTML = '<svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>' + msg;
   wrap.appendChild(t);
   setTimeout(() => { t.classList.add('out'); setTimeout(() => t.remove(), 260); }, 2200);
+}
+
+// ── Cash Projection Calendar ──
+const CPC_MONTHS = ['August 2026','September 2026','October 2026'];
+let cpcMonthIdx = 1;
+function cpcNavMonth(dir, e){
+  cpcMonthIdx = dir === 'next' ? Math.min(cpcMonthIdx + 1, CPC_MONTHS.length - 1) : Math.max(cpcMonthIdx - 1, 0);
+  document.getElementById('cpcTitle').textContent = CPC_MONTHS[cpcMonthIdx];
+  if(CPC_MONTHS[cpcMonthIdx] === 'September 2026'){
+    fireToast('Showing September 2026', e);
+  } else {
+    fireToast(CPC_MONTHS[cpcMonthIdx] + ' — sample data not available yet', e);
+  }
+}
+function cpcGoToday(e){
+  cpcMonthIdx = 1;
+  document.getElementById('cpcTitle').textContent = CPC_MONTHS[cpcMonthIdx];
+  const today = document.querySelector('.cpc-day-col.today');
+  if(today) today.scrollIntoView({block:'center', behavior:'smooth'});
+  fireToast('Jumped to today', e);
+}
+function cpcSetView(view, el){
+  document.querySelectorAll('.cpc-view-tabs span').forEach(s => s.classList.remove('on'));
+  el.classList.add('on');
+  if(view === 'Month'){
+    fireToast('Month view', event);
+  } else {
+    fireToast(view + ' view coming soon', event);
+  }
 }
 
 // ── Count-up ──
