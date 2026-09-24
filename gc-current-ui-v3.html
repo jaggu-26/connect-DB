@@ -1430,7 +1430,7 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
 
 
         <!-- Contractual & Currency -->
-        <div class="section-lbl">Contractual &amp; Currency</div>
+        <div class="fin-2col" style="display:grid;grid-template-columns:1fr 1fr;gap:18px">
         <div class="card">
             <div class="tile-hdr">
               <div class="tile-title">Cash Spent by Currency</div>
@@ -1458,10 +1458,8 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
               <span style="font-size:14px;font-weight:700;color:var(--text)" id="cur-total-val">$2,693,000</span>
             </div>
           </div>
-        </div>
 
         <!-- Financial Insights -->
-        <div class="section-lbl">Financial Insights</div>
         <div class="fi-card reveal">
           <div class="fi-card-hdr">
             <div class="fi-icon" style="background:linear-gradient(135deg,#7C6FF5 0%,#4B3FD8 100%)">
@@ -1508,6 +1506,7 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
             <span>Goes negative Jun 28 · add funds or hold low-priority approvals</span>
             <span class="fi-alert-link" onclick="fireToast('Opening cash plan',event)">Plan →</span>
           </div>
+        </div>
         </div>
 
         <div class="fi-card reveal">
