@@ -196,6 +196,31 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
 .fi-variance-left{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--nav);font-weight:700}
 .fi-variance-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
 .fi-variance-amt{font-size:13px;font-weight:700;white-space:nowrap}
+/* Cash Projection Calendar */
+.cpc-topbar{background:var(--nav);color:#fff;display:flex;align-items:center;justify-content:center;position:relative;padding:10px 16px;font-size:13px;font-weight:700;letter-spacing:.02em}
+.cpc-topbar-icons{position:absolute;right:14px;top:50%;transform:translateY(-50%);display:flex;align-items:center;gap:12px;font-size:13px;opacity:.85}
+.cpc-toolbar{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--border);flex-wrap:wrap;gap:10px}
+.cpc-nav{display:flex;align-items:center;gap:6px}
+.cpc-nav button{border:1px solid var(--border);background:var(--card);border-radius:7px;width:30px;height:30px;font-size:15px;color:var(--text-2);cursor:pointer;display:flex;align-items:center;justify-content:center}
+.cpc-nav button.today{width:auto;padding:0 12px;font-size:12.5px;font-weight:600;color:var(--text)}
+.cpc-title{font-size:17px;font-weight:800;color:var(--text)}
+.cpc-view-tabs{display:flex;align-items:center;gap:4px;background:var(--bg);border-radius:8px;padding:3px}
+.cpc-view-tabs span{padding:5px 12px;font-size:12px;font-weight:600;color:var(--text-2);border-radius:6px;cursor:pointer}
+.cpc-view-tabs span.on{background:var(--card);color:var(--text);box-shadow:0 1px 2px rgba(0,0,0,.08)}
+.cpc-scroll{max-height:480px;overflow-y:auto}
+.cpc-dow-row{display:grid;grid-template-columns:44px repeat(7,1fr);position:sticky;top:0;background:var(--card);z-index:2;border-bottom:1px solid var(--border)}
+.cpc-dow-row div{padding:8px 6px;font-size:12px;font-weight:700;color:var(--text-2);text-align:center}
+.cpc-week-row{display:grid;grid-template-columns:44px repeat(7,1fr);border-bottom:1px solid var(--border)}
+.cpc-wk-lbl{display:flex;align-items:flex-start;justify-content:center;padding-top:6px;font-size:10.5px;font-weight:700;color:var(--text-3);background:var(--bg)}
+.cpc-day-col{border-left:1px solid var(--border);padding:4px 5px 8px;display:flex;flex-direction:column;gap:3px;min-height:70px}
+.cpc-day-num{font-size:11.5px;font-weight:700;color:var(--text-2);text-align:right;padding:2px 2px 3px}
+.cpc-day-num.muted{color:var(--text-3);font-weight:600}
+.cpc-chip{font-size:10px;font-weight:700;color:#fff;border-radius:4px;padding:3px 5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cpc-chip.pda{background:#4C8DFF}
+.cpc-chip.sda{background:#0B1E3D}
+.cpc-chip.fda{background:#16233E}
+.cpc-chip.vi{background:#7A4FC9}
+.cpc-chip.apda{background:#E0159C}
 .section-lbl::after{content:'';flex:1;height:1px;background:var(--border)}
 .info-icon{display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;border-radius:50%;background:var(--blue-light);color:var(--brand);font-size:9px;font-weight:700;cursor:pointer;position:relative;flex-shrink:0;line-height:1;transition:transform .2s var(--ease)}
 .info-icon:hover{transform:scale(1.15)}
@@ -1556,6 +1581,85 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
               <span class="fi-footer-link" onclick="fireToast('Chasing all 4 overdue agents',event)">Chase all →</span>
             </div>
           </div>
+
+        <!-- Cash Position Forecast (calendar) -->
+        <div class="section-lbl">Cash Position Forecast</div>
+        <div class="fi-card reveal" style="padding:0;overflow:hidden">
+          <div class="cpc-topbar">Cash Projection Calendar
+            <div class="cpc-topbar-icons">
+              <svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:#fff;fill:none;stroke-width:2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+              <svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:#fff;fill:none;stroke-width:2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              <span>⋯</span>
+            </div>
+          </div>
+          <div class="cpc-toolbar">
+            <div class="cpc-nav">
+              <button onclick="fireToast('Previous month',event)">‹</button>
+              <button class="today" onclick="fireToast('Jumped to today',event)">Today</button>
+              <button onclick="fireToast('Next month',event)">›</button>
+            </div>
+            <div class="cpc-title">September 2026</div>
+            <div class="cpc-view-tabs"><span class="on">Month</span><span>List</span><span>Quarter</span></div>
+          </div>
+          <div class="cpc-scroll">
+            <div class="cpc-dow-row"><div></div><div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div></div>
+
+            <div class="cpc-week-row">
+              <div class="cpc-wk-lbl">W36</div>
+              <div class="cpc-day-col"><div class="cpc-day-num muted">30</div><div class="cpc-chip sda">SDA - $1700</div><div class="cpc-chip vi">VI - $24748.61</div><div class="cpc-chip vi">VI - $7983.77</div></div>
+              <div class="cpc-day-col"><div class="cpc-day-num muted">31</div><div class="cpc-chip pda">PDA - $500</div><div class="cpc-chip vi">VI - $129.06</div></div>
+              <div class="cpc-day-col"><div class="cpc-day-num">1</div></div>
+              <div class="cpc-day-col"><div class="cpc-day-num">2</div><div class="cpc-chip pda">PDA - $2484</div><div class="cpc-chip pda">PDA - $4695</div><div class="cpc-chip vi">VI - $165</div><div class="cpc-chip vi">VI - $165</div><div class="cpc-chip vi">VI - $199.47</div></div>
+              <div class="cpc-day-col"><div class="cpc-day-num">3</div><div class="cpc-chip sda">SDA - $100</div><div class="cpc-chip sda">SDA - $22012.45</div><div class="cpc-chip vi">VI - $5123.65</div></div>
+              <div class="cpc-day-col"><div class="cpc-day-num">4</div><div class="cpc-chip pda">PDA - $583.52</div><div class="cpc-chip sda">SDA - $1309.56</div><div class="cpc-chip vi">VI - $145</div><div class="cpc-chip vi">VI - $2021.7</div></div>
+              <div class="cpc-day-col"><div class="cpc-day-num">5</div><div class="cpc-chip apda">APDA - $11974.28</div><div class="cpc-chip fda">FDA - $14215.38</div><div class="cpc-chip sda">SDA - $695.32</div><div class="cpc-chip vi">VI - $100</div><div class="cpc-chip vi">VI - $11525.32</div></div>
+            </div>
+
+            <div class="cpc-week-row">
+              <div class="cpc-wk-lbl">W37</div>
+              <div class="cpc-day-col"><div class="cpc-day-num">6</div><div class="cpc-chip pda">PDA - $3301</div><div class="cpc-chip pda">PDA - $7648.11</div><div class="cpc-chip vi">VI - $10540.4</div></div>
+              <div class="cpc-day-col"><div class="cpc-day-num">7</div></div>
+              <div class="cpc-day-col"><div class="cpc-day-num">8</div><div class="cpc-chip pda">PDA - $14110.56</div><div class="cpc-chip pda">PDA - $15321.34</div><div class="cpc-chip pda">PDA - $1936.43</div></div>
+              <div class="cpc-day-col"><div class="cpc-day-num">9</div><div class="cpc-chip pda">PDA - $165</div><div class="cpc-chip vi">VI - $10293.23</div><div class="cpc-chip vi">VI - $145</div></div>
+              <div class="cpc-day-col"><div class="cpc-day-num">10</div><div class="cpc-chip pda">PDA - $518122.49</div><div class="cpc-chip vi">VI - $13149.39</div><div class="cpc-chip vi">VI - $165</div></div>
+              <div class="cpc-day-col"><div class="cpc-day-num">11</div><div class="cpc-chip fda">FDA - $17.1</div><div class="cpc-chip vi">VI - $1318.39</div></div>
+              <div class="cpc-day-col"><div class="cpc-day-num">12</div><div class="cpc-chip fda">FDA - $15490.93</div><div class="cpc-chip pda">PDA - $14272.2</div><div class="cpc-chip sda">SDA - $158.28</div></div>
+            </div>
+
+            <div class="cpc-week-row">
+              <div class="cpc-wk-lbl">W38</div>
+              <div class="cpc-day-col"><div class="cpc-day-num">13</div><div class="cpc-chip vi">VI - $4200</div></div>
+              <div class="cpc-day-col"><div class="cpc-day-num">14</div><div class="cpc-chip pda">PDA - $9120</div><div class="cpc-chip vi">VI - $310.5</div></div>
+              <div class="cpc-day-col"><div class="cpc-day-num">15</div></div>
+              <div class="cpc-day-col"><div class="cpc-day-num">16</div><div class="cpc-chip sda">SDA - $2450</div><div class="cpc-chip vi">VI - $890</div></div>
+              <div class="cpc-day-col"><div class="cpc-day-num">17</div><div class="cpc-chip pda">PDA - $6640</div></div>
+              <div class="cpc-day-col"><div class="cpc-day-num">18</div><div class="cpc-chip apda">APDA - $3120.75</div><div class="cpc-chip vi">VI - $145</div></div>
+              <div class="cpc-day-col"><div class="cpc-day-num">19</div><div class="cpc-chip fda">FDA - $8890.4</div><div class="cpc-chip sda">SDA - $612</div></div>
+            </div>
+
+            <div class="cpc-week-row">
+              <div class="cpc-wk-lbl">W39</div>
+              <div class="cpc-day-col"><div class="cpc-day-num">20</div><div class="cpc-chip pda">PDA - $2210</div></div>
+              <div class="cpc-day-col"><div class="cpc-day-num">21</div><div class="cpc-chip vi">VI - $76.5</div></div>
+              <div class="cpc-day-col"><div class="cpc-day-num">22</div><div class="cpc-chip sda">SDA - $19340</div><div class="cpc-chip vi">VI - $205</div></div>
+              <div class="cpc-day-col"><div class="cpc-day-num">23</div></div>
+              <div class="cpc-day-col"><div class="cpc-day-num">24</div><div class="cpc-chip pda">PDA - $4890</div><div class="cpc-chip vi">VI - $1180</div></div>
+              <div class="cpc-day-col"><div class="cpc-day-num">25</div><div class="cpc-chip fda">FDA - $22100</div></div>
+              <div class="cpc-day-col"><div class="cpc-day-num">26</div><div class="cpc-chip apda">APDA - $5340.2</div><div class="cpc-chip vi">VI - $310</div><div class="cpc-chip vi">VI - $600</div></div>
+            </div>
+
+            <div class="cpc-week-row" style="border-bottom:none">
+              <div class="cpc-wk-lbl">W40</div>
+              <div class="cpc-day-col"><div class="cpc-day-num">27</div><div class="cpc-chip pda">PDA - $3120</div></div>
+              <div class="cpc-day-col"><div class="cpc-day-num">28</div><div class="cpc-chip sda">SDA - $890</div></div>
+              <div class="cpc-day-col"><div class="cpc-day-num">29</div><div class="cpc-chip vi">VI - $2450</div></div>
+              <div class="cpc-day-col"><div class="cpc-day-num">30</div><div class="cpc-chip fda">FDA - $12980</div><div class="cpc-chip vi">VI - $340</div></div>
+              <div class="cpc-day-col"><div class="cpc-day-num muted">1</div><div class="cpc-chip pda">PDA - $1560</div></div>
+              <div class="cpc-day-col"><div class="cpc-day-num muted">2</div></div>
+              <div class="cpc-day-col"><div class="cpc-day-num muted">3</div><div class="cpc-chip vi">VI - $890</div></div>
+            </div>
+          </div>
+        </div>
 
         <!-- Analytics Modules -->
         <div class="section-lbl">Analytics Modules</div>
