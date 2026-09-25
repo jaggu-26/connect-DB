@@ -2106,14 +2106,24 @@ function cpcInitDefaultView(){
   cpcMonthIdx = 1;
   const titleEl = document.getElementById('cpcTitle');
   if(titleEl) titleEl.textContent = CPC_MONTHS[cpcMonthIdx];
+  const container = document.getElementById('cpcMonthView');
   const today = document.querySelector('.cpc-day-col.today');
-  if(today) today.scrollIntoView({block:'center'});
+  if(container && today){
+    const delta = today.getBoundingClientRect().top - container.getBoundingClientRect().top;
+    const targetScroll = container.scrollTop + delta - (container.clientHeight / 2);
+    container.scrollTop = Math.max(0, targetScroll);
+  }
 }
 function cpcGoToday(e){
   cpcMonthIdx = 1;
   document.getElementById('cpcTitle').textContent = CPC_MONTHS[cpcMonthIdx];
+  const container = document.getElementById('cpcMonthView');
   const today = document.querySelector('.cpc-day-col.today');
-  if(today) today.scrollIntoView({block:'center', behavior:'smooth'});
+  if(container && today){
+    const delta = today.getBoundingClientRect().top - container.getBoundingClientRect().top;
+    const targetScroll = container.scrollTop + delta - (container.clientHeight / 2);
+    container.scrollTo({top: Math.max(0, targetScroll), behavior:'smooth'});
+  }
   fireToast('Jumped to today', e);
 }
 const CPC_DATE_SEQ = (() => {
