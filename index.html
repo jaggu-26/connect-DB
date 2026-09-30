@@ -210,7 +210,8 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
 .cpc-view-tabs{display:flex;align-items:center;gap:4px;background:var(--bg);border-radius:8px;padding:3px}
 .cpc-view-tabs span{padding:5px 12px;font-size:12px;font-weight:600;color:var(--text-2);border-radius:6px;cursor:pointer}
 .cpc-view-tabs span.on{background:var(--card);color:var(--text);box-shadow:0 1px 2px rgba(0,0,0,.08)}
-.cpc-scroll{max-height:482px;overflow-y:auto}
+.cpc-scroll{max-height:482px;overflow-y:auto;overflow-x:auto}
+.cpc-dow-row,.cpc-week-row{min-width:520px}
 .cpc-dow-row{display:grid;grid-template-columns:44px repeat(7,1fr);position:sticky;top:0;background:var(--card);z-index:2;border-bottom:1px solid var(--border)}
 .cpc-dow-row div{padding:8px 6px;font-size:12px;font-weight:700;color:var(--text-2);text-align:center}
 .cpc-week-row{display:grid;grid-template-columns:44px repeat(7,1fr);border-bottom:1px solid var(--border)}
@@ -647,30 +648,44 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
 
 /* ═══ RESPONSIVE ═══ */
 @media(max-width:1024px){
-  .situation-stats-row{grid-template-columns:1fr 1fr}
-  .trends-grid{grid-template-columns:1fr!important}
-  .trends-grid .chart-card[style*="grid-column:span 2"]{grid-column:span 1!important}
+  .situation-stats-row{grid-template-columns:1fr 1fr!important}
+  .trends-grid{grid-template-columns:1fr 1fr!important}
+  .trends-grid .chart-card[style*="grid-column:span 2"]{grid-column:span 2!important}
   .quad-grid{grid-template-columns:repeat(2,1fr)!important}
   .topbar-search{width:220px}
+  .pi-grid{grid-template-columns:1fr!important}
+}
+@media(max-width:900px){
+  .topbar{flex-wrap:wrap;row-gap:8px;min-height:0}
+  .topbar-spacer{display:none}
+  #dash-tabs-bar{position:static!important;left:auto!important;transform:none!important;order:3;width:100%;justify-content:center;display:flex}
+  .topbar-right{order:2;margin-left:auto}
+  .dapipe-stages-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .dapipe-stages{min-width:560px}
 }
 @media(max-width:768px){
-  .topbar{padding:4px 14px 2px}
+  .topbar{padding:8px 14px}
   .mycalls-wrap{display:none}
   .content{padding:16px 14px 24px}
   .situation-grid{grid-template-columns:1fr 1fr!important}
   .situation-grid .sit-card{height:auto!important}
-  .situation-stats-row{grid-template-columns:1fr}
+  .situation-stats-row{grid-template-columns:1fr!important}
+  .situation-stats-row .card[style*="grid-column:span 2"]{grid-column:span 1!important}
   .fin-2col{grid-template-columns:1fr!important}
   .trends-grid{grid-template-columns:1fr!important}
   .quad-grid{grid-template-columns:repeat(2,1fr)!important}
   .section-lbl{margin-top:4px}
+}
+@media(max-width:560px){
+  .topbar-search{width:100%;order:3}
+  .topbar-right{flex-wrap:wrap;width:100%;justify-content:flex-start}
 }
 @media(max-width:480px){
   .situation-grid{grid-template-columns:1fr!important}
   .quad-grid{grid-template-columns:1fr!important}
   .health-tiles{grid-template-columns:1fr!important;grid-template-rows:auto!important}
   .dash-welcome{font-size:15px!important}
-  .btn-primary span{display:none}
+  .btn-primary{white-space:nowrap}
 }
 .area-line{stroke:var(--brand)}
 
@@ -1066,6 +1081,7 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
           </div>
         </div>
         <div class="dapipe-body">
+          <div class="dapipe-stages-wrap">
           <div class="dapipe-stages">
             <div class="dapipe-stage" onclick="goDetail('view-appt','Pending Appointment',event)">
               <div class="dapipe-circle">8</div>
@@ -1103,6 +1119,7 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
               <div class="dapipe-stage-count">27 DAs</div>
               <div class="dapipe-stage-amt">$341K</div>
             </div>
+          </div>
           </div>
           <div class="dapipe-alert"><strong style="color:var(--text)">Bottleneck alert:</strong> 15 DAs stuck in approval stage — oldest for 6 days. 5 FDAs overdue totalling $151K. Resolving approvals first unblocks the most value.</div>
         </div>
