@@ -741,6 +741,28 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
 </style>
 </head>
 <body>
+<script>
+// ── Prototype self-expire ──
+// TEST MODE: 10-second expiry window to verify behavior. Revert to the
+// 3-day version after confirming, bumping PROTOTYPE_DEPLOY_DATE to the
+// deploy date each time.
+(function(){
+  var PROTOTYPE_DEPLOY_TIME = '2026-10-01T06:14:31Z';
+  var EXPIRY_SECONDS = 10;
+  var deployed = new Date(PROTOTYPE_DEPLOY_TIME);
+  var expires = new Date(deployed.getTime() + EXPIRY_SECONDS * 1000);
+  if (new Date() > expires) {
+    document.write(
+      '<div style="min-height:100vh;display:flex;align-items:center;justify-content:center;' +
+      'font-family:system-ui,-apple-system,sans-serif;background:#F4F6FB;color:#4B5565;text-align:center;padding:24px">' +
+      '<div><div style="font-size:18px;font-weight:700;color:#1a2a4a;margin-bottom:8px">This preview link has expired</div>' +
+      '<div style="font-size:14px">This prototype was only available for a limited time after deployment.</div></div></div>'
+    );
+    document.close();
+    throw new Error('Prototype expired');
+  }
+})();
+</script>
 <div class="shell">
 <nav class="nav-rail">
   <div class="nav-item" title="Menu">
