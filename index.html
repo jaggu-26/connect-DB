@@ -689,6 +689,38 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
 }
 .area-line{stroke:var(--brand)}
 
+/* ═══ EMPTY-STATE PREVIEW ═══ */
+.es-real{display:contents}
+.es-empty{display:none;flex:1;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:8px;padding:36px 20px}
+.es-empty-icon{width:40px;height:40px;border-radius:50%;background:var(--bg);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.es-empty-icon svg{width:20px;height:20px;stroke:var(--text-3);fill:none;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}
+.es-empty-title{font-size:13.5px;font-weight:700;color:var(--text)}
+.es-empty-sub{font-size:12px;color:var(--text-2);max-width:280px;line-height:1.5}
+.es-empty-cta{margin-top:2px;font-size:12px;font-weight:700;color:var(--brand);cursor:pointer;background:none;border:none;padding:0}
+body.preview-empty .es-real{display:none!important}
+body.preview-empty .es-empty{display:flex!important}
+.empty-preview-toggle{background:var(--nav);color:#fff;font-size:12.5px;font-weight:700;padding:10px 16px;border-radius:999px;box-shadow:0 8px 20px rgba(0,0,0,.2);cursor:pointer;display:flex;align-items:center;gap:8px;border:none;transition:background .2s}
+.empty-preview-toggle:hover{background:#0B3FE0}
+.empty-preview-toggle.on{background:var(--brand)}
+.empty-preview-toggle .dot{width:7px;height:7px;border-radius:50%;background:#8FB3FF;flex-shrink:0}
+.empty-preview-toggle.on .dot{background:#fff}
+.empty-preview-toggle svg{flex-shrink:0}
+.empty-state-menu{display:none;position:absolute;bottom:calc(100% + 8px);right:0;background:var(--card);border:1px solid var(--border);border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,.18);min-width:200px;padding:4px 0;z-index:301}
+.empty-state-menu .search-dd-item{display:flex;align-items:center;justify-content:space-between;gap:10px}
+
+/* ═══ EMPTY-STATE OPTION 2: full data + blur overlay ═══ */
+body.preview-empty-overlay #content{filter:blur(5px);pointer-events:none;user-select:none;transition:filter .2s}
+.es-overlay{display:none;position:fixed;inset:0;z-index:250;align-items:center;justify-content:center}
+body.preview-empty-overlay .es-overlay{display:flex}
+.es-overlay-backdrop{position:fixed;inset:0;background:rgba(10,20,40,.22)}
+.es-overlay-card{position:relative;z-index:1;background:#fff;border-radius:16px;padding:36px 40px;box-shadow:0 24px 64px rgba(0,0,0,.3);text-align:center;max-width:380px}
+.es-overlay-icon{width:52px;height:52px;border-radius:50%;background:var(--blue-light);display:flex;align-items:center;justify-content:center;margin:0 auto 16px}
+.es-overlay-icon svg{width:26px;height:26px;stroke:var(--brand);fill:none;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}
+.es-overlay-title{font-size:17px;font-weight:800;color:var(--nav);margin-bottom:8px;line-height:1.4}
+.es-overlay-sub{font-size:13px;color:var(--text-2);margin-bottom:22px;line-height:1.5}
+.es-overlay-cta{background:var(--brand);color:#fff;font-weight:700;font-size:13.5px;padding:12px 26px;border-radius:8px;border:none;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:background .2s}
+.es-overlay-cta:hover{background:#0B3FE0}
+
 /* ═══ TOAST ═══ */
 .toast{background:var(--nav);color:#fff;font-size:12.5px;font-weight:600;padding:11px 16px;border-radius:10px;box-shadow:var(--shadow-lg);display:flex;align-items:center;gap:8px;animation:toast-in .3s var(--ease-out)}
 .toast svg{width:14px;height:14px;stroke:var(--teal);fill:none;stroke-width:2.5;stroke-linecap:round;flex-shrink:0}
@@ -912,6 +944,7 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
         <!-- Card 1: Act Now — Approvals -->
         <div class="sit-card sit-urgent no-circle" style="background:linear-gradient(135deg,var(--nav) 0%,#0B3FE0 100%)" onclick="goDetail('view-pending','Pending Approval',event)">
           <span class="sit-badge"><span class="sit-dot"></span>Act Now — Approvals</span>
+          <div class="es-real">
           <div class="sit-val" data-count="15">0</div>
           <div class="sit-lbl">DAs are waiting for your sign-off.</div>
           <div class="sit-sub">Oldest waiting 6 days · USD 172K total value</div>
@@ -922,45 +955,73 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
               <span style="font-size:12px;font-weight:700;color:rgba(255,255,255,.75)">2 FDA / 2 SDA / 1 VI</span>
             </div>
           </div>
+          </div>
+          <div class="es-empty">
+            <div class="es-empty-icon" style="background:rgba(255,255,255,.15)"><svg viewBox="0 0 24 24" stroke="#fff"><path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.45 5.11L2 12v6a2 2 0 002 2h16a2 2 0 002-2v-6l-3.45-6.89A2 2 0 0016.76 4H7.24a2 2 0 00-1.79 1.11z"/></svg></div>
+            <div class="es-empty-title" style="color:#fff">No port calls yet</div>
+            <div class="es-empty-sub" style="color:rgba(255,255,255,.7)">Approvals will show up here once a port call is added.</div>
+          </div>
         </div>
         <!-- Card 2: Pending Appointments -->
         <div class="sit-card" onclick="goDetail('view-appt','Pending Appointment',event)">
           <span class="sit-badge"><span class="sit-dot" style="color:var(--orange)"></span>Pending Appointments</span>
+          <div class="es-real">
           <div class="sit-val" data-count="8">0</div>
           <div class="sit-lbl">Vessels arriving without an agent appointed.</div>
           <div class="sit-sub">1 overdue · 2 due today · 5 within 16 days</div>
           <div class="sit-actions">
             <button class="sit-btn sit-btn-outline" onclick="event.stopPropagation();goDetail('view-appt','Pending Appointment',event)">Assign agents</button>
           </div>
+          </div>
+          <div class="es-empty">
+            <div class="es-empty-icon"><svg viewBox="0 0 24 24"><path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.45 5.11L2 12v6a2 2 0 002 2h16a2 2 0 002-2v-6l-3.45-6.89A2 2 0 0016.76 4H7.24a2 2 0 00-1.79 1.11z"/></svg></div>
+            <div class="es-empty-title">No vessels onboarded yet</div>
+            <div class="es-empty-sub">Add a port call to start assigning agents.</div>
+          </div>
         </div>
         <!-- Overdue DAs -->
         <div class="sit-card" onclick="goDetail('view-overdue','Overdue DAs',event)">
           <span class="sit-badge"><span class="sit-dot" style="color:var(--orange)"></span>Overdue</span>
+          <div class="es-real">
           <div class="sit-val" data-count="5">0</div>
           <div class="sit-lbl">FDAs not received from agents past their deadline.</div>
           <div class="sit-sub">oldest is 12 days overdue</div>
           <div class="sit-actions">
             <button class="sit-btn sit-btn-outline" onclick="event.stopPropagation();goDetail('view-overdue','Overdue DAs',event)">Chase Agent</button>
           </div>
+          </div>
+          <div class="es-empty">
+            <div class="es-empty-icon"><svg viewBox="0 0 24 24"><path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.45 5.11L2 12v6a2 2 0 002 2h16a2 2 0 002-2v-6l-3.45-6.89A2 2 0 0016.76 4H7.24a2 2 0 00-1.79 1.11z"/></svg></div>
+            <div class="es-empty-title">No port calls yet</div>
+            <div class="es-empty-sub">Overdue FDAs will appear here after your first port call.</div>
+          </div>
         </div>
         <!-- DAs Due in 5 Days -->
         <div class="sit-card" onclick="goDetail('view-overdue','Due Soon',event)">
           <span class="sit-badge"><span class="sit-dot" style="color:var(--orange)"></span>Due Soon</span>
+          <div class="es-real">
           <div class="sit-val" data-count="7">0</div>
           <div class="sit-lbl">DAs due in the next 5 days</div>
           <div class="sit-sub">Based on Port Call Timebar configuration</div>
           <div class="sit-actions">
             <button class="sit-btn sit-btn-outline" onclick="event.stopPropagation();goDetail('view-overdue','Due Soon',event)">View Due DAs</button>
           </div>
+          </div>
+          <div class="es-empty">
+            <div class="es-empty-icon"><svg viewBox="0 0 24 24"><path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.45 5.11L2 12v6a2 2 0 002 2h16a2 2 0 002-2v-6l-3.45-6.89A2 2 0 0016.76 4H7.24a2 2 0 00-1.79 1.11z"/></svg></div>
+            <div class="es-empty-title">No port calls yet</div>
+            <div class="es-empty-sub">Upcoming due dates will appear once a port call is added.</div>
+          </div>
         </div>
       </div>
 
       <div class="situation-stats-row" style="grid-template-columns:repeat(4,1fr);gap:20px">
-        <div class="card reveal" style="grid-column:span 2;align-self:start">
+        <div class="card reveal" style="grid-column:span 2">
           <div class="tile-hdr">
             <div class="tile-title">In Process at GeoConnect <span style="font-size:11px;font-weight:400;color:var(--text-2)">· June 2026</span></div>
             <span style="font-size:12px;font-weight:600;color:var(--text-2);cursor:pointer" onclick="goDetail('view-pending','Query Listing',event)">More details</span>
           </div>
+          <div class="es-real">
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:start">
             <div class="sit-card" style="box-shadow:none;cursor:pointer;background:var(--bg);border-color:transparent" onclick="goDetail('view-pending','Under Process',event)">
               <span class="sit-badge"><span class="sit-dot" style="color:var(--orange)"></span>Under Process</span>
@@ -983,12 +1044,18 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
             <span style="font-size:11.5px;color:var(--text-2)">3 queries in process at GeoConnect</span>
             <span style="font-size:12px;font-weight:700;color:var(--brand);cursor:pointer" onclick="goDetail('view-pending','Query Listing',event)">Oldest query: 6 days →</span>
           </div>
+          </div>
+          <div class="es-empty">
+            <div class="es-empty-icon"><svg viewBox="0 0 24 24"><path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.45 5.11L2 12v6a2 2 0 002 2h16a2 2 0 002-2v-6l-3.45-6.89A2 2 0 0016.76 4H7.24a2 2 0 00-1.79 1.11z"/></svg></div>
+            <div class="es-empty-title">No queries yet</div>
+            <div class="es-empty-sub">Nothing to track until a port call is onboarded at GeoConnect.</div>
+          </div>
         </div>
 
-        <div class="card reveal" style="display:flex;flex-direction:column;grid-column:span 1;align-self:start">
+        <div class="card reveal" style="display:flex;flex-direction:column;grid-column:span 1">
           <div class="tile-hdr">
             <div class="tile-title">Anomalies</div>
-            <div style="display:flex;align-items:center;gap:8px">
+            <div class="es-real" style="display:flex;align-items:center;gap:8px">
               <button class="anomaly-nav-btn" onclick="slideAnomaly(-1)" aria-label="Previous anomaly">
                 <svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:var(--text-2);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><polyline points="15 18 9 12 15 6"/></svg>
               </button>
@@ -1001,6 +1068,7 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
               </button>
             </div>
           </div>
+          <div class="es-real">
           <div class="anomaly-slider" id="anomalySlider">
             <div class="anomaly-slide active">
               <div class="anomaly-content">
@@ -1033,11 +1101,18 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
               <div class="anomaly-note">Peak season surcharge not previously applied.</div>
             </div>
           </div>
+          </div>
+          <div class="es-empty">
+            <div class="es-empty-icon"><svg viewBox="0 0 24 24"><path d="M12 9v4m0 4h.01M10.3 3.9L2.8 17a2 2 0 001.7 3h15a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z"/></svg></div>
+            <div class="es-empty-title">No data to analyze yet</div>
+            <div class="es-empty-sub">Anomalies are detected once port calls start generating cost data.</div>
+          </div>
         </div>
 
         <!-- MILESTONE CARD (moved next to Anomalies) -->
-        <div class="card sit-milestone reveal" style="grid-column:span 1;padding:20px;border-radius:16px;align-self:start">
+        <div class="card sit-milestone reveal" style="grid-column:span 1;padding:20px;border-radius:16px">
           <span class="sit-badge sit-gold" style="position:relative;z-index:1"><span class="sit-dot"></span>Milestone — June 2026</span>
+          <div class="es-real">
           <div style="display:flex;align-items:center;gap:14px;margin-top:14px;position:relative;z-index:1">
             <div class="milestone-icon" style="width:60px;height:60px;border-radius:12px">
               <svg viewBox="0 0 24 24" style="width:34px;height:34px"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
@@ -1052,6 +1127,12 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
           <div class="milestone-chips" style="position:relative;z-index:1;margin-top:10px">
             <span class="milestone-chip" style="padding:7px 13px;font-size:12.5px">▲ 8 vs last month</span>
             <span class="milestone-chip" style="padding:7px 13px;font-size:12.5px">🔥 12-day streak</span>
+          </div>
+          </div>
+          <div class="es-empty" style="position:relative;z-index:1">
+            <div class="es-empty-icon" style="background:rgba(255,255,255,.6)"><svg viewBox="0 0 24 24" style="stroke:#92400E"><path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.45 5.11L2 12v6a2 2 0 002 2h16a2 2 0 002-2v-6l-3.45-6.89A2 2 0 0016.76 4H7.24a2 2 0 00-1.79 1.11z"/></svg></div>
+            <div class="es-empty-title" style="color:#78350F">No milestones yet</div>
+            <div class="es-empty-sub" style="color:#92400E">Highlights appear once you start approving DAs.</div>
           </div>
         </div>
       </div>
@@ -1081,6 +1162,7 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
           </div>
         </div>
         <div class="dapipe-body">
+          <div class="es-real">
           <div class="dapipe-stages-wrap">
           <div class="dapipe-stages">
             <div class="dapipe-stage" onclick="goDetail('view-appt','Pending Appointment',event)">
@@ -1122,6 +1204,13 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
           </div>
           </div>
           <div class="dapipe-alert"><strong style="color:var(--text)">Bottleneck alert:</strong> 15 DAs stuck in approval stage — oldest for 6 days. 5 FDAs overdue totalling $151K. Resolving approvals first unblocks the most value.</div>
+          </div>
+          <div class="es-empty">
+            <div class="es-empty-icon"><svg viewBox="0 0 24 24"><path d="M3 12h4l2 5 4-10 2 5h6"/></svg></div>
+            <div class="es-empty-title">No onboarding yet</div>
+            <div class="es-empty-sub">Add your first port call to see disbursement accounts move through this pipeline.</div>
+            <button class="es-empty-cta" onclick="event.stopPropagation();fireToast('Opening New Port Call…',event)">+ Add Port Call</button>
+          </div>
         </div>
       </div>
 
@@ -1129,6 +1218,7 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
       <div class="situation-stats-row" style="grid-template-columns:1fr 1fr 1fr">
         <div class="card reveal">
           <div class="tile-hdr"><div class="tile-title">By Category <span style="font-size:11px;font-weight:400;color:var(--text-2)">· YTD</span></div></div>
+          <div class="es-real">
           <div class="health-tiles">
             <div class="health-tile">
               <div class="health-tile-top"><span class="health-tile-lbl">YTD Savings</span><div class="health-tile-icon" style="background:#fff;color:#9BAABF"><svg class="health-tile-default" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg class="health-tile-arrow" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div></div>
@@ -1150,6 +1240,12 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
               <div class="health-tile-val">$50K</div>
               <div class="health-tile-bottom"><div class="health-tile-bar"><div class="health-tile-bar-fill" style="--w:33%;background:#6B9BFF"></div></div><span class="health-tile-trend pos">★ Direct contract</span></div>
             </div>
+          </div>
+          </div>
+          <div class="es-empty">
+            <div class="es-empty-icon"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
+            <div class="es-empty-title">No savings recorded yet</div>
+            <div class="es-empty-sub">Savings are tracked once port calls with DAs are onboarded.</div>
           </div>
         </div>
 
@@ -1201,6 +1297,7 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
               </div>
             </div>
           </div>
+          <div class="es-real">
           <div style="height:18px;border-radius:99px;overflow:hidden;display:flex;gap:2px;margin-bottom:18px;flex-shrink:0">
             <div style="flex:85.2;background:#1852FE"></div><div style="flex:8.1;background:#4274FF"></div><div style="flex:4.1;background:#0A3BC4"></div><div style="flex:2.0;background:#6B9BFF"></div><div style="flex:0.6;background:#B8CFFE"></div>
           </div>
@@ -1213,15 +1310,28 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
           </div>
           <div id="typeNoDataNote" style="display:none;margin-top:10px;font-size:12px;color:var(--text-3);text-align:center"></div>
           <div style="margin-top:16px;padding-top:10px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-shrink:0"><span style="font-size:11px;color:var(--text-2)" id="typeFooterLabel">Saving per Port Call</span><span style="font-size:20px;font-weight:800;color:var(--text)" id="typeFooterAmount">$556</span></div>
+          </div>
+          <div class="es-empty">
+            <div class="es-empty-icon"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
+            <div class="es-empty-title">No savings for this type yet</div>
+            <div class="es-empty-sub">This breakdown fills in once port calls are onboarded.</div>
+          </div>
         </div>
 
         <div class="card reveal">
           <div class="tile-hdr"><div class="tile-title">By Agent</div><span style="font-size:12px;font-weight:600;color:var(--text-2);cursor:pointer" onclick="openAgentListPanel()">More details</span></div>
+          <div class="es-real">
           <div class="health-tiles">
             <div class="health-tile"><div class="health-tile-top"><span class="health-tile-lbl">ABC Test Shipping</span><div class="health-tile-icon" style="background:#fff;color:#9BAABF"><svg class="health-tile-default" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg><svg class="health-tile-arrow" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div></div><div class="health-tile-val">$307K</div><div class="health-tile-bottom"><div class="health-tile-bar"><div class="health-tile-bar-fill" style="--w:100%;background:#1852FE"></div></div><span class="health-tile-trend pos">★ Top agent</span></div></div>
             <div class="health-tile"><div class="health-tile-top"><span class="health-tile-lbl">Keppel Smit</span><div class="health-tile-icon" style="background:#fff;color:#9BAABF"><svg class="health-tile-default" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg><svg class="health-tile-arrow" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div></div><div class="health-tile-val">$37K</div><div class="health-tile-bottom"><div class="health-tile-bar"><div class="health-tile-bar-fill" style="--w:12%;background:#4274FF"></div></div><span class="health-tile-trend pos">▲ 2nd place</span></div></div>
             <div class="health-tile"><div class="health-tile-top"><span class="health-tile-lbl">Test Vendor 22</span><div class="health-tile-icon" style="background:#fff;color:#9BAABF"><svg class="health-tile-default" viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg><svg class="health-tile-arrow" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div></div><div class="health-tile-val">$24K</div><div class="health-tile-bottom"><div class="health-tile-bar"><div class="health-tile-bar-fill" style="--w:8%;background:#0A3BC4"></div></div><span class="health-tile-trend pos">▲ 3rd place</span></div></div>
             <div class="health-tile"><div class="health-tile-top"><span class="health-tile-lbl">Test Vendor -A</span><div class="health-tile-icon" style="background:#fff;color:#9BAABF"><svg class="health-tile-default" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg><svg class="health-tile-arrow" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div></div><div class="health-tile-val">$12K</div><div class="health-tile-bottom"><div class="health-tile-bar"><div class="health-tile-bar-fill" style="--w:4%;background:#6B9BFF"></div></div><span class="health-tile-trend pos">▲ 4th place</span></div></div>
+          </div>
+          </div>
+          <div class="es-empty">
+            <div class="es-empty-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2M9 11a4 4 0 100-8 4 4 0 000 8zM23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg></div>
+            <div class="es-empty-title">No agents onboarded yet</div>
+            <div class="es-empty-sub">Rankings appear once agents are linked to port calls.</div>
           </div>
         </div>
       </div>
@@ -1235,6 +1345,7 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
               <div class="tile-title">Contractual Discount <span style="font-size:11px;font-weight:400;color:var(--text-2)">· MTD</span></div>
               <span style="font-size:11px;color:var(--success);font-weight:600;background:#EDFAF4;padding:2px 8px;border-radius:99px">▲ 8.2%</span>
             </div>
+            <div class="es-real">
             <!-- Arc gauge + total -->
             <div style="display:flex;align-items:center;gap:18px;margin-bottom:18px">
               <div style="position:relative;width:88px;height:88px;flex-shrink:0">
@@ -1297,6 +1408,12 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
                 <span style="font-size:10px;background:#EDFAF4;color:var(--success);font-weight:700;padding:2px 6px;border-radius:99px">10%</span>
               </div>
             </div>
+            </div>
+            <div class="es-empty">
+              <div class="es-empty-icon"><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+              <div class="es-empty-title">No contracts onboarded yet</div>
+              <div class="es-empty-sub">Add a contract and port call to start tracking discounts.</div>
+            </div>
           </div>
 
           <div class="pi-card">
@@ -1307,6 +1424,7 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
               </div>
               <span class="pi-card-pill" style="color:var(--teal-dark);background:var(--teal-bg)">Peak: Thu–Fri</span>
             </div>
+            <div class="es-real">
             <div class="pi-caption" style="font-size:12.5px;color:var(--text-2)">
               <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
               Based on confirmed vessel ETAs, agent avg submission times, and DA type distribution
@@ -1337,6 +1455,12 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
               <span>~47 DAs forecast this week · $138K estimated value</span>
               <span class="pi-footer-link" onclick="fireToast('Opening full forecast',event)">Full forecast →</span>
             </div>
+            </div>
+            <div class="es-empty">
+              <div class="es-empty-icon"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
+              <div class="es-empty-title">No vessels onboarded yet</div>
+              <div class="es-empty-sub">Add a port call with a vessel ETA to forecast approval workload.</div>
+            </div>
           </div>
         </div>
       </div>
@@ -1357,6 +1481,8 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
               </div>
             </div>
           </div>
+          
+          <div class="es-real">
           <div id="chart-subtitle" style="font-size:11.5px;color:var(--text-2);margin-top:2px;margin-bottom:4px">Weekly totals across all vessels and ports</div>
           <svg viewBox="0 0 640 190" style="width:100%;height:auto;margin-top:6px" id="main-chart">
             <defs><linearGradient id="grad-main" x1="0" y1="0" x2="0" y2="1">
@@ -1387,11 +1513,18 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
             <div class="cfoot-item"><span class="cfoot-val" id="stat-approved" style="color:#147638">27</span><span class="cfoot-lbl" id="stat-approved-lbl">Approved this month</span></div>
             <div class="cfoot-item"><span class="cfoot-val" id="stat-rejected" style="color:var(--slate)">3</span><span class="cfoot-lbl" id="stat-rejected-lbl">Rejected this month</span></div>
           </div>
+          </div>
+          <div class="es-empty">
+            <div class="es-empty-icon"><svg viewBox="0 0 24 24"><path d="M4 19V9M12 19V5M20 19v-6"/></svg></div>
+            <div class="es-empty-title">No onboarding yet</div>
+            <div class="es-empty-sub">The chart will populate once your first port call is added.</div>
+          </div>
         </div>
 
         <div style="display:flex;flex-direction:column;gap:14px">
           <div class="card reveal">
             <div class="tile-hdr"><div class="tile-title">Activity Timeline</div></div>
+            <div class="es-real">
             <div class="timeline">
               <div class="tl-item"><span class="tl-dot ok"></span><div class="tl-title">TST2600108 approved</div><div class="tl-sub">$9,120 · by Sahithi Alluru</div><div class="tl-time">2 hours ago</div></div>
               <div class="tl-item"><span class="tl-dot new"></span><div class="tl-title">TST2600144 port call created</div><div class="tl-sub">Omicron West · Singapore</div><div class="tl-time">4 hours ago</div></div>
@@ -1400,6 +1533,12 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
               <div class="tl-item"><span class="tl-dot no"></span><div class="tl-title">TST2600099 rejected</div><div class="tl-sub">$4,050 · amount mismatch</div><div class="tl-time">1 day ago</div></div>
               <div class="tl-item"><span class="tl-dot ok"></span><div class="tl-title">TST2600096 approved</div><div class="tl-sub">$21,300 · by Sahithi Alluru</div><div class="tl-time">1 day ago</div></div>
               <div class="tl-item"><span class="tl-dot new"></span><div class="tl-title">TST2600141 DA submitted</div><div class="tl-sub">$6,850 · Straits Agency · Rotterdam</div><div class="tl-time">2 days ago</div></div>
+            </div>
+            </div>
+            <div class="es-empty">
+              <div class="es-empty-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+              <div class="es-empty-title">No activity yet</div>
+              <div class="es-empty-sub">Nothing to show until onboarding — activity appears once port calls are added.</div>
             </div>
           </div>
         </div>
@@ -1422,44 +1561,72 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
           <!-- Available Balance — main card (navy/brand, like sit-urgent) -->
           <div class="sit-card" style="gap:7px;background:linear-gradient(135deg,var(--nav) 0%,#1C4ED8 100%);border-color:transparent;color:#fff;cursor:default">
             <span class="sit-badge" style="color:rgba(255,255,255,.8)"><span class="sit-dot"></span>Available Balance</span>
+            <div class="es-real">
             <div class="sit-val" style="color:#fff">$32,005.36</div>
             <div class="sit-lbl" style="color:rgba(255,255,255,.9)">Cash across all agents &amp; vendors.</div>
             <div class="sit-sub" style="color:rgba(255,255,255,.65)">As of June 29, 2026</div>
             <div class="sit-actions">
               <button class="sit-btn" style="background:#fff;color:var(--nav)" onclick="fireToast('Opening balance breakdown',event)">View breakdown</button>
             </div>
+            </div>
+            <div class="es-empty">
+              <div class="es-empty-icon" style="background:rgba(255,255,255,.15)"><svg viewBox="0 0 24 24" stroke="#fff"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div>
+              <div class="es-empty-title" style="color:#fff">No onboarding yet</div>
+              <div class="es-empty-sub" style="color:rgba(255,255,255,.7)">Add a port call and agent accounts to see available balance.</div>
+            </div>
           </div>
 
           <!-- Under Approval — amber/warn -->
           <div class="sit-card" style="gap:7px">
             <span class="sit-badge"><span class="sit-dot" style="color:var(--orange)"></span>Under Approval</span>
+            <div class="es-real">
             <div class="sit-val">$48,650</div>
             <div class="sit-lbl">DAs awaiting financial sign-off.</div>
             <div class="sit-sub">15 items · oldest 6 days · $172K</div>
             <div class="sit-actions">
               <button class="sit-btn sit-btn-orange" onclick="fireToast('Opening approval queue',event)"><svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round"><polyline points="20 6 9 17 4 12"/></svg>Review &amp; approve</button>
             </div>
+            </div>
+            <div class="es-empty" style="padding:20px 8px">
+              <div class="es-empty-icon"><svg viewBox="0 0 24 24"><path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.45 5.11L2 12v6a2 2 0 002 2h16a2 2 0 002-2v-6l-3.45-6.89A2 2 0 0016.76 4H7.24a2 2 0 00-1.79 1.11z"/></svg></div>
+              <div class="es-empty-title">No onboarding yet</div>
+              <div class="es-empty-sub">Financial approvals appear once a port call is added.</div>
+            </div>
           </div>
 
           <!-- In Process — teal/info -->
           <div class="sit-card" style="gap:7px">
             <span class="sit-badge"><span class="sit-dot" style="color:var(--teal-dark)"></span>In Process</span>
+            <div class="es-real">
             <div class="sit-val">$237,409</div>
             <div class="sit-lbl">Active disbursements in progress.</div>
             <div class="sit-sub">34 port calls · 8 ports · largest $42K</div>
             <div class="sit-actions">
               <button class="sit-btn sit-btn-outline" onclick="fireToast('Opening port calls',event)">View breakdown</button>
             </div>
+            </div>
+            <div class="es-empty" style="padding:20px 8px">
+              <div class="es-empty-icon"><svg viewBox="0 0 24 24"><path d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48l2.83-2.83"/></svg></div>
+              <div class="es-empty-title">No port calls onboarded yet</div>
+              <div class="es-empty-sub">In-progress disbursements will show up here once added.</div>
+            </div>
           </div>
 
           <!-- Projected Balance — red only in dot + button -->
           <div class="sit-card" style="gap:7px">
             <span class="sit-badge"><span class="sit-dot" style="color:var(--danger)"></span>Projected Balance — Alert</span>
+            <div class="es-real">
             <div class="sit-val">–$277,748</div>
             <div class="sit-lbl">Goes negative after all commitments.</div>
             <div class="sit-sub">$309K shortfall · act before month-end</div>
             <div class="sit-actions">
               <button class="sit-btn" style="background:var(--danger);color:#fff" onclick="fireToast('Opening cash forecast',event)"><svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:#fff;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round"><polyline points="20 6 9 17 4 12"/></svg>Review forecast</button>
+            </div>
+            </div>
+            <div class="es-empty" style="padding:20px 8px">
+              <div class="es-empty-icon"><svg viewBox="0 0 24 24"><path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.45 5.11L2 12v6a2 2 0 002 2h16a2 2 0 002-2v-6l-3.45-6.89A2 2 0 0016.76 4H7.24a2 2 0 00-1.79 1.11z"/></svg></div>
+              <div class="es-empty-title">No onboarding yet</div>
+              <div class="es-empty-sub">A cash forecast appears once port calls are onboarded.</div>
             </div>
           </div>
 
@@ -1476,6 +1643,7 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
               </div>
             </div>
             <div id="cur-label" style="font-size:11px;color:var(--text-2);margin-bottom:8px">June 2026 disbursements · $equivalent</div>
+            <div class="es-real">
             <div id="cur-mtd-data" class="sbar-wrap">
               <div class="sbar-row"><div class="sbar-lbl" style="display:flex;align-items:center;gap:4px"><span style="width:7px;height:7px;border-radius:50%;background:#1852FE;display:inline-block"></span>USD</div><div class="sbar-track"><div class="sbar-fill" style="width:50%;background:#1852FE"></div></div><div style="display:flex;flex-direction:column;align-items:flex-end;width:72px;flex-shrink:0"><span class="sbar-val">$1.3M</span><span style="font-size:10px;color:var(--text-3)">50.0%</span></div></div>
               <div class="sbar-row"><div class="sbar-lbl" style="display:flex;align-items:center;gap:4px"><span style="width:7px;height:7px;border-radius:50%;background:#3B81F6;display:inline-block"></span>EUR</div><div class="sbar-track"><div class="sbar-fill" style="width:17.3%;background:#3B81F6"></div></div><div style="display:flex;flex-direction:column;align-items:flex-end;width:72px;flex-shrink:0"><span class="sbar-val">$466K</span><span style="font-size:10px;color:var(--text-3)">17.3%</span></div></div>
@@ -1502,6 +1670,12 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
               <span style="font-size:11px;color:var(--text-2)" id="cur-total-lbl">Total MTD disbursements</span>
               <span style="font-size:14px;font-weight:700;color:var(--text)" id="cur-total-val">$2,693,000</span>
             </div>
+            </div>
+            <div class="es-empty">
+              <div class="es-empty-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
+              <div class="es-empty-title">No onboarding yet</div>
+              <div class="es-empty-sub">The currency breakdown fills in once a port call is added.</div>
+            </div>
           </div>
 
         <!-- Overdue Balance Recovery -->
@@ -1514,6 +1688,7 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
               <span class="fi-pill" style="color:var(--danger);background:#FEF1F2">$151K at risk</span>
             </div>
             <div class="fi-divider"></div>
+            <div class="es-real">
             <div style="text-align:right;padding:10px 20px;border-bottom:1px solid var(--border);font-size:12px;color:var(--text-2);white-space:nowrap">
               Recovered YTD <strong style="color:#147638">$292,560</strong> · Pending <strong style="color:var(--text)">$48,320</strong>
             </div>
@@ -1569,6 +1744,12 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
               <span>$151K total · 4 agents · oldest 12 days</span>
               <span class="fi-footer-link" onclick="fireToast('Chasing all 4 overdue agents',event)">Chase all →</span>
             </div>
+            </div>
+            <div class="es-empty">
+              <div class="es-empty-icon"><svg viewBox="0 0 24 24"><path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.45 5.11L2 12v6a2 2 0 002 2h16a2 2 0 002-2v-6l-3.45-6.89A2 2 0 0016.76 4H7.24a2 2 0 00-1.79 1.11z"/></svg></div>
+              <div class="es-empty-title">No onboarding yet</div>
+              <div class="es-empty-sub">Overdue agent balances will show up once port calls are added.</div>
+            </div>
           </div>
         </div>
 
@@ -1577,6 +1758,7 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
         <div class="fi-card" style="padding:0;overflow:hidden">
           <div class="cpc-topbar">Cash Projection Calendar
           </div>
+          <div class="es-real">
           <div class="cpc-toolbar">
             <div class="cpc-nav">
               <button onclick="cpcNavMonth('prev',event)">‹</button>
@@ -1745,6 +1927,12 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
           </div>
           <div class="cpc-scroll" id="cpcListView" style="display:none;padding:10px 16px"></div>
           <div id="cpcQuarterView" style="display:none;padding:16px"></div>
+          </div>
+          <div class="es-empty" style="padding:48px 20px">
+            <div class="es-empty-icon"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
+            <div class="es-empty-title">No onboarding yet</div>
+            <div class="es-empty-sub">PDA, SDA, FDA and VI entries will appear once port calls are scheduled.</div>
+          </div>
         </div>
 
         <!-- Analytics Modules -->
@@ -1772,6 +1960,7 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
         </div>
       </div>
       <div class="table-card" id="pending-list">
+        <div class="es-real">
         <div id="pending-tabs" class="filter-tabs">
           <div class="filter-tab active" onclick="filterRows('pending',event.target,'all')">All (15)</div>
           <div class="filter-tab" onclick="filterRows('pending',event.target,'PDA')">PDA (3)</div>
@@ -1803,6 +1992,13 @@ html,body{width:100%;height:100%;font-family:'Gilroy','Helvetica Neue',system-ui
             <tr data-type="PDA"><td class="pc-id">TST2600136</td><td><span class="da-tier pda">PDA</span></td><td>Atlantic Hope</td><td>Port Klang</td><td>Straits Agency</td><td class="num">$8,900</td><td class="mid"><span class="da-pill info">1 day</span></td><td class="actions"><button class="btn-mini" style="background:var(--blue-light);color:var(--brand);border:1px solid var(--brand)" onclick="openSidePanel({title:'TST2600136',pc:'TST2600136',type:'PDA',vessel:'Atlantic Hope',port:'Port Klang',agent:'Straits Agency',amount:'USD 8,900',days:'1 day',summary:'PDA just submitted. Vessel arriving in 3 days.'});event.stopPropagation()">View →</button></td></tr>
           </tbody>
         </table></div>
+        </div>
+        <div class="es-empty">
+          <div class="es-empty-icon"><svg viewBox="0 0 24 24"><path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.45 5.11L2 12v6a2 2 0 002 2h16a2 2 0 002-2v-6l-3.45-6.89A2 2 0 0016.76 4H7.24a2 2 0 00-1.79 1.11z"/></svg></div>
+          <div class="es-empty-title">No onboarding yet</div>
+          <div class="es-empty-sub">Nothing to approve until your first port call is added.</div>
+          <button class="es-empty-cta" onclick="fireToast('Opening New Port Call…',event)">+ Add Port Call</button>
+        </div>
       </div>
     </div>
 
@@ -2330,10 +2526,12 @@ function switchDashTab(panel, tabEl){
   const fin = document.getElementById('dash-panel-financial');
   if(panel === 'disbursements'){
     dis.style.display = 'flex'; fin.style.display = 'none';
+    if(document.body.classList.contains('preview-empty')) lockEsHeightsIn(dis);
   } else {
     dis.style.display = 'none'; fin.style.display = 'flex';
     syncFinCardHeight();
     setTimeout(cpcInitDefaultView, 0);
+    if(document.body.classList.contains('preview-empty')) lockEsHeightsIn(fin);
   }
 }
 function syncFinCardHeight(){
@@ -2393,40 +2591,82 @@ function cashHover(idx){
 
 // ── Chart period switcher ──
 (function(){
-  const CHART = {
-    week: {
-      labels: ['W1','W2','W3','W4','W5','W6','W7','W8'],
-      xs:     [62, 142, 222, 302, 382, 462, 542, 618],
-      sub1:   [104, 90, 97, 69, 79, 55, 62, 41],   // submitted (lower y = higher)
-      sub2:   [125, 111, 118, 97, 104, 83, 90, 69], // approved
-      val1:   [16, 20, 18, 26, 23, 30, 28, 34],
-      val2:   [10, 14, 12, 18, 16, 22, 20, 26],
-      disbursed: '$341K', approved: '27', rejected: '3',
-      subText: 'Weekly totals across all vessels and ports',
-      approvedLbl: 'Approved this week', rejectedLbl: 'Rejected this week'
-    },
-    month: {
-      labels: ['Jan','Feb','Mar','Apr','May','Jun'],
-      xs:     [70, 182, 294, 406, 518, 618],
-      sub1:   [111, 90, 76, 83, 62, 48],
-      sub2:   [132, 111, 97, 104, 83, 69],
-      val1:   [14, 20, 24, 22, 28, 32],
-      val2:   [8, 14, 18, 16, 22, 26],
-      disbursed: '$1.4M', approved: '112', rejected: '9',
-      subText: 'Monthly disbursement submissions vs approvals',
-      approvedLbl: 'Approved this year', rejectedLbl: 'Rejected this year'
-    },
-    quarter: {
-      labels: ['Q1','Q2','Q3','Q4'],
-      xs:     [120, 306, 492, 618],
-      sub1:   [97, 76, 62, 41],
-      sub2:   [118, 97, 83, 62],
-      val1:   [18, 24, 28, 34],
-      val2:   [12, 18, 22, 28],
-      disbursed: '$4.1M', approved: '374', rejected: '28',
-      subText: 'Quarterly performance — submissions vs approvals',
-      approvedLbl: 'Approved (YTD)', rejectedLbl: 'Rejected (YTD)'
+  const MONTH_ABBR = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+  function evenXs(n){
+    if(n === 1) return [340];
+    const start = 62, end = 618;
+    return Array.from({length:n}, (_, i) => Math.round(start + i*(end-start)/(n-1)));
+  }
+
+  // Current month split into 7-day weeks (W1, W2, ...), each carrying its real date range for the tooltip.
+  function buildWeekData(){
+    const today = new Date();
+    const year = today.getFullYear(), month = today.getMonth();
+    const daysInMonth = new Date(year, month+1, 0).getDate();
+    const labels = [], ranges = [];
+    let start = 1, idx = 1;
+    while(start <= daysInMonth){
+      const end = Math.min(start+6, daysInMonth);
+      labels.push('W'+idx);
+      ranges.push(MONTH_ABBR[month]+' '+start+' – '+MONTH_ABBR[month]+' '+end);
+      start = end+1; idx++;
     }
+    const n = labels.length;
+    const SAMPLE_SUB1 = [104, 90, 97, 69, 79];
+    const SAMPLE_SUB2 = [125, 111, 118, 97, 104];
+    const SAMPLE_VAL1 = [16, 20, 18, 26, 23];
+    const SAMPLE_VAL2 = [10, 14, 12, 18, 16];
+    return {
+      labels, ranges, xs: evenXs(n),
+      sub1: SAMPLE_SUB1.slice(0,n), sub2: SAMPLE_SUB2.slice(0,n),
+      val1: SAMPLE_VAL1.slice(0,n), val2: SAMPLE_VAL2.slice(0,n),
+      disbursed: '$341K', approved: '27', rejected: '3',
+      subText: MONTH_ABBR[month]+' '+year+' — weekly totals across all vessels and ports',
+      approvedLbl: 'Approved this week', rejectedLbl: 'Rejected this week'
+    };
+  }
+
+  // Last 6 months ending at the current month.
+  function buildMonthData(){
+    const today = new Date();
+    const labels = [];
+    for(let i=5;i>=0;i--){
+      const d = new Date(today.getFullYear(), today.getMonth()-i, 1);
+      labels.push(MONTH_ABBR[d.getMonth()]);
+    }
+    return {
+      labels, xs: [70, 182, 294, 406, 518, 618],
+      sub1: [111, 90, 76, 83, 62, 48],
+      sub2: [132, 111, 97, 104, 83, 69],
+      val1: [14, 20, 24, 22, 28, 32],
+      val2: [8, 14, 18, 16, 22, 26],
+      disbursed: '$1.4M', approved: '112', rejected: '9',
+      subText: 'Last 6 months — disbursement submissions vs approvals',
+      approvedLbl: 'Approved this period', rejectedLbl: 'Rejected this period'
+    };
+  }
+
+  // The 4 quarters of the current year, each labelled with its year.
+  function buildQuarterData(){
+    const year = new Date().getFullYear();
+    return {
+      labels: ['Q1 '+year, 'Q2 '+year, 'Q3 '+year, 'Q4 '+year],
+      xs: [120, 306, 492, 618],
+      sub1: [97, 76, 62, 41],
+      sub2: [118, 97, 83, 62],
+      val1: [18, 24, 28, 34],
+      val2: [12, 18, 22, 28],
+      disbursed: '$4.1M', approved: '374', rejected: '28',
+      subText: 'Quarterly performance for '+year+' — submissions vs approvals',
+      approvedLbl: 'Approved (YTD)', rejectedLbl: 'Rejected (YTD)'
+    };
+  }
+
+  const CHART = {
+    week: buildWeekData(),
+    month: buildMonthData(),
+    quarter: buildQuarterData()
   };
 
   function polyline(xs, ys){
@@ -2474,7 +2714,9 @@ function cashHover(idx){
     line.setAttribute('x1', x); line.setAttribute('x2', x);
     line.style.display = 'block';
     const tip = document.getElementById('chartTooltip');
-    tip.innerHTML = '<div style="font-weight:700;margin-bottom:3px">'+d.labels[i]+'</div>'
+    const rangeLine = (d.ranges && d.ranges[i]) ? '<div style="color:rgba(255,255,255,.65);font-size:10.5px;margin-bottom:3px">'+d.ranges[i]+'</div>' : '';
+    tip.innerHTML = '<div style="font-weight:700;margin-bottom:1px">'+d.labels[i]+'</div>'
+      +rangeLine
       +'<div><span style="color:#8FB3FF">●</span> Submitted: '+d.val1[i]+'</div>'
       +'<div><span style="color:#5EEAD4">●</span> Approved: '+d.val2[i]+'</div>';
     tip.style.display = 'block';
@@ -2542,7 +2784,10 @@ function cashHover(idx){
       });
     });
   };
-  buildChartHoverPoints(CHART.week);
+  // Sync the initial static markup (hardcoded for the old 8-week dataset) to the real current-month week data.
+  const initialTab = document.querySelector('.period-tab.active') || document.querySelector('.period-tab');
+  if(initialTab) window.switchChartPeriod('week', initialTab);
+  else buildChartHoverPoints(CHART.week);
 })();
 
 // ── Role selector ──
@@ -2814,6 +3059,85 @@ document.addEventListener('DOMContentLoaded', function(){
   updateDate();
   setInterval(updateDate, 1000);
 })();
+
+// ── Empty-state preview toggle ──
+// Locks each container to its exact current (real-data) height (not just a
+// minimum) before switching to the empty state, so cards never grow or
+// shrink either way — the empty-state content just centers within that
+// fixed box. Panels hidden behind an inactive dash tab measure as 0px, so
+// lockEsHeightsIn() is also re-run on that panel the moment it's switched to.
+function lockEsHeightsIn(root){
+  const wasOn = document.body.classList.contains('preview-empty');
+  if(wasOn) document.body.classList.remove('preview-empty');
+  [...root.querySelectorAll('.es-empty')].forEach(el => {
+    const c = el.parentElement;
+    const h = c.getBoundingClientRect().height;
+    if(h > 0){
+      c.style.height = h + 'px';
+      c.style.overflow = 'hidden';
+    }
+  });
+  if(wasOn) document.body.classList.add('preview-empty');
+}
+// ── Empty state menu (Off / Option 1 / Option 2) ──
+let emptyStateMode = 'off';
+function toggleEmptyStateMenu(){
+  const menu = document.getElementById('emptyStateMenu');
+  menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+}
+document.addEventListener('click', function(e){
+  const menu = document.getElementById('emptyStateMenu');
+  const trigger = document.getElementById('emptyStateTrigger');
+  if(menu && menu.style.display === 'block' && !menu.contains(e.target) && !trigger.contains(e.target)){
+    menu.style.display = 'none';
+  }
+});
+function selectEmptyStateOption(mode){
+  document.getElementById('emptyStateMenu').style.display = 'none';
+  if(emptyStateMode === 'option1'){
+    document.body.classList.remove('preview-empty');
+    [...document.querySelectorAll('.es-empty')].forEach(el => {
+      const c = el.parentElement;
+      c.style.height = ''; c.style.overflow = '';
+    });
+  }
+  document.body.classList.remove('preview-empty-overlay');
+  emptyStateMode = mode;
+  document.getElementById('chk-option1').style.display = mode === 'option1' ? 'inline' : 'none';
+  document.getElementById('chk-option2').style.display = mode === 'option2' ? 'inline' : 'none';
+  document.getElementById('chk-option-off').style.display = mode === 'off' ? 'inline' : 'none';
+  const trigger = document.getElementById('emptyStateTrigger');
+  trigger.classList.toggle('on', mode !== 'off');
+  if(mode === 'option1'){
+    lockEsHeightsIn(document);
+    document.body.classList.add('preview-empty');
+  } else if(mode === 'option2'){
+    document.body.classList.add('preview-empty-overlay');
+  }
+}
 </script>
+<div style="position:fixed;right:20px;bottom:20px;z-index:300">
+  <div class="empty-preview-toggle" id="emptyStateTrigger" onclick="event.stopPropagation();toggleEmptyStateMenu()" title="Preview empty-state treatments">
+    <span class="dot"></span><span class="epw-label">Empty state</span>
+    <svg viewBox="0 0 24 24" style="width:11px;height:11px;stroke:#fff;fill:none;stroke-width:2.5;stroke-linecap:round"><polyline points="6 9 12 15 18 9"/></svg>
+  </div>
+  <div class="empty-state-menu" id="emptyStateMenu">
+    <div class="search-dd-item" onclick="selectEmptyStateOption('off')">Off <span class="version-check" id="chk-option-off">✓</span></div>
+    <div class="search-dd-item" onclick="selectEmptyStateOption('option1')">Option 1 — Placeholder cards <span class="version-check" id="chk-option1" style="display:none">✓</span></div>
+    <div class="search-dd-item" onclick="selectEmptyStateOption('option2')">Option 2 — Kickstart overlay <span class="version-check" id="chk-option2" style="display:none">✓</span></div>
+  </div>
+</div>
+<div class="es-overlay" id="esOverlay">
+  <div class="es-overlay-backdrop"></div>
+  <div class="es-overlay-card">
+    <div class="es-overlay-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+    <div class="es-overlay-title">Kickstart your dashboard</div>
+    <div class="es-overlay-sub">Create a port call to start tracking disbursements, approvals, and cash position in real time.</div>
+    <button class="es-overlay-cta" onclick="fireToast('Opening New Port Call…',event)">
+      <svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:#fff;fill:none;stroke-width:2.5;stroke-linecap:round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      Create Port Call
+    </button>
+  </div>
+</div>
 </body>
 </html>
